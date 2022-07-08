@@ -1,6 +1,6 @@
 import User from '../entities/User';
 import { log } from '../../core/logger/logger';
-import { GetUserRepository } from '../../core/repositories/getUserRepository';
+import { UserRepository } from '../../core/repositories/userRepository';
 import getUserUseCase from '../../core/usecases/getUserUseCase';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -8,8 +8,8 @@ import Authentication from '../entities/Authentication';
 
 const authenticationUseCase = async ({
                                        email,
-                                       password
-                                     }: User, repository: GetUserRepository): Promise<Authentication> => {
+                                       password,
+                                     }: User, repository: UserRepository): Promise<Authentication> => {
   log(`[authenticationUseCase]: getting user by email: ${email}`);
   const user = await getUserUseCase({ email } as any, repository);
   if (!user) {

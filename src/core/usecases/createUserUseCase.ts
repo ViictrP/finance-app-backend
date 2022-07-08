@@ -1,11 +1,11 @@
 import bCrypt from 'bcrypt';
 
 import User from '../entities/User';
-import { CreateUserRepository } from '../repositories/createUserRepository';
+import { UserRepository } from '../repositories/userRepository';
 import userValidator from '../validators/userValidator';
 import { log } from '../logger/logger';
 
-const createUserUseCase = async (user: User, repository: CreateUserRepository): Promise<User> => {
+const createUserUseCase = async (user: User, repository: UserRepository): Promise<User> => {
   log(`[createUserUseCase]: validating user ${user.email} information`);
   const isValid = userValidator(user);
   if (!isValid) {

@@ -1,12 +1,16 @@
 import express from 'express';
-import createUserUseCaseAdapter from './adapters/createUserUseCaseAdapter';
-import authenticationUseCaseAdapter from './adapters/authenticationUseCaseAdapter';
-import getMyProfileUseCaseAdapter from './adapters/getMyProfileUseCaseAdapter';
+import {
+  authenticationUseCaseAdapter,
+  createUserUseCaseAdapter,
+  getMyProfileUseCaseAdapter,
+  updateUserUseCaseAdapter,
+} from './adapters';
 
 const router = express.Router();
 
 router.post('/users', createUserUseCaseAdapter);
 router.post('/login', authenticationUseCaseAdapter);
+router.put('/users/:id', updateUserUseCaseAdapter);
 router.get('/me', getMyProfileUseCaseAdapter);
 
 export default router;

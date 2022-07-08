@@ -1,4 +1,4 @@
-import User from '../entities/User';
+import { User } from '../entities';
 import propertyValidator from './propertyValidator';
 
 const userValidator = (user: User) => {
