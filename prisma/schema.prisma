@@ -11,14 +11,59 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  lastname  String
-  email     String   @unique
-  password  String
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  salary    Decimal? @db.Decimal(10, 2)
+  id           String         @id @default(uuid())
+  name         String
+  lastname     String
+  email        String         @unique
+  password     String
+  active       Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  salary       Decimal?       @db.Decimal(10, 2)
+  creditCards  CreditCard[]
+  transactions Transaction[]
 
   @@map("finance_app_user")
+}
+
+model CreditCard {
+  id                String    @id @default(uuid())
+  userId            String    @map("user_id")
+  title             String
+  description       String
+  number            String    @unique
+  user              User      @relation(references: [id], fields: [userId])
+  invoices          Invoice[]
+  invoiceClosingDay Int       @map("invoice_closing_day") @default(0)
+  createAt          DateTime  @default(now())
+
+  @@map("credit_card")
+}
+
+model Invoice {
+  id            String         @id @default(uuid())
+  creditCardId   String        @map("credit_card_id")
+  creditCard    CreditCard     @relation(references: [id], fields: [creditCardId])
+  transactions  Transaction[]
+  createdAt     DateTime       @default(now())
+  isClosed      Boolean        @default(false)
+  year          Int
+  month         String
+
+  @@unique([month, year])
+  @@map("invoice")
+}
+
+model Transaction {
+  id                String   @id @default(uuid())
+  amount            Decimal  @db.Decimal(10, 2)
+  isInstallment     Boolean  @default(false)
+  installmentAmount Int
+  createdAt         DateTime @default(now())
+  invoiceId         String   @map("invoice_id")
+  invoice           Invoice? @relation(references: [id], fields: [invoiceId])
+  userId            String   @map("user_id")
+  user              User     @relation(references: [id], fields: [userId])
+  category          String
+
+  @@map("transaction")
 }
