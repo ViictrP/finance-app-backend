@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { log } from '../core/logger/logger';
 import { updateUserUseCase } from '../core/usecases';
-import repository from '../infra/userPrismaRepository';
+import { userPrismaRepository } from '../infra';
 
 const updateUserUseCaseAdapter = async (req: Request, res: Response) => {
   try {
@@ -9,7 +9,7 @@ const updateUserUseCaseAdapter = async (req: Request, res: Response) => {
     const { id } = req.params;
     body.id = id;
     log('[updateUserUseCaseAdapter]: update user request received with body {}', body, { sensitive: ['password'] });
-    const newUser = await updateUserUseCase(body, repository as any);
+    const newUser = await updateUserUseCase(body, userPrismaRepository as any);
     log(`[updateUserUseCaseAdapter]: user data was updated [id]: ${newUser.id}`);
     const hateoas = { ...newUser, path: `/users/${newUser.id}` };
     res.status(200).json(hateoas);

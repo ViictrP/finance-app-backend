@@ -1,6 +1,6 @@
 import User from '../entities/User';
 import { log } from '../logger/logger';
-import { UserRepository } from '../repositories/userRepository';
+import { UserRepository } from '../repositories';
 
 const updateUserUseCase = async (user: User, repository: UserRepository): Promise<User> => {
   const { id } = user;

@@ -1,3 +1,6 @@
+import Transaction from './Transaction';
+import CreditCard from './CreditCard';
+
 export default interface User {
   id: string;
   name: string;
@@ -7,4 +10,6 @@ export default interface User {
   active: boolean;
   createdAt: Date;
   salary?: number;
+  creditCards: CreditCard[];
+  transactions: Transaction[];
 }

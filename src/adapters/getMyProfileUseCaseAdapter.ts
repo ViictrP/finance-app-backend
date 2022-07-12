@@ -1,5 +1,5 @@
 import { log } from '../core/logger/logger';
-import repository from '../infra/userPrismaRepository';
+import { userPrismaRepository } from '../infra';
 import { Request, Response } from 'express';
 import { getUserUseCase } from '../core/usecases';
 import jwt from 'jsonwebtoken';
@@ -12,7 +12,7 @@ const getMyProfileUseCaseAdapter = async (req: Request, res: Response) => {
     log('[getMyProfileUseCaseAdapter]: extracting user data from access token');
     const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as any;
     log(`[getMyProfileUseCaseAdapter]: getting user ${id} data`);
-    const user = await getUserUseCase({ id } as any, repository as any);
+    const user = await getUserUseCase({ id } as any, userPrismaRepository as any);
     log(`[getUserUseCaseAdapter]: user found [id]: ${user.id}`);
     res.status(200).json(user);
   } catch (error) {

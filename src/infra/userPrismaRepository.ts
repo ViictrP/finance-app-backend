@@ -1,4 +1,4 @@
-import User from '../core/entities/User';
+import { User } from '../core/entities';
 import { prisma } from './prisma';
 
 const create = (newUser: User) => {
@@ -10,6 +10,18 @@ const create = (newUser: User) => {
 const get = (filter: User) => {
   return prisma.user.findUnique({
     where: { ...filter },
+    include: {
+      creditCards: {
+        include: {
+          invoices: {
+            include: {
+              transactions: true
+            }
+          }
+        }
+      },
+      transactions: true
+    }
   });
 };
 
