@@ -1,6 +1,6 @@
 import { log } from '../logger/logger';
-import User from '../entities/User';
-import { UserRepository } from '../repositories/userRepository';
+import { User } from '../entities';
+import { UserRepository } from '../repositories';
 
 const getUserUseCase = async (user: User, repository: UserRepository): Promise<User> => {
   log(`[getUserUseCase]: getting user by filter: ${user}`);

@@ -1,8 +1,8 @@
-import { UserRepository } from '../repositories/userRepository';
+import { UserRepository } from '../repositories';
 import { log } from '../logger/logger';
 import { CreditCard } from '../entities';
-import creditCardValidator from '../validators/creditCardValidator';
-import { CreditCardRepository } from '../repositories/creditCardRepository';
+import { creditCardValidator } from '../validators';
+import { CreditCardRepository } from '../repositories';
 import { MONTHS } from '../enums/month.enum';
 
 const creditCardUseCase = async (creditCard: CreditCard, userRepository: UserRepository, repository: CreditCardRepository): Promise<CreditCard> => {

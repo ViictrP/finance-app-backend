@@ -1,8 +1,8 @@
 import bCrypt from 'bcrypt';
 
 import User from '../entities/User';
-import { UserRepository } from '../repositories/userRepository';
-import userValidator from '../validators/userValidator';
+import { UserRepository } from '../repositories';
+import { userValidator } from '../validators';
 import { log } from '../logger/logger';
 
 const createUserUseCase = async (user: User, repository: UserRepository): Promise<User> => {

@@ -1,5 +1,5 @@
 import { log } from '../logger/logger';
-import User from '../entities/User';
+import { User } from '../entities';
 import { CreditCardRepository } from '../repositories';
 import { CreditCard } from '../entities';
 

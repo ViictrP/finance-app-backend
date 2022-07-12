@@ -2,7 +2,7 @@ import { log } from '../core/logger/logger';
 import { creditCardPrismaRepository } from '../infra';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import getCreditCardsUseCase from '../core/usecases/getCreditCardsUseCase';
+import { getCreditCardsUseCase } from '../core/usecases';
 
 const getCreditCardsUseCaseAdapter = async (req: Request, res: Response) => {
   try {

@@ -1,4 +1,4 @@
-import User from '../core/entities/User';
+import { User } from '../core/entities';
 import { prisma } from './prisma';
 
 const create = (newUser: User) => {
