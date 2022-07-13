@@ -9,7 +9,8 @@
     "test:silent": "jest --coverage --silent --noStackTrace .",
     "build": "tsc",
     "start": "npx prisma migrate deploy && node dist/server.js",
-    "dev": "ts-node-dev src/server.ts"
+    "dev": "ts-node-dev src/server.ts",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "author": "Victor Prado",
   "license": "MIT",
   "devDependencies": {
+    "@swc/core": "^1.2.213",
     "@swc/jest": "^0.2.21",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
@@ -30,6 +32,7 @@
     "@types/jest": "^28.1.1",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.42",
+    "husky": "^8.0.1",
     "jest": "^28.1.1",
     "prisma": "^4.0.0",
     "ts-node": "^10.8.1",
