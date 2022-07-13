@@ -34,6 +34,7 @@ model CreditCard {
   user              User      @relation(references: [id], fields: [userId])
   invoices          Invoice[]
   invoiceClosingDay Int       @map("invoice_closing_day") @default(0)
+  backgroundColor   String    @default("bg-zinc-900")
   createAt          DateTime  @default(now())
 
   @@map("credit_card")
