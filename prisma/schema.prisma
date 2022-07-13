@@ -49,7 +49,7 @@ model Invoice {
   year          Int
   month         String
 
-  @@unique([month, year])
+  @@unique([month, year, creditCardId])
   @@map("invoice")
 }
 
