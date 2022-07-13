@@ -12,6 +12,7 @@ describe('Credit Card Validator', () => {
       invoices: [],
       invoiceClosingDay: 1,
       createAt: new Date(),
+      backgroundColor: 'bg-zinc-900'
     };
     const valid = creditCardValidator(creditCard);
 
