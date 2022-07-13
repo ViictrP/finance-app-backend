@@ -9,7 +9,8 @@
     "test:silent": "jest --coverage --silent --noStackTrace .",
     "build": "tsc",
     "start": "npx prisma migrate deploy && node dist/server.js",
-    "dev": "ts-node-dev src/server.ts"
+    "dev": "ts-node-dev src/server.ts",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -49,10 +50,5 @@
   "bugs": {
     "url": "https://github.com/ViictrP/finance-app-backend/issues"
   },
-  "homepage": "https://github.com/ViictrP/finance-app-backend#readme",
-  "husky": {
-    "hooks": {
-      "pre-push": "npm run test"
-    }
-  }
+  "homepage": "https://github.com/ViictrP/finance-app-backend#readme"
 }
