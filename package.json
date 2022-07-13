@@ -23,6 +23,7 @@
   "author": "Victor Prado",
   "license": "MIT",
   "devDependencies": {
+    "@swc/core": "^1.2.213",
     "@swc/jest": "^0.2.21",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
