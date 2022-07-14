@@ -1,11 +1,11 @@
 import express from 'express';
 import {
   authenticationUseCaseAdapter,
-  createCreditCardUseCaseAdapter,
+  createCreditCardUseCaseAdapter, createTransactionUseCaseAdapter,
   createUserUseCaseAdapter,
   getCreditCardsUseCaseAdapter,
   getMyProfileUseCaseAdapter,
-  updateUserUseCaseAdapter
+  updateUserUseCaseAdapter,
 } from './adapters';
 
 const router = express.Router();
@@ -21,4 +21,7 @@ router.get('/me', getMyProfileUseCaseAdapter);
 // ============= CREDIT CARD ============
 router.post('/credit-cards', createCreditCardUseCaseAdapter);
 router.get('/credit-cards', getCreditCardsUseCaseAdapter);
+
+// ============= TRANSACTION ============
+router.post('/transactions', createTransactionUseCaseAdapter);
 export default router;

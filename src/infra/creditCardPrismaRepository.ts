@@ -17,6 +17,19 @@ const create = (creditCard: CreditCard) => {
   });
 };
 
+const get = (filter: CreditCard) => {
+  return prisma.creditCard.findUnique({
+    where: { ...filter },
+    include: {
+      invoices: {
+        include: {
+          transactions: true
+        }
+      }
+    }
+  });
+};
+
 const getMany = (user: User) => {
   return prisma.creditCard.findMany({
     where: {
@@ -49,6 +62,7 @@ const update = (creditCard: CreditCard) => {
 
 export default {
   create,
+  get,
   getMany,
   update
 };

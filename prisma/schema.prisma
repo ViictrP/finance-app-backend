@@ -56,11 +56,13 @@ model Invoice {
 
 model Transaction {
   id                String   @id @default(uuid())
+  description       String
   amount            Decimal  @db.Decimal(10, 2)
   isInstallment     Boolean  @default(false)
   installmentAmount Int
   createdAt         DateTime @default(now())
-  invoiceId         String   @map("invoice_id")
+  date              DateTime
+  invoiceId         String?   @map("invoice_id")
   invoice           Invoice? @relation(references: [id], fields: [invoiceId])
   userId            String   @map("user_id")
   user              User     @relation(references: [id], fields: [userId])

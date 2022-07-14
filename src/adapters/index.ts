@@ -4,6 +4,7 @@ import getMyProfileUseCaseAdapter from './getMyProfileUseCaseAdapter';
 import updateUserUseCaseAdapter from './updateUserUseCaseAdapter';
 import createCreditCardUseCaseAdapter from './createCreditCardUseCaseAdapter';
 import getCreditCardsUseCaseAdapter from './getCreditCardsUseCaseAdapter';
+import createTransactionUseCaseAdapter from './createTransactionUseCaseAdapter';
 
 export {
   authenticationUseCaseAdapter,
@@ -11,5 +12,6 @@ export {
   getMyProfileUseCaseAdapter,
   updateUserUseCaseAdapter,
   createCreditCardUseCaseAdapter,
-  getCreditCardsUseCaseAdapter
+  getCreditCardsUseCaseAdapter,
+  createTransactionUseCaseAdapter
 }
