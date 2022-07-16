@@ -15,7 +15,11 @@ const includes = {
       },
     },
   },
-  transactions: true,
+  transactions: {
+    where: {
+      invoice: null
+    }
+  },
 };
 
 const create = (newUser: User) => {
