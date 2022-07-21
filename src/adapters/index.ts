@@ -1,17 +1,17 @@
 import authenticationUseCaseAdapter from './authenticationUseCaseAdapter';
-import createUserUseCaseAdapter from './createUserUseCaseAdapter';
+import postUserUseCaseAdapter from './postUserUseCaseAdapter';
 import getMyProfileUseCaseAdapter from './getMyProfileUseCaseAdapter';
 import updateUserUseCaseAdapter from './updateUserUseCaseAdapter';
-import createCreditCardUseCaseAdapter from './createCreditCardUseCaseAdapter';
+import postCreditCardUseCaseAdapter from './postCreditCardUseCaseAdapter';
 import getCreditCardsUseCaseAdapter from './getCreditCardsUseCaseAdapter';
-import createTransactionUseCaseAdapter from './createTransactionUseCaseAdapter';
+import postTransactionUseCaseAdapter from './postTransactionUseCaseAdapter';
 
 export {
   authenticationUseCaseAdapter,
-  createUserUseCaseAdapter,
+  postUserUseCaseAdapter,
   getMyProfileUseCaseAdapter,
   updateUserUseCaseAdapter,
-  createCreditCardUseCaseAdapter,
+  postCreditCardUseCaseAdapter,
   getCreditCardsUseCaseAdapter,
-  createTransactionUseCaseAdapter
+  postTransactionUseCaseAdapter
 }

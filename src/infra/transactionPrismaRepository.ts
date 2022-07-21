@@ -1,7 +1,8 @@
-import { Invoice, Transaction } from '../core/entities';
+import { Transaction } from '../core/entities';
 import { prisma } from './prisma';
 
-const createInvoiceTransaction = (transaction: Transaction, invoice: Invoice) => {
+const createInvoiceTransaction = (transaction: Transaction) => {
+  const invoice = transaction.invoice!;
   return prisma.transaction.create({
     data: {
       amount: transaction.amount,
@@ -21,8 +22,8 @@ const createInvoiceTransaction = (transaction: Transaction, invoice: Invoice) =>
             month_year_creditCardId: {
               month: invoice.month,
               year: invoice.year,
-              creditCardId: invoice.creditCard.id
-            }
+              creditCardId: invoice.creditCard.id,
+            },
           },
           create: {
             month: invoice.month,
@@ -36,7 +37,7 @@ const createInvoiceTransaction = (transaction: Transaction, invoice: Invoice) =>
           },
         },
       },
-    }
+    },
   });
 };
 
@@ -56,8 +57,8 @@ const create = (transaction: Transaction) => {
       },
     },
     include: {
-      invoice: true
-    }
+      invoice: true,
+    },
   });
 };
 
