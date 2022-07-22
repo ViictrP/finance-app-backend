@@ -6,7 +6,7 @@ import {
   getCreditCardsUseCaseAdapter,
   getMyProfileUseCaseAdapter,
   updateUserUseCaseAdapter,
-  resetAdapter
+  resetAdapter, getInvoiceUseCaseAdapter
 } from './adapters';
 
 const router = express.Router();
@@ -25,6 +25,7 @@ router.get('/me', getMyProfileUseCaseAdapter);
 // ============= CREDIT CARD ============
 router.post('/credit-cards', postCreditCardUseCaseAdapter);
 router.get('/credit-cards', getCreditCardsUseCaseAdapter);
+router.get('/credit-cards/:id/invoice', getInvoiceUseCaseAdapter);
 
 // ============= TRANSACTION ============
 router.post('/transactions', postTransactionUseCaseAdapter);
