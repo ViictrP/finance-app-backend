@@ -2,7 +2,9 @@ import { CreditCard } from '../entities';
 import propertyValidator from './propertyValidator';
 
 const creditCardValidator = (creditCard: CreditCard): boolean => {
-  return propertyValidator('title', creditCard);
+  const hasTitle = propertyValidator('title', creditCard);
+  const hasInvoiceClosingDay = creditCard.invoiceClosingDay > 0;
+  return hasTitle && hasInvoiceClosingDay;
 };
 
 export default creditCardValidator;

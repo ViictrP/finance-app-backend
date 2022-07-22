@@ -1,4 +1,4 @@
-import { Invoice, Transaction } from '../entities';
+import { Transaction } from '../entities';
 
 export type TransactionRepository = {
   create: (transaction: Transaction) => Promise<Transaction>;
