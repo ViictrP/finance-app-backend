@@ -6,9 +6,13 @@ import {
   getCreditCardsUseCaseAdapter,
   getMyProfileUseCaseAdapter,
   updateUserUseCaseAdapter,
+  resetAdapter
 } from './adapters';
 
 const router = express.Router();
+
+// ============= ADMIN ==============
+router.delete('/admin/reset-data', resetAdapter);
 
 // ============= USER ==============
 
