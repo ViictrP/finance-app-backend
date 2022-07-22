@@ -12,7 +12,8 @@ const createTransactionUseCase = async (transaction: Transaction, creditCardRepo
     throw new Error(`the transaction ${transaction.description} is invalid`);
   }
   transaction.date = new Date(transaction.date);
-  transaction.installmentAmount = Number(transaction.installmentAmount);
+  transaction.installmentAmount = transaction.installmentAmount > 0 ? transaction.installmentAmount : 1;
+  const transactionAmout = transaction.amount / transaction.installmentAmount;
   const transactionDate = new Date(transaction.date);
   let yearIncrement = 1;
   const { invoice, user } = transaction;
@@ -24,6 +25,7 @@ const createTransactionUseCase = async (transaction: Transaction, creditCardRepo
       const monthIndex = transactionDate.getMonth();
       newTransaction.date.setMonth(monthIndex + i);
       newTransaction.date.setFullYear(transactionDate.getFullYear());
+      newTransaction.amount = transactionAmout;
       populateWithInvoice(newTransaction, invoice, creditCard);
       log('[createTransactionUseCase]: persisting new transaction for invoice', transaction);
       await repository.createInvoiceTransaction(newTransaction);
