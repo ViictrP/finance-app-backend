@@ -12,7 +12,7 @@ const createTransactionUseCase = async (transaction: Transaction, creditCardRepo
     throw new Error(`the transaction ${transaction.description} is invalid`);
   }
   transaction.date = new Date(transaction.date);
-  transaction.installmentAmount = transaction.installmentAmount > 0 ? transaction.installmentAmount : 1;
+  transaction.installmentAmount = transaction.installmentAmount > 0 ? Number(transaction.installmentAmount) : 1;
   const transactionAmout = transaction.amount / transaction.installmentAmount;
   const transactionDate = new Date(transaction.date);
   let yearIncrement = 1;
