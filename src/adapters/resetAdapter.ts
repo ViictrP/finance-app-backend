@@ -9,14 +9,21 @@ const resetAdapter = async (req: Request, res: Response) => {
   const token = headers[process.env.TOKEN_HEADER_KEY as string] as string;
   log('[resetAdapter]: extracting user data from access token');
   const { email } = jwt.verify(token, process.env.JWT_SECRET as string) as any;
-  if (email !== 'admin@financeapp.com') {
-    res.status(403).json({ message: 'not permitted' });
-  }
-  await prisma.transaction.deleteMany();
-  await prisma.invoice.deleteMany();
-  await prisma.creditCard.deleteMany();
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email
+    }
+  });
+  await prisma.creditCard.deleteMany({
+    where: {
+      user: {
+        ...user
+      }
+    }
+  });
   log('[resetAdapter]: data wiped');
-  res.status(204).json({ message: 'data wiped' });
+  res.status(204).json({ message: `user ${email} data wiped` });
 };
 
 export default resetAdapter;
