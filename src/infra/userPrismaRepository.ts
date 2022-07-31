@@ -2,6 +2,12 @@ import { User } from '../core/entities';
 import { prisma } from './prisma';
 import { MONTHS } from '../core/enums/month.enum';
 
+const monthStart = new Date();
+const monthEnd = new Date();
+monthStart.setDate(1);
+monthEnd.setDate(1);
+monthEnd.setMonth(monthStart.getMonth() + 1);
+
 const includes = {
   creditCards: {
     include: {
@@ -17,7 +23,11 @@ const includes = {
   },
   transactions: {
     where: {
-      invoice: null
+      invoice: null,
+      date: {
+        gte: monthStart.toISOString(),
+        lte: monthEnd.toISOString()
+      }
     }
   },
 };
