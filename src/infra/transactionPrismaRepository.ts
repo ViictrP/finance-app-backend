@@ -9,6 +9,7 @@ const createInvoiceTransaction = (transaction: Transaction) => {
       description: transaction.description,
       isInstallment: transaction.isInstallment,
       installmentAmount: transaction.installmentAmount ?? 0,
+      installmentNumber: transaction.installmentNumber,
       category: transaction.category,
       date: transaction.date,
       user: {
