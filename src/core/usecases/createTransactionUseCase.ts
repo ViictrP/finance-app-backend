@@ -26,6 +26,7 @@ const createTransactionUseCase = async (transaction: Transaction, creditCardRepo
       newTransaction.date.setMonth(monthIndex + i);
       newTransaction.date.setFullYear(transactionDate.getFullYear());
       newTransaction.amount = transactionAmout;
+      newTransaction.installmentNumber = i + 1;
       populateWithInvoice(newTransaction, invoice, creditCard);
       log('[createTransactionUseCase]: persisting new transaction for invoice', transaction);
       await repository.createInvoiceTransaction(newTransaction);

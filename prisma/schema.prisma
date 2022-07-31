@@ -60,6 +60,7 @@ model Transaction {
   amount            Decimal  @db.Decimal(10, 2)
   isInstallment     Boolean  @default(false)
   installmentAmount Int
+  installmentNumber Int      @default(1)
   createdAt         DateTime @default(now())
   date              DateTime
   invoiceId         String?   @map("invoice_id")

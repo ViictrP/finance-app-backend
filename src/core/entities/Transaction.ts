@@ -7,6 +7,7 @@ export default interface Transaction {
   description: string;
   isInstallment: boolean;
   installmentAmount: number;
+  installmentNumber: number;
   createdAt: Date;
   date: Date;
   invoice?: Invoice;
