@@ -30,13 +30,14 @@ model CreditCard {
   userId            String    @map("user_id")
   title             String
   description       String
-  number            String    @unique
+  number            String
   user              User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   invoices          Invoice[]
   invoiceClosingDay Int       @map("invoice_closing_day") @default(0)
   backgroundColor   String    @default("bg-zinc-900")
   createAt          DateTime  @default(now())
 
+  @@unique([number, userId])
   @@map("credit_card")
 }
 
