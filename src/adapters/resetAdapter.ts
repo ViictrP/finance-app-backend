@@ -15,6 +15,13 @@ const resetAdapter = async (req: Request, res: Response) => {
       email: email
     }
   });
+  await prisma.transaction.deleteMany({
+    where: {
+      user: {
+        id: user!.id
+      }
+    }
+  });
   await prisma.creditCard.deleteMany({
     where: {
       user: {
