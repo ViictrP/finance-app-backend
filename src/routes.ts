@@ -1,13 +1,16 @@
 import express from 'express';
 import {
   authenticationUseCaseAdapter,
-  postCreditCardUseCaseAdapter, postTransactionUseCaseAdapter,
-  postUserUseCaseAdapter,
   getCreditCardsUseCaseAdapter,
+  getInvoiceUseCaseAdapter,
   getMyProfileUseCaseAdapter,
+  postCreditCardUseCaseAdapter,
+  postTransactionUseCaseAdapter,
+  postUserUseCaseAdapter,
+  resetAdapter,
   updateUserUseCaseAdapter,
-  resetAdapter, getInvoiceUseCaseAdapter
 } from './adapters';
+import deleteTransactionUseCaseAdapter from './adapters/deleteTransactionUseCaseAdapter';
 
 const router = express.Router();
 
@@ -25,8 +28,9 @@ router.get('/me', getMyProfileUseCaseAdapter);
 // ============= CREDIT CARD ============
 router.post('/credit-cards', postCreditCardUseCaseAdapter);
 router.get('/credit-cards', getCreditCardsUseCaseAdapter);
-router.get('/credit-cards/:id/invoice', getInvoiceUseCaseAdapter);
+router.get('/credit-cards/:id/invoices', getInvoiceUseCaseAdapter);
 
 // ============= TRANSACTION ============
 router.post('/transactions', postTransactionUseCaseAdapter);
+router.delete('/transactions/:id', deleteTransactionUseCaseAdapter);
 export default router;
