@@ -5,4 +5,5 @@ export type TransactionRepository = {
   createInvoiceTransaction: (transaction: Transaction) => Promise<Transaction>;
   get: (transaction: Transaction) => Promise<Transaction | null>;
   update: (transaction: Transaction) => Promise<Transaction>;
+  deleteTransaction: (transaction: Transaction) => Promise<void>;
 }

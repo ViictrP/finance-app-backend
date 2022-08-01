@@ -85,9 +85,18 @@ const update = (transaction: Transaction) => {
   });
 };
 
+const deleteTransaction = (transaction: Transaction) => {
+  return prisma.transaction.delete({
+    where: {
+      id: transaction.id
+    }
+  });
+};
+
 export default {
   createInvoiceTransaction,
   create,
   get,
   update,
+  deleteTransaction
 };
