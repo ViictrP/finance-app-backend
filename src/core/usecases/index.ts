@@ -6,6 +6,7 @@ import getCreditCardsUseCase from './getCreditCardsUseCase';
 import createTransactionUseCase from './createTransactionUseCase';
 import getInvoiceUseCase from './getInvoiceUseCase';
 import deleteTransactionUseCase from './deleteTransactionUseCase';
+import updateCreditCardUseCase from './updateCreditCardUseCase';
 
 export {
   createUserUseCase,
@@ -15,5 +16,6 @@ export {
   getCreditCardsUseCase,
   createTransactionUseCase,
   getInvoiceUseCase,
-  deleteTransactionUseCase
+  deleteTransactionUseCase,
+  updateCreditCardUseCase
 };

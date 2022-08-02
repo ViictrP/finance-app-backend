@@ -55,7 +55,8 @@ const update = (creditCard: CreditCard) => {
     data: {
       title: creditCard.title,
       description: creditCard.description,
-      number: creditCard.number
+      number: creditCard.number,
+      backgroundColor: creditCard.backgroundColor
     }
   });
 };
