@@ -11,10 +11,10 @@ const updateUserUseCase = async (user: User, repository: UserRepository): Promis
     throw new Error(`user not found by filter ${user}`);
   }
   log(`[updateUserUseCase]: updating user data ${user.email}`);
-  savedUser.email = user.email;
-  savedUser.name = user.name;
+  savedUser.email = user.email ?? savedUser.email;
+  savedUser.name = user.name ?? savedUser.name ?? savedUser.lastname;
   savedUser.lastname = user.lastname;
-  savedUser.salary = user.salary;
+  savedUser.salary = user.salary ?? savedUser.salary;
   return repository.update(user);
 };
 

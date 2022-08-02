@@ -8,7 +8,8 @@ import {
   postTransactionUseCaseAdapter,
   postUserUseCaseAdapter,
   resetAdapter,
-  updateUserUseCaseAdapter,
+  updateCreditCardUseCaseAdapter,
+  updateUserUseCaseAdapter
 } from './adapters';
 import deleteTransactionUseCaseAdapter from './adapters/deleteTransactionUseCaseAdapter';
 
@@ -29,6 +30,7 @@ router.get('/me', getMyProfileUseCaseAdapter);
 router.post('/credit-cards', postCreditCardUseCaseAdapter);
 router.get('/credit-cards', getCreditCardsUseCaseAdapter);
 router.get('/credit-cards/:id/invoices', getInvoiceUseCaseAdapter);
+router.put('/credit-cards/:id', updateCreditCardUseCaseAdapter);
 
 // ============= TRANSACTION ============
 router.post('/transactions', postTransactionUseCaseAdapter);
