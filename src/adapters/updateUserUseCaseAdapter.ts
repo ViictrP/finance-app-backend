@@ -6,8 +6,8 @@ import { userPrismaRepository } from '../infra';
 const updateUserUseCaseAdapter = async (req: Request, res: Response) => {
   try {
     const { body } = req;
-    const { id } = req.params;
-    body.id = id;
+    const { user } = res.locals;
+    body.id = user.id;
     log('[updateUserUseCaseAdapter]: update user request received with body {}', body, { sensitive: ['password'] });
     const newUser = await updateUserUseCase(body, userPrismaRepository as any);
     log(`[updateUserUseCaseAdapter]: user data was updated [id]: ${newUser.id}`);
