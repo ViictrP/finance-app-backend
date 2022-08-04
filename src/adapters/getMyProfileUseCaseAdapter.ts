@@ -1,7 +1,7 @@
 import { log } from '../core/logger/logger';
 import { userPrismaRepository } from '../infra';
 import { Request, Response } from 'express';
-import { getUserUseCase } from '../core/usecases';
+import { getUserUseCase }  from '../core/usecases';
 
 const getMyProfileUseCaseAdapter = async (req: Request, res: Response) => {
   try {
