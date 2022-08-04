@@ -6,7 +6,7 @@ import postCreditCardUseCaseAdapter from './postCreditCardUseCaseAdapter';
 import getCreditCardsUseCaseAdapter from './getCreditCardsUseCaseAdapter';
 import postTransactionUseCaseAdapter from './postTransactionUseCaseAdapter';
 import getInvoiceUseCaseAdapter from './getInvoiceUseCaseAdapter';
-import resetAdapter from './resetAdapter';
+import deleteUserDataUseCaseAdapter from './deleteUserDataUseCaseAdapter';
 import updateCreditCardUseCaseAdapter from './updateCreditCardUseCaseAdapter';
 
 export {
@@ -18,6 +18,6 @@ export {
   getCreditCardsUseCaseAdapter,
   postTransactionUseCaseAdapter,
   getInvoiceUseCaseAdapter,
-  resetAdapter,
+  deleteUserDataUseCaseAdapter,
   updateCreditCardUseCaseAdapter
 }

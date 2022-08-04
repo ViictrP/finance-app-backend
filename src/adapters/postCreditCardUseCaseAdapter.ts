@@ -7,10 +7,8 @@ import jwt from 'jsonwebtoken';
 const postCreditCardUseCaseAdapter = async (req: Request, res: Response) => {
   try {
     const { body, headers } = req;
-    const token = headers[process.env.TOKEN_HEADER_KEY as string] as string;
-    log('[postCreditCardUseCaseAdapter]: extracting user data from access token');
-    const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as any;
-    body.user = { id };
+    const { user } = res.locals;
+    body.user = user;
     log('[postCreditCardUseCaseAdapter]: save credit card request received with body {}', body);
     const newCreditCard = await createCreditCardUseCase(body, userPrismaRepository as any, creditCardPrismaRepository as any);
     log(`[createCreditCardUseCaseAdapter]: new credit card [id]: ${newCreditCard.id} saved`);

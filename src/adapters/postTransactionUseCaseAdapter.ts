@@ -1,16 +1,13 @@
 import { Request, Response } from 'express';
 import { log } from '../core/logger/logger';
-import jwt from 'jsonwebtoken';
 import { createTransactionUseCase } from '../core/usecases';
 import { creditCardPrismaRepository, transactionPrismaRepository, userPrismaRepository } from '../infra';
 
 const postTransactionUseCaseAdapter = async (req: Request, res: Response) => {
   try {
-    const { body, headers } = req;
-    const token = headers[process.env.TOKEN_HEADER_KEY as string] as string;
-    log('[postTransactionUseCaseAdapter]: extracting user data from access token');
-    const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as any;
-    body.user = { id };
+    const { body } = req;
+    const { user } = res.locals;
+    body.user = user;
     log('[postTransactionUseCaseAdapter]: save new transaction request received with body {}', body);
     const newCreditCard = await createTransactionUseCase(body, creditCardPrismaRepository as any, userPrismaRepository as any, transactionPrismaRepository as any);
     log(`[createTransactionUseCaseAdapter]: new transaction [id]: ${newCreditCard.id} saved`);
