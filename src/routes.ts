@@ -1,13 +1,14 @@
 import express from 'express';
 import {
   authenticationUseCaseAdapter,
+  deleteUserDataUseCaseAdapter,
+  getBalanceUseCaseAdapter,
   getCreditCardsUseCaseAdapter,
   getInvoiceUseCaseAdapter,
   getMyProfileUseCaseAdapter,
   postCreditCardUseCaseAdapter,
   postTransactionUseCaseAdapter,
   postUserUseCaseAdapter,
-  deleteUserDataUseCaseAdapter,
   updateCreditCardUseCaseAdapter,
   updateUserUseCaseAdapter
 } from './adapters';
@@ -23,6 +24,7 @@ router.post('/login', authenticationUseCaseAdapter);
 router.put('/users', isAuthorizedMiddleware, updateUserUseCaseAdapter);
 router.get('/me', isAuthorizedMiddleware, getMyProfileUseCaseAdapter);
 router.delete('/users', isAuthorizedMiddleware, deleteUserDataUseCaseAdapter);
+router.get('/balances', isAuthorizedMiddleware, getBalanceUseCaseAdapter);
 
 
 // ============= CREDIT CARD ============

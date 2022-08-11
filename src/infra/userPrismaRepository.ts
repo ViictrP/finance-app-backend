@@ -8,12 +8,13 @@ monthStart.setDate(1);
 monthEnd.setDate(1);
 monthEnd.setMonth(monthStart.getMonth() + 1);
 
-const includes = {
+const getIncludes = (month?: string, year?: number) => ({
   creditCards: {
     include: {
       invoices: {
         where: {
-          month: MONTHS[new Date().getMonth()],
+          month: month ?? MONTHS[monthStart.getMonth()],
+          year: year ?? monthStart.getFullYear()
         },
         include: {
           transactions: true,
@@ -25,24 +26,24 @@ const includes = {
     where: {
       invoice: null,
       date: {
-        gte: monthStart.toISOString(),
-        lte: monthEnd.toISOString()
+        gte: month && year ? new Date(year, MONTHS.indexOf(month), 1).toISOString() : monthStart.toISOString(),
+        lte: month && year ? new Date(year, MONTHS.indexOf(month), 31).toISOString() : monthEnd.toISOString()
       }
     }
   },
-};
+});
 
 const create = (newUser: User) => {
   return prisma.user.create({
     data: { ...newUser },
-    include: includes,
+    include: getIncludes(),
   });
 };
 
-const get = (filter: User) => {
+const get = (filter: User, month?: string, year?: number) => {
   return prisma.user.findUnique({
     where: { ...filter },
-    include: includes,
+    include: getIncludes(month, year),
   });
 };
 
@@ -54,7 +55,7 @@ const update = (user: User) => {
     data: {
       ...user,
     },
-    include: includes,
+    include: getIncludes(),
   });
 };
 
