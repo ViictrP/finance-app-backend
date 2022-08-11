@@ -1,5 +1,7 @@
 import isAuthorizedMiddleware from './isAuthorizedMiddleware';
+import isAdminMiddleware from './isAdminMiddleware';
 
 export {
-  isAuthorizedMiddleware
+  isAuthorizedMiddleware,
+  isAdminMiddleware
 }
