@@ -1,4 +1,4 @@
-import propertyValidator from './propertyValidator';
+import propertyValidator from '../../../../src/core/validators/propertyValidator';
 
 describe('Property Validator', () => {
   it('Should return true if object has the especified property', () => {

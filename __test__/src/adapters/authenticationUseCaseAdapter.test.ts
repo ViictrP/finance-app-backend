@@ -1,6 +1,6 @@
-jest.mock('../auth/usecases/authenticationUseCase');
-import authenticationUseCase from '../auth/usecases/authenticationUseCase';
-import authenticationUseCaseAdapter from './authenticationUseCaseAdapter';
+jest.mock('../../../src/auth/usecases/authenticationUseCase');
+import authenticationUseCase from '../../../src/auth/usecases/authenticationUseCase';
+import authenticationUseCaseAdapter from '../../../src/adapters/authenticationUseCaseAdapter';
 
 
 describe('authenticationUseCaseAdapter', () => {

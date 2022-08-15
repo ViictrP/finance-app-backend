@@ -1,8 +1,8 @@
-jest.mock('../core/usecases/createTransactionUseCase');
-import { createTransactionUseCase } from '../core/usecases';
-import postTransactionUseCaseAdapter from './postTransactionUseCaseAdapter';
+jest.mock('../../../src/core/usecases/createUserUseCase');
+import { createUserUseCase } from '../../../src/core/usecases';
+import postUserUseCaseAdapter from '../../../src/adapters/postUserUseCaseAdapter';
 
-describe('postTransactionUseCase', () => {
+describe('postUserUseCaseAdapter', () => {
   const res = {
     locals: {
       user: {
@@ -21,23 +21,23 @@ describe('postTransactionUseCase', () => {
     params: { id: 'test' }
   };
 
-  it('Should return success after saving the transaction card', async () => {
-    const useCase = createTransactionUseCase as jest.Mock;
+  it('Should return success after saving new user', async () => {
+    const useCase = createUserUseCase as jest.Mock;
     useCase.mockImplementation(() => ({ id: 'test' }));
     const statusSpy = jest.spyOn(res, 'status');
     const jsonSpy = jest.spyOn(res, 'json');
-    await postTransactionUseCaseAdapter(req as any, res as any);
+    await postUserUseCaseAdapter(req as any, res as any);
     expect(statusSpy).toHaveBeenCalledWith(201);
-    expect(jsonSpy).toHaveBeenCalledWith({ id: 'test', path: '/transactions/test' });
+    expect(jsonSpy).toHaveBeenCalledWith({ id: 'test', path: '/users/test' });
   });
 
   it('Should return 422 if an error occurs', async () => {
-    const useCase = createTransactionUseCase as jest.Mock;
+    const useCase = createUserUseCase as jest.Mock;
     useCase.mockImplementation(() => {
       throw new Error();
     });
     const statusSpy = jest.spyOn(res, 'status');
-    await postTransactionUseCaseAdapter(req as any, res as any);
+    await postUserUseCaseAdapter(req as any, res as any);
     expect(statusSpy).toHaveBeenCalledWith(422);
   });
 });

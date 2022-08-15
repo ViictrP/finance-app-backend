@@ -1,6 +1,6 @@
-jest.mock('../core/usecases/getUserUseCase');
-import getMyProfileUseCaseAdapter from './getMyProfileUseCaseAdapter';
-import { getUserUseCase } from '../core/usecases';
+jest.mock('../../../src/core/usecases/getUserUseCase');
+import getMyProfileUseCaseAdapter from '../../../src/adapters/getMyProfileUseCaseAdapter';
+import { getUserUseCase } from '../../../src/core/usecases';
 
 describe('getMyProfileUseCaseAdapter', () => {
 

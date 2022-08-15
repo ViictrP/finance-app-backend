@@ -1,5 +1,6 @@
+// @ts-ignore
 import jwt from 'jsonwebtoken';
-import { isAuthorizedMiddleware } from './index';
+import { isAuthorizedMiddleware } from '../../../../src/adapters/middlewares';
 
 describe('isAuthorizedMiddleware', () => {
 

@@ -1,5 +1,5 @@
-import { CreditCard } from '../entities';
-import { creditCardValidator } from './index';
+import { CreditCard } from '../../../../src/core/entities';
+import { creditCardValidator } from '../../../../src/core/validators';
 
 describe('Credit Card Validator', () => {
   it('Should return true if credit card is valid', () => {
