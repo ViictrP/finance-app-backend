@@ -1,4 +1,4 @@
-import { log } from './logger';
+import { log } from '../../../../src/core/logger/logger';
 
 describe('Logger', () => {
   it('Should log the message with success', () => {

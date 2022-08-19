@@ -1,5 +1,5 @@
-import { Transaction } from '../entities';
-import { creditCardValidator, transactionValidator } from './index';
+import { Transaction } from '../../../../src/core/entities';
+import { creditCardValidator, transactionValidator } from '../../../../src/core/validators';
 
 describe('TransactionValidator', () => {
   it('Should return true if transaction is valid', () => {

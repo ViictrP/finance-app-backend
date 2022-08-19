@@ -1,5 +1,5 @@
-import { User } from '../entities';
-import { userValidator } from './index';
+import { User } from '../../../../src/core/entities';
+import { userValidator } from '../../../../src/core/validators';
 
 describe('User validator', () => {
 

@@ -1,8 +1,8 @@
-jest.mock('../core/usecases/getCreditCardsUseCase');
-import { getCreditCardsUseCase } from '../core/usecases';
-import getCreditCardsUseCaseAdapter from './getCreditCardsUseCaseAdapter';
+jest.mock('../../../src/core/usecases/updateUserUseCase');
+import { updateUserUseCase } from '../../../src/core/usecases';
+import updateUserUseCaseAdapter from '../../../src/adapters/updateUserUseCaseAdapter';
 
-describe('getCreditCardsUseCaseAdapter', () => {
+describe('updateUserUseCaseAdapter', () => {
   const res = {
     locals: {
       user: {
@@ -21,23 +21,23 @@ describe('getCreditCardsUseCaseAdapter', () => {
     params: { id: 'test' }
   };
 
-  it('Should return success after getting credit cards', async () => {
-    const useCase = getCreditCardsUseCase as jest.Mock;
+  it('Should return success after updating the user', async () => {
+    const useCase = updateUserUseCase as jest.Mock;
     useCase.mockImplementation(() => ({ id: 'test' }));
     const statusSpy = jest.spyOn(res, 'status');
     const jsonSpy = jest.spyOn(res, 'json');
-    await getCreditCardsUseCaseAdapter(req as any, res as any);
+    await updateUserUseCaseAdapter(req as any, res as any);
     expect(statusSpy).toHaveBeenCalledWith(200);
-    expect(jsonSpy).toHaveBeenCalledWith({ id: 'test' });
+    expect(jsonSpy).toHaveBeenCalledWith({ id: 'test', path: '/users/test' });
   });
 
   it('Should return 422 if an error occurs', async () => {
-    const useCase = getCreditCardsUseCase as jest.Mock;
+    const useCase = updateUserUseCase as jest.Mock;
     useCase.mockImplementation(() => {
       throw new Error();
     });
     const statusSpy = jest.spyOn(res, 'status');
-    await getCreditCardsUseCaseAdapter(req as any, res as any);
+    await updateUserUseCaseAdapter(req as any, res as any);
     expect(statusSpy).toHaveBeenCalledWith(422);
   });
 });

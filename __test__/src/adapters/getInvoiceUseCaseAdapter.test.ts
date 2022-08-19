@@ -1,6 +1,6 @@
-jest.mock('../core/usecases/getInvoiceUseCase');
-import { getInvoiceUseCase } from '../core/usecases';
-import getInvoiceUseCaseAdapter from './getInvoiceUseCaseAdapter';
+jest.mock('../../../src/core/usecases/getInvoiceUseCase');
+import { getInvoiceUseCase } from '../../../src/core/usecases';
+import getInvoiceUseCaseAdapter from '../../../src/adapters/getInvoiceUseCaseAdapter';
 
 describe('getInvoiceUseCaseAdapter', () => {
   const res = {

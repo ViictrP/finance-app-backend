@@ -1,6 +1,6 @@
-jest.mock('../core/usecases/deleteTransactionUseCase');
-import { deleteTransactionUseCase } from '../core/usecases';
-import deleteTransactionUseCaseAdapter from './deleteTransactionUseCaseAdapter';
+jest.mock('../../../src/core/usecases/deleteTransactionUseCase');
+import { deleteTransactionUseCase } from '../../../src/core/usecases';
+import deleteTransactionUseCaseAdapter from '../../../src/adapters/deleteTransactionUseCaseAdapter';
 
 
 describe('deleteTransactionUseCaseAdapter', () => {
