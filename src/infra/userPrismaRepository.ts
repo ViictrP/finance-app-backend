@@ -7,6 +7,8 @@ const monthEnd = new Date();
 monthStart.setDate(1);
 monthEnd.setDate(1);
 monthEnd.setMonth(monthStart.getMonth() + 1);
+console.log('TESTE AQUI ZÉ: ', monthStart, monthEnd);
+
 
 const getIncludes = (month?: string, year?: number) => ({
   creditCards: {
