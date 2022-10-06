@@ -62,9 +62,10 @@ model Transaction {
   isInstallment     Boolean  @default(false)
   installmentAmount Int
   installmentNumber Int      @default(1)
+  installmentId     String?  @default(uuid())
   createdAt         DateTime @default(now())
   date              DateTime
-  invoiceId         String?   @map("invoice_id")
+  invoiceId         String?  @map("invoice_id")
   invoice           Invoice? @relation(references: [id], fields: [invoiceId], onDelete: Cascade)
   userId            String   @map("user_id")
   user              User     @relation(references: [id], fields: [userId], onDelete: Cascade)

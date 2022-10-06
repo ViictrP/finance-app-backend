@@ -3,6 +3,7 @@ import { CreditCardRepository, TransactionRepository, UserRepository } from '../
 import { log } from '../logger/logger';
 import { MONTHS } from '../enums/month.enum';
 import { transactionValidator } from '../validators';
+import { randomUUID } from 'crypto';
 
 const createTransactionUseCase = async (transaction: Transaction, creditCardRepository: CreditCardRepository, userRepository: UserRepository, repository: TransactionRepository) => {
   log('[createTransactionUseCase]: validating new transaction', transaction);
@@ -20,6 +21,7 @@ const createTransactionUseCase = async (transaction: Transaction, creditCardRepo
   if (invoice) {
     log('[createTransactionUseCase]: getting credit card for this transaction', transaction);
     const creditCard = await creditCardRepository.get(invoice.creditCard);
+    const installmentId = randomUUID();
     for (let i = 0; i < transaction.installmentAmount; i++) {
       const newTransaction = { ...transaction };
       const monthIndex = transactionDate.getMonth();
@@ -27,6 +29,7 @@ const createTransactionUseCase = async (transaction: Transaction, creditCardRepo
       newTransaction.date.setFullYear(transactionDate.getFullYear());
       newTransaction.amount = transactionAmout;
       newTransaction.installmentNumber = i + 1;
+      newTransaction.installmentId = installmentId;
       populateWithInvoice(newTransaction, invoice, creditCard);
       log('[createTransactionUseCase]: persisting new transaction for invoice', transaction);
       await repository.createInvoiceTransaction(newTransaction);

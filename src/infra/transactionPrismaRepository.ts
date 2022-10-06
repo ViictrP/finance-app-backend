@@ -49,6 +49,7 @@ const create = (transaction: Transaction) => {
       description: transaction.description,
       isInstallment: transaction.isInstallment,
       installmentAmount: transaction.installmentAmount ?? 0,
+      installmentId: transaction.installmentId,
       category: transaction.category,
       date: transaction.date,
       user: {

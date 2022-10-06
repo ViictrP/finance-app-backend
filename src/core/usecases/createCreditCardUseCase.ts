@@ -22,6 +22,8 @@ const creditCardUseCase = async (creditCard: CreditCard, userRepository: UserRep
     year: today.getFullYear(),
     isClosed: false
   };
+  (creditCard.id as any) = undefined;
+  creditCard.invoiceClosingDay = Number(creditCard.invoiceClosingDay);
   creditCard.invoices = [invoice as any];
   log(`[creditCardUseCase]: persisting new credit card ${creditCard.title}`);
   return repository.create(creditCard);
