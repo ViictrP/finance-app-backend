@@ -1,6 +1,6 @@
 import User from '../entities/User';
 import { log } from '../../core/logger/logger';
-import { UserRepository } from '../../core/repositories/userRepository';
+import { UserRepository } from '../../core/repositories';
 import getUserUseCase from '../../core/usecases/getUserUseCase';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
