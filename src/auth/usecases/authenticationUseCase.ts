@@ -11,7 +11,8 @@ const authenticationUseCase = async ({
                                        password,
                                      }: User, repository: UserRepository): Promise<Authentication> => {
   log(`[authenticationUseCase]: getting user by email: ${email}`);
-  const user = await getUserUseCase({ email } as any, repository);
+  const lowerCasedEmail = email.toLowerCase();
+  const user = await getUserUseCase({ lowerCasedEmail } as any, repository);
   if (!user) {
     log(`user not found for email ${email}`);
     throw new Error(`user not found for email ${email}`);
