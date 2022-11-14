@@ -6,5 +6,5 @@ export type TransactionRepository = {
   get: (transaction: Transaction) => Promise<Transaction | null>;
   getManyByUserMonthAndYear: (user: User, month: string, year: number) => Promise<Transaction[]>;
   update: (transaction: Transaction) => Promise<Transaction>;
-  deleteTransaction: (transaction: Transaction) => Promise<void>;
+  deleteTransaction: (transaction: Transaction, all: boolean) => Promise<void>;
 }

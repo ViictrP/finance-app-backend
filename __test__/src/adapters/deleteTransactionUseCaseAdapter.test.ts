@@ -26,7 +26,8 @@ describe('deleteTransactionUseCaseAdapter', () => {
     const useCase = deleteTransactionUseCase as jest.Mock;
     useCase.mockImplementation(() => ({ id: 'test' }));
     const statusSpy = jest.spyOn(res, 'status');
-    await deleteTransactionUseCaseAdapter(req as any, res as any);
+    const _req = { ...req, query: { all: false } };
+    await deleteTransactionUseCaseAdapter(_req as any, res as any);
     expect(statusSpy).toHaveBeenCalledWith(204);
   });
 

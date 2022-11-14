@@ -1,7 +1,7 @@
 import { TransactionRepository } from '../repositories';
 import { log } from '../logger/logger';
 
-const deleteTransactionUseCase = async (id: string, repository: TransactionRepository) => {
+const deleteTransactionUseCase = async (id: string, all: boolean, repository: TransactionRepository) => {
   log(`[deleteTransactionUseCase]: getting transaction information id `, id);
   const transaction = await repository.get({ id } as any);
 
@@ -11,7 +11,7 @@ const deleteTransactionUseCase = async (id: string, repository: TransactionRepos
   }
 
   log(`[deleteTransactionUseCase]: deletting transaction information id `, id);
-  return repository.deleteTransaction(transaction);
+  return repository.deleteTransaction(transaction, all);
 };
 
 export default deleteTransactionUseCase;

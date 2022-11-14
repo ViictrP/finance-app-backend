@@ -6,9 +6,10 @@ import { transactionPrismaRepository } from '../infra';
 const deleteTransactionUseCaseAdapter = async (req: Request, res: Response) => {
   try {
     const { params } = req;
+    const { all } = req.query;
     const transactionId = params.id;
     log(`[deleteTransactionUseCaseAdapter]: deleting transaction ${transactionId}`);
-    await deleteTransactionUseCase(transactionId, transactionPrismaRepository as any);
+    await deleteTransactionUseCase(transactionId, all === 'true', transactionPrismaRepository as any);
     log(`[deleteTransactionUseCaseAdapter]: transaction deleted`);
     return res.status(204).json();
   } catch (error) {
