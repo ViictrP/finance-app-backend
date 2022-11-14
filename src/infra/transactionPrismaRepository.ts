@@ -10,6 +10,7 @@ const createInvoiceTransaction = (transaction: Transaction) => {
       isInstallment: transaction.isInstallment,
       installmentAmount: transaction.installmentAmount ?? 0,
       installmentNumber: transaction.installmentNumber,
+      installmentId: transaction.installmentId,
       category: transaction.category,
       date: transaction.date,
       user: {
@@ -86,7 +87,15 @@ const update = (transaction: Transaction) => {
   });
 };
 
-const deleteTransaction = (transaction: Transaction) => {
+const deleteTransaction = (transaction: Transaction, all: boolean) => {
+  if (all) {
+    return prisma.transaction.deleteMany({
+      where: {
+        installmentId: transaction.installmentId
+      }
+    });
+  }
+
   return prisma.transaction.delete({
     where: {
       id: transaction.id
