@@ -10,7 +10,7 @@ const creditCardUseCase = async (creditCard: CreditCard, userRepository: UserRep
   const isValid = creditCardValidator(creditCard);
   if (!isValid) {
     log(`[creditCardUseCase]: credit card ${creditCard.title} has invalid data`);
-    throw new Error(`the user ${creditCard.title} is invalid`);
+    throw new Error(`the credit card ${creditCard.title} is invalid`);
   }
   log('[creditCardUseCase]: finding the owner of the new credit card', creditCard.title);
   const user = await userRepository.get(creditCard.user);

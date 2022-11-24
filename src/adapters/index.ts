@@ -6,10 +6,10 @@ import postCreditCardUseCaseAdapter from './postCreditCardUseCaseAdapter';
 import getCreditCardsUseCaseAdapter from './getCreditCardsUseCaseAdapter';
 import postTransactionUseCaseAdapter from './postTransactionUseCaseAdapter';
 import getInvoiceUseCaseAdapter from './getInvoiceUseCaseAdapter';
-import deleteUserDataUseCaseAdapter from './deleteUserDataUseCaseAdapter';
 import updateCreditCardUseCaseAdapter from './updateCreditCardUseCaseAdapter';
 import getBalanceUseCaseAdapter from './getBalanceUseCaseAdapter';
 import backupAdapter from './backupAdapter';
+import deleteTransactionUseCaseAdapter from './deleteTransactionUseCaseAdapter';
 
 export {
   authenticationUseCaseAdapter,
@@ -20,8 +20,8 @@ export {
   getCreditCardsUseCaseAdapter,
   postTransactionUseCaseAdapter,
   getInvoiceUseCaseAdapter,
-  deleteUserDataUseCaseAdapter,
   updateCreditCardUseCaseAdapter,
   getBalanceUseCaseAdapter,
-  backupAdapter
-}
+  backupAdapter,
+  deleteTransactionUseCaseAdapter
+};

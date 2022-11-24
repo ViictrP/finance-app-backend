@@ -1,7 +1,6 @@
 import express from 'express';
 import {
   authenticationUseCaseAdapter, backupAdapter,
-  deleteUserDataUseCaseAdapter,
   getBalanceUseCaseAdapter,
   getCreditCardsUseCaseAdapter,
   getInvoiceUseCaseAdapter,
@@ -11,8 +10,8 @@ import {
   postUserUseCaseAdapter,
   updateCreditCardUseCaseAdapter,
   updateUserUseCaseAdapter,
+  deleteTransactionUseCaseAdapter
 } from './adapters';
-import deleteTransactionUseCaseAdapter from './adapters/deleteTransactionUseCaseAdapter';
 import { isAdminMiddleware, isAuthorizedMiddleware } from './adapters/middlewares';
 
 const router = express.Router();
@@ -25,7 +24,6 @@ router.post('/users', postUserUseCaseAdapter);
 router.post('/login', authenticationUseCaseAdapter);
 router.put('/users', isAuthorizedMiddleware, updateUserUseCaseAdapter);
 router.get('/me', isAuthorizedMiddleware, getMyProfileUseCaseAdapter);
-router.delete('/users', isAuthorizedMiddleware, deleteUserDataUseCaseAdapter);
 router.get('/balances', isAuthorizedMiddleware, getBalanceUseCaseAdapter);
 
 
