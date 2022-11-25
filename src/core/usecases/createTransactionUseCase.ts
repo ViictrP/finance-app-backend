@@ -6,7 +6,7 @@ import { transactionValidator } from '../validators';
 import { randomUUID } from 'crypto';
 
 async function createTransactionWithinInvoice(transaction: Transaction, creditCardRepository: CreditCardRepository, invoice: Invoice, repository: TransactionRepository) {
-  if (!transaction.installmentAmount) transaction.installmentAmount = 1;
+  transaction.installmentAmount = transaction.installmentAmount > 0 ? Number(transaction.installmentAmount) : 1;
   const transactionAmout = transaction.amount / transaction.installmentAmount;
   const transactionDate = new Date(transaction.date);
   let yearIncrement = 1;
