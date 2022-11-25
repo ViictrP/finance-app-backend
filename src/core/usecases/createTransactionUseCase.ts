@@ -1,9 +1,43 @@
-import { CreditCard, Invoice, Transaction } from '../entities';
+import { CreditCard, Invoice, Transaction, User } from '../entities';
 import { CreditCardRepository, TransactionRepository, UserRepository } from '../repositories';
 import { log } from '../logger/logger';
 import { MONTHS } from '../enums/month.enum';
 import { transactionValidator } from '../validators';
 import { randomUUID } from 'crypto';
+
+async function createTransactionWithinInvoice(transaction: Transaction, creditCardRepository: CreditCardRepository, invoice: Invoice, repository: TransactionRepository) {
+  if (!transaction.installmentAmount) transaction.installmentAmount = 1;
+  const transactionAmout = transaction.amount / transaction.installmentAmount;
+  const transactionDate = new Date(transaction.date);
+  let yearIncrement = 1;
+  log('[createTransactionUseCase]: getting credit card for this transaction', transaction);
+  const creditCard = await creditCardRepository.get(invoice.creditCard);
+  const installmentId = randomUUID();
+  for (let i = 0; i < transaction.installmentAmount; i++) {
+    const newTransaction = { ...transaction };
+    const monthIndex = transactionDate.getMonth();
+    newTransaction.date.setMonth(monthIndex + i);
+    newTransaction.date.setFullYear(transactionDate.getFullYear());
+    newTransaction.amount = transactionAmout;
+    newTransaction.installmentNumber = i + 1;
+    newTransaction.installmentId = installmentId;
+    populateWithInvoice(newTransaction, invoice, creditCard);
+    log('[createTransactionUseCase]: persisting new transaction for invoice', transaction);
+    await repository.createInvoiceTransaction(newTransaction);
+    if (newTransaction.date.getMonth() === 11) {
+      transactionDate.setFullYear(transactionDate.getFullYear() + yearIncrement);
+    }
+  }
+  return transaction;
+}
+
+async function createTransactionWithoutInvoice(transaction: Transaction, userRepository: UserRepository, user: User, repository: TransactionRepository) {
+  log('[createTransactionUseCase]: getting user for this transaction', transaction);
+  const _user = await userRepository.get(user!);
+  transaction.user = _user!;
+  log('[createTransactionUseCase]: persisting new transaction for user', transaction);
+  return repository.create(transaction);
+}
 
 const createTransactionUseCase = async (transaction: Transaction, creditCardRepository: CreditCardRepository, userRepository: UserRepository, repository: TransactionRepository) => {
   log('[createTransactionUseCase]: validating new transaction', transaction);
@@ -13,37 +47,11 @@ const createTransactionUseCase = async (transaction: Transaction, creditCardRepo
     throw new Error(`the transaction ${transaction.description} is invalid`);
   }
   transaction.date = new Date(transaction.date);
-  transaction.installmentAmount = transaction.installmentAmount > 0 ? Number(transaction.installmentAmount) : 1;
-  const transactionAmout = transaction.amount / transaction.installmentAmount;
-  const transactionDate = new Date(transaction.date);
-  let yearIncrement = 1;
   const { invoice, user } = transaction;
   if (invoice) {
-    log('[createTransactionUseCase]: getting credit card for this transaction', transaction);
-    const creditCard = await creditCardRepository.get(invoice.creditCard);
-    const installmentId = randomUUID();
-    for (let i = 0; i < transaction.installmentAmount; i++) {
-      const newTransaction = { ...transaction };
-      const monthIndex = transactionDate.getMonth();
-      newTransaction.date.setMonth(monthIndex + i);
-      newTransaction.date.setFullYear(transactionDate.getFullYear());
-      newTransaction.amount = transactionAmout;
-      newTransaction.installmentNumber = i + 1;
-      newTransaction.installmentId = installmentId;
-      populateWithInvoice(newTransaction, invoice, creditCard);
-      log('[createTransactionUseCase]: persisting new transaction for invoice', transaction);
-      await repository.createInvoiceTransaction(newTransaction);
-      if (newTransaction.date.getMonth() === 11) {
-        transactionDate.setFullYear(transactionDate.getFullYear() + yearIncrement);
-      }
-    }
-    return transaction;
+    return await createTransactionWithinInvoice(transaction, creditCardRepository, invoice, repository);
   } else {
-    log('[createTransactionUseCase]: getting user for this transaction', transaction);
-    const _user = await userRepository.get(user!);
-    transaction.user = _user!;
-    log('[createTransactionUseCase]: persisting new transaction for user', transaction);
-    return repository.create(transaction);
+    return await createTransactionWithoutInvoice(transaction, userRepository, user, repository);
   }
 };
 
