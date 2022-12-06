@@ -11,16 +11,17 @@ datasource db {
 }
 
 model User {
-  id           String         @id @default(uuid())
-  name         String
-  lastname     String
-  email        String         @unique
-  password     String
-  active       Boolean        @default(true)
-  createdAt    DateTime       @default(now())
-  salary       Decimal?       @db.Decimal(10, 2)
-  creditCards  CreditCard[]
-  transactions Transaction[]
+  id                String         @id @default(uuid())
+  name              String
+  lastname          String
+  email             String         @unique
+  password          String
+  active            Boolean        @default(true)
+  createdAt         DateTime       @default(now())
+  salary            Decimal?       @db.Decimal(10, 2)
+  creditCards       CreditCard[]
+  transactions      Transaction[]
+  recurringExpenses RecurringExpense[]
 
   @@map("finance_app_user")
 }
@@ -72,4 +73,16 @@ model Transaction {
   category          String
 
   @@map("transaction")
+}
+
+model RecurringExpense {
+  id                String   @id @default(uuid())
+  description       String
+  amount            Decimal  @db.Decimal(10, 2)
+  createdAt         DateTime @default(now())
+  userId            String   @map("user_id")
+  user              User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  category          String
+
+  @@map("recurring_expense")
 }
