@@ -10,6 +10,7 @@ import updateCreditCardUseCaseAdapter from './updateCreditCardUseCaseAdapter';
 import getBalanceUseCaseAdapter from './getBalanceUseCaseAdapter';
 import backupAdapter from './backupAdapter';
 import deleteTransactionUseCaseAdapter from './deleteTransactionUseCaseAdapter';
+import postRecurringExpensesUseCaseAdapter from './postRecurringExpensesUseCaseAdapter';
 
 export {
   authenticationUseCaseAdapter,
@@ -23,5 +24,6 @@ export {
   updateCreditCardUseCaseAdapter,
   getBalanceUseCaseAdapter,
   backupAdapter,
-  deleteTransactionUseCaseAdapter
+  deleteTransactionUseCaseAdapter,
+  postRecurringExpensesUseCaseAdapter
 };
