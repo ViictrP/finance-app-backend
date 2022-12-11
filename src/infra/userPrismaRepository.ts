@@ -22,6 +22,7 @@ const getIncludes = (month?: string, year?: number) => {
         },
       },
     },
+    recurringExpenses: true,
     transactions: {
       where: {
         invoice: null,

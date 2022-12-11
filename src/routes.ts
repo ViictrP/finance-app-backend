@@ -10,7 +10,7 @@ import {
   postUserUseCaseAdapter,
   updateCreditCardUseCaseAdapter,
   updateUserUseCaseAdapter,
-  deleteTransactionUseCaseAdapter
+  deleteTransactionUseCaseAdapter, postRecurringExpensesUseCaseAdapter,
 } from './adapters';
 import { isAdminMiddleware, isAuthorizedMiddleware } from './adapters/middlewares';
 
@@ -36,4 +36,5 @@ router.put('/credit-cards/:id', isAuthorizedMiddleware, updateCreditCardUseCaseA
 // ============= TRANSACTION ============
 router.post('/transactions', isAuthorizedMiddleware, postTransactionUseCaseAdapter);
 router.delete('/transactions/:id', isAuthorizedMiddleware, deleteTransactionUseCaseAdapter);
+router.post('/recurring-expenses', isAuthorizedMiddleware, postRecurringExpensesUseCaseAdapter);
 export default router;

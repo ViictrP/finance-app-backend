@@ -1,5 +1,5 @@
 import RecurringExpense from '../entities/RecurringExpense';
 
 export type RecurringExpenseRepository = {
-  create: (RecurringExpense: RecurringExpense) => Promise<RecurringExpense>;
+  create: (recurringExpense: RecurringExpense) => Promise<RecurringExpense>;
 };
