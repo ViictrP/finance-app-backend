@@ -1,5 +1,6 @@
 import Transaction from './Transaction';
 import CreditCard from './CreditCard';
+import RecurringExpense from './RecurringExpense';
 
 export default interface User {
   id: string;
@@ -12,4 +13,5 @@ export default interface User {
   salary?: number;
   creditCards: CreditCard[];
   transactions: Transaction[];
+  recurringExpenses: RecurringExpense[];
 }
