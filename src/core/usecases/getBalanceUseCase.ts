@@ -15,10 +15,11 @@ const getBalanceUseCase = async (filter: TransactionFilter, repository: UserRepo
   }
   const { user, month, year } = filter;
   log(`[getBalanceUseCase]: getting the transactions of ${month}/${year}`);
-  const profile = await repository.get(user, month, year);
+  const { creditCards, transactions, recurringExpenses } = await repository.get(user, month, year) as User;
   return {
-    creditCards: profile!.creditCards,
-    transactions: profile!.transactions,
+    creditCards: creditCards,
+    transactions: transactions,
+    recurringExpenses: recurringExpenses
   }
 };
 

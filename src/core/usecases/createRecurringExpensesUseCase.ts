@@ -19,7 +19,12 @@ const createRecurringExpensesUseCase = async (
   const user = await userRepository.get(recurringExpense.user);
   recurringExpense.user = { id: user!.id } as User;
   log(`[createRecurringExpensesUseCase]: creating the recurring expense ${recurringExpense.description}`);
-  return repository.create(recurringExpense);
+  return repository.create({
+    description: recurringExpense.description,
+    user: recurringExpense.user,
+    amount: recurringExpense.amount,
+    category: recurringExpense.category
+  } as RecurringExpense);
 };
 
 export default createRecurringExpensesUseCase;
