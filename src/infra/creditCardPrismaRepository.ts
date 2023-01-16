@@ -1,4 +1,4 @@
-import { CreditCard, User } from '../core/entities';
+import { CreditCard, Invoice, User } from '../core/entities';
 import { prisma } from './prisma';
 
 const create = (creditCard: CreditCard) => {
@@ -11,15 +11,34 @@ const create = (creditCard: CreditCard) => {
         }
       },
       invoices: {
-        create: [...creditCard.invoices]
+        create: [...creditCard.invoices] as any[]
       }
     }
   });
 };
 
 const get = (filter: CreditCard) => {
+  let query = {};
+
+  if (!!filter.id) {
+    query = {
+      id: filter.id
+    }
+  }
+
+  if (!!filter.number) {
+    query = {
+      number_userId: {
+        number: filter.number,
+        userId: filter.user.id
+      }
+    };
+  }
+
   return prisma.creditCard.findUnique({
-    where: { ...filter },
+    where: {
+      ...query
+    },
     include: {
       invoices: {
         include: {
@@ -56,7 +75,8 @@ const update = (creditCard: CreditCard) => {
       title: creditCard.title,
       description: creditCard.description,
       number: creditCard.number,
-      backgroundColor: creditCard.backgroundColor
+      backgroundColor: creditCard.backgroundColor,
+      invoiceClosingDay: creditCard.invoiceClosingDay
     }
   });
 };
