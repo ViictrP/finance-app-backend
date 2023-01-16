@@ -37,7 +37,7 @@ const getIncludes = (month?: string, year?: number) => {
 
 const create = (newUser: User) => {
   return prisma.user.create({
-    data: { ...newUser },
+    data: { ...newUser } as any,
     include: getIncludes(),
   });
 };
@@ -56,7 +56,7 @@ const update = (user: User) => {
     },
     data: {
       ...user,
-    },
+    } as any,
     include: getIncludes(),
   });
 };
