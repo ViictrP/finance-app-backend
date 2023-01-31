@@ -13,17 +13,23 @@ async function createTransactionWithinInvoice(transaction: Transaction, creditCa
   log('[createTransactionUseCase]: getting credit card for this transaction', transaction);
   const creditCard = await creditCardRepository.get(invoice.creditCard);
   const installmentId = randomUUID();
-  for (let i = 0; i < transaction.installmentAmount; i++) {
+
+  async function createNewInstallment(installmentNumber: number) {
     const newTransaction = { ...transaction };
     const monthIndex = transactionDate.getMonth();
-    newTransaction.date.setMonth(monthIndex + i);
+    newTransaction.date.setMonth(monthIndex + installmentNumber);
     newTransaction.date.setFullYear(transactionDate.getFullYear());
     newTransaction.amount = transactionAmout;
-    newTransaction.installmentNumber = i + 1;
+    newTransaction.installmentNumber = installmentNumber + 1;
     newTransaction.installmentId = installmentId;
     populateWithInvoice(newTransaction, invoice, creditCard);
     log('[createTransactionUseCase]: persisting new transaction for invoice', transaction);
     await repository.createInvoiceTransaction(newTransaction);
+    return newTransaction;
+  }
+
+  for (let i = 0; i < transaction.installmentAmount; i++) {
+    const newTransaction = await createNewInstallment(i);
     if (newTransaction.date.getMonth() === 11) {
       transactionDate.setFullYear(transactionDate.getFullYear() + yearIncrement);
     }

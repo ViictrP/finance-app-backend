@@ -1,6 +1,6 @@
 import { UserRepository } from '../repositories';
 import { log } from '../logger/logger';
-import { CreditCard } from '../entities';
+import { CreditCard, Invoice, User } from '../entities';
 import { creditCardValidator } from '../validators';
 import { CreditCardRepository } from '../repositories';
 import { MONTHS } from '../enums/month.enum';
@@ -14,7 +14,7 @@ const creditCardUseCase = async (creditCard: CreditCard, userRepository: UserRep
   }
   log('[creditCardUseCase]: finding the owner of the new credit card', creditCard.title);
   const user = await userRepository.get(creditCard.user);
-  creditCard.user = { id: user!.id } as any;
+  creditCard.user = { id: user!.id } as User;
   log('[creditCardUseCase]: creating a new invoice for this credit card', creditCard.title);
   const today = new Date();
   const invoice = {
@@ -22,9 +22,9 @@ const creditCardUseCase = async (creditCard: CreditCard, userRepository: UserRep
     year: today.getFullYear(),
     isClosed: false
   };
-  (creditCard.id as any) = undefined;
+  (creditCard.id as unknown) = undefined;
   creditCard.invoiceClosingDay = Number(creditCard.invoiceClosingDay);
-  creditCard.invoices = [invoice as any];
+  creditCard.invoices = [invoice as Invoice];
   log(`[creditCardUseCase]: persisting new credit card ${creditCard.title}`);
   return repository.create(creditCard);
 };
