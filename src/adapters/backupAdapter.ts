@@ -16,7 +16,12 @@ const backupAdapter = async (req: Request, res: Response) => {
             },
           },
         },
-        transactions: true,
+        recurringExpenses: true,
+        transactions: {
+          where: {
+            invoice: null
+          }
+        },
       },
     });
     log('[backupAdapter]: backup generated!');
