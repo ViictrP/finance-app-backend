@@ -14,4 +14,6 @@ export default interface User {
   creditCards: CreditCard[];
   transactions: Transaction[];
   recurringExpenses: RecurringExpense[];
+  delete: boolean;
+  deleteDate?: Date;
 }

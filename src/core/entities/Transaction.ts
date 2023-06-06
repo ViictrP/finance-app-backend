@@ -13,5 +13,7 @@ export default interface Transaction {
   date: Date;
   invoice?: Invoice;
   user: User;
-  category: 'food' | 'home' | 'credit-card' | 'shop' | 'other'
+  category: 'food' | 'home' | 'credit-card' | 'shop' | 'other';
+  deleted: boolean;
+  deleteDate?: Date;
 }

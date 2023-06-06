@@ -10,34 +10,50 @@ const getIncludes = (month?: string, year?: number) => {
   monthEnd.setMonth(monthStart.getMonth() + 1);
   return {
     creditCards: {
+      where: {
+        deleted: false,
+      },
       include: {
         invoices: {
           where: {
             month: month ?? MONTHS[monthStart.getMonth()],
-            year: year ?? monthStart.getFullYear()
+            year: year ?? monthStart.getFullYear(),
           },
           include: {
-            transactions: true,
+            transactions: {
+              where: {
+                deleted: false,
+              },
+            },
           },
         },
       },
     },
-    recurringExpenses: true,
+    recurringExpenses: {
+      where: {
+        deleted: false,
+      },
+    },
     transactions: {
       where: {
         invoice: null,
         date: {
           gte: month && year ? new Date(year, MONTHS.indexOf(month), 1).toISOString() : monthStart.toISOString(),
-          lte: month && year ? new Date(year, MONTHS.indexOf(month), 31).toISOString() : monthEnd.toISOString()
-        }
-      }
+          lte: month && year ? new Date(year, MONTHS.indexOf(month), 31).toISOString() : monthEnd.toISOString(),
+        },
+        deleted: false,
+      },
     },
   };
 };
 
 const create = (newUser: User) => {
   return prisma.user.create({
-    data: { ...newUser } as any,
+    data: {
+      ...newUser,
+      deleted: false,
+      deleteDate: null
+    } as any,
     include: getIncludes(),
   });
 };
@@ -61,8 +77,21 @@ const update = (user: User) => {
   });
 };
 
+const deleteOne = (user: User) => {
+  return prisma.user.update({
+    where: {
+      id: user.id
+    },
+    data: {
+      deleted: true,
+      deleteDate: new Date()
+    }
+  });
+};
+
 export default {
   create,
   get,
   update,
+  deleteOne
 };

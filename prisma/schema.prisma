@@ -11,17 +11,20 @@ datasource db {
 }
 
 model User {
-  id                String         @id @default(uuid())
+  id                String             @id @default(uuid())
   name              String
   lastname          String
-  email             String         @unique
+  email             String             @unique
   password          String
-  active            Boolean        @default(true)
-  createdAt         DateTime       @default(now())
-  salary            Decimal?       @db.Decimal(10, 2)
+  active            Boolean            @default(true)
+  createdAt         DateTime           @default(now()) @map("created_at")
+  salary            Decimal?           @db.Decimal(10, 2)
   creditCards       CreditCard[]
   transactions      Transaction[]
   recurringExpenses RecurringExpense[]
+  deleted           Boolean            @default(false)
+  deleteDate        DateTime?          @map("delete_date")
+  MonthClosure      MonthClosure[]
 
   @@map("finance_app_user")
 }
@@ -34,55 +37,77 @@ model CreditCard {
   number            String
   user              User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   invoices          Invoice[]
-  invoiceClosingDay Int       @map("invoice_closing_day") @default(0)
-  backgroundColor   String    @default("bg-zinc-900")
-  createAt          DateTime  @default(now())
+  invoiceClosingDay Int       @default(0) @map("invoice_closing_day")
+  backgroundColor   String    @default("bg-zinc-900") @map("background_color")
+  createAt          DateTime  @default(now()) @map("create_at")
+  deleted           Boolean   @default(false)
+  deleteDate        DateTime? @map("delete_date")
 
-  @@unique([number, userId])
+  @@index([number, userId])
   @@map("credit_card")
 }
 
 model Invoice {
-  id            String         @id @default(uuid())
-  creditCardId   String        @map("credit_card_id")
-  creditCard    CreditCard     @relation(references: [id], fields: [creditCardId], onDelete: Cascade)
-  transactions  Transaction[]
-  createdAt     DateTime       @default(now())
-  isClosed      Boolean        @default(false)
-  year          Int
-  month         String
+  id           String        @id @default(uuid())
+  creditCardId String        @map("credit_card_id")
+  creditCard   CreditCard    @relation(references: [id], fields: [creditCardId], onDelete: Cascade)
+  transactions Transaction[]
+  createdAt    DateTime      @default(now()) @map("created_at")
+  isClosed     Boolean       @default(false) @map("is_closed")
+  year         Int
+  month        String
 
   @@unique([month, year, creditCardId])
   @@map("invoice")
 }
 
 model Transaction {
-  id                String   @id @default(uuid())
+  id                String    @id @default(uuid())
   description       String
-  amount            Decimal  @db.Decimal(10, 2)
-  isInstallment     Boolean  @default(false)
-  installmentAmount Int
-  installmentNumber Int      @default(1)
-  installmentId     String?  @default(uuid())
-  createdAt         DateTime @default(now())
+  amount            Decimal   @db.Decimal(10, 2)
+  isInstallment     Boolean   @default(false) @map("is_installment")
+  installmentAmount Int       @map("installment_amount")
+  installmentNumber Int       @default(1) @map("installment_number")
+  installmentId     String?   @default(uuid()) @map("installment_id")
+  createdAt         DateTime  @default(now()) @map("created_at")
   date              DateTime
-  invoiceId         String?  @map("invoice_id")
-  invoice           Invoice? @relation(references: [id], fields: [invoiceId], onDelete: Cascade)
-  userId            String   @map("user_id")
-  user              User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  invoiceId         String?   @map("invoice_id")
+  invoice           Invoice?  @relation(references: [id], fields: [invoiceId], onDelete: Cascade)
+  userId            String    @map("user_id")
+  user              User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   category          String
+  deleted           Boolean   @default(false)
+  deleteDate        DateTime? @map("delete_date")
 
   @@map("transaction")
 }
 
 model RecurringExpense {
-  id                String   @id @default(uuid())
-  description       String
-  amount            Decimal  @db.Decimal(10, 2)
-  createdAt         DateTime @default(now())
-  userId            String   @map("user_id")
-  user              User     @relation(references: [id], fields: [userId], onDelete: Cascade)
-  category          String
+  id          String    @id @default(uuid())
+  description String
+  amount      Decimal   @db.Decimal(10, 2)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  userId      String    @map("user_id")
+  user        User      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  category    String
+  deleted     Boolean   @default(false)
+  deleteDate  DateTime? @map("delete_date")
 
   @@map("recurring_expense")
+}
+
+model MonthClosure {
+  id         String    @id @default(uuid())
+  month      String
+  year       Int
+  userId     String    @map("user_id")
+  user       User      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  deleted    Boolean   @default(false)
+  deleteDate DateTime? @map("delete_date")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  total      Decimal   @db.Decimal(10, 2)
+  expenses   Decimal   @db.Decimal(10, 2)
+  available  Decimal   @db.Decimal(10, 2)
+
+  @@map("month_closure")
 }

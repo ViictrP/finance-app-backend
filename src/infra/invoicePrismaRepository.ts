@@ -8,10 +8,14 @@ const get = (invoice: Invoice) => {
         month: invoice.month,
         year: invoice.year,
         creditCardId: invoice.creditCard.id
-      }
+      },
     },
     include: {
-      transactions: true
+      transactions: {
+        where: {
+          deleted: false
+        }
+      }
     }
   });
 };

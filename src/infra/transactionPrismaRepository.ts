@@ -13,6 +13,8 @@ const createInvoiceTransaction = (transaction: Transaction) => {
       installmentId: transaction.installmentId,
       category: transaction.category,
       date: transaction.date,
+      deleted: false,
+      deleteDate: null,
       user: {
         connect: {
           id: transaction.user.id,
@@ -25,7 +27,7 @@ const createInvoiceTransaction = (transaction: Transaction) => {
               month: invoice.month,
               year: invoice.year,
               creditCardId: invoice.creditCard.id,
-            },
+            }
           },
           create: {
             month: invoice.month,
@@ -53,6 +55,8 @@ const create = (transaction: Transaction) => {
       installmentId: transaction.installmentId,
       category: transaction.category,
       date: transaction.date,
+      deleted: false,
+      deleteDate: null,
       user: {
         connect: {
           id: transaction.user.id,
@@ -88,18 +92,24 @@ const update = (transaction: Transaction) => {
 };
 
 const deleteTransaction = (transaction: Transaction, all: boolean) => {
+  const data = {
+    deleted: true,
+    deleteDate: new Date(),
+  };
   if (all) {
-    return prisma.transaction.deleteMany({
+    return prisma.transaction.updateMany({
       where: {
         installmentId: transaction.installmentId
-      }
+      },
+      data
     });
   }
 
-  return prisma.transaction.delete({
+  return prisma.transaction.update({
     where: {
       id: transaction.id
-    }
+    },
+    data
   });
 };
 

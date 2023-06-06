@@ -7,4 +7,6 @@ export default interface RecurringExpense {
   createdAt: Date;
   user: User;
   category: string;
+  deleted: boolean;
+  deleteDate?: Date;
 }

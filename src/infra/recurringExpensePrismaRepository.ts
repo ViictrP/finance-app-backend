@@ -14,6 +14,28 @@ const create = (recurringExpense: RecurringExpense) => {
   });
 };
 
+const get = (recurringExpense: RecurringExpense) => {
+  return prisma.recurringExpense.findUnique({
+    where: {
+      id: recurringExpense.id
+    }
+  });
+};
+
+const deleteOne = (recurringExpense: RecurringExpense) => {
+  return prisma.recurringExpense.update({
+    where: {
+      id: recurringExpense.id
+    },
+    data: {
+      deleted: true,
+      deleteDate: new Date()
+    }
+  });
+}
+
 export default {
-  create
+  create,
+  get,
+  deleteOne
 }
