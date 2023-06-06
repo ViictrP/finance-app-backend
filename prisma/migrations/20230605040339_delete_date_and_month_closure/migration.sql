@@ -9,23 +9,23 @@
 
 */
 -- AlterTable
-ALTER TABLE "credit_card" ADD COLUMN     "deleteDate" TIMESTAMP(3) NOT NULL,
+ALTER TABLE "credit_card" ADD COLUMN     "deleteDate" TIMESTAMP(3) NULL,
 ADD COLUMN     "deleted" BOOLEAN NOT NULL DEFAULT false;
 
 -- AlterTable
-ALTER TABLE "finance_app_user" ADD COLUMN     "deleteDate" TIMESTAMP(3) NOT NULL,
+ALTER TABLE "finance_app_user" ADD COLUMN     "deleteDate" TIMESTAMP(3) NULL,
 ADD COLUMN     "deleted" BOOLEAN NOT NULL DEFAULT false;
 
 -- AlterTable
-ALTER TABLE "invoice" ADD COLUMN     "deleteDate" TIMESTAMP(3) NOT NULL,
+ALTER TABLE "invoice" ADD COLUMN     "deleteDate" TIMESTAMP(3) NULL,
 ADD COLUMN     "deleted" BOOLEAN NOT NULL DEFAULT false;
 
 -- AlterTable
-ALTER TABLE "recurring_expense" ADD COLUMN     "deleteDate" TIMESTAMP(3) NOT NULL,
+ALTER TABLE "recurring_expense" ADD COLUMN     "deleteDate" TIMESTAMP(3) NULL,
 ADD COLUMN     "deleted" BOOLEAN NOT NULL DEFAULT false;
 
 -- AlterTable
-ALTER TABLE "transaction" ADD COLUMN     "deleteDate" TIMESTAMP(3) NOT NULL,
+ALTER TABLE "transaction" ADD COLUMN     "deleteDate" TIMESTAMP(3) NULL,
 ADD COLUMN     "deleted" BOOLEAN NOT NULL DEFAULT false;
 
 -- CreateTable
@@ -35,7 +35,7 @@ CREATE TABLE "month_closure" (
     "year" INTEGER NOT NULL,
     "user_id" TEXT NOT NULL,
     "deleted" BOOLEAN NOT NULL DEFAULT false,
-    "deleteDate" TIMESTAMP(3) NOT NULL,
+    "deleteDate" TIMESTAMP(3) NULL,
 
     CONSTRAINT "month_closure_pkey" PRIMARY KEY ("id")
 );
