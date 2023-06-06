@@ -7,7 +7,7 @@ RUN ls
 # Installing dependecies
 RUN npm i -g husky
 RUN npm i -g prisma
-RUN npm ci --omit=dev
+RUN npm ci
 RUN npm run build
 # Defining environment variables
 ENV DATABASE_URL=$DATABASE_URL
