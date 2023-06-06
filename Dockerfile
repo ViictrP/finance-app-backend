@@ -3,7 +3,6 @@ FROM node:16
 WORKDIR /usr/src/app
 # Copying app
 COPY . .
-RUN ls -a
 # Installing dependecies
 RUN npm i -g husky
 RUN npm i -g prisma
