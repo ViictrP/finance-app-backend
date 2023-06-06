@@ -1,0 +1,51 @@
+# Postgres external name
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  type: ExternalName
+  externalName: containers-us-west-88.railway.app
+---
+# Application
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finance-app-server-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: finance-app-server-node
+  template:
+    metadata:
+      labels:
+        app: finance-app-server-node
+    spec:
+      containers:
+        - name: finance-app-server-node-container
+          image: docker.io/viictrp/finance-app-server-node:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_URL
+              value: 'postgres://postgres:z8D6D26nReSH1RQb4VdU@postgres:6787/finance-app-database?schema=finance-app'
+            - name: JWT_SECRET
+              value: 'LOCAL_SECRET'
+            - name: TOKEN_HEADER_KEY
+              value: 'x-authentication-token'
+            - name: PORT
+              value: '8080'
+---
+# Application service
+apiVersion: v1
+kind: Service
+metadata:
+  name: finance-app-server-node
+spec:
+  selector:
+    app: finance-app-server-node
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
