@@ -2,12 +2,12 @@ FROM node:16
 # Defining the working directory
 WORKDIR /usr/src/app
 # Copying app
-COPY . /
-RUN ls
+COPY . .
 # Installing dependecies
 RUN npm i -g husky
 RUN npm i -g prisma
-RUN npm ci
+RUN npm i -g tsc
+RUN npm ci --omit=dev
 RUN npm run build
 # Defining environment variables
 ENV DATABASE_URL=$DATABASE_URL
