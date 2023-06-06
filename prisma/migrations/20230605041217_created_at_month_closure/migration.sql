@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "month_closure" ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
