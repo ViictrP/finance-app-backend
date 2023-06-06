@@ -6,7 +6,8 @@ jest.mock('../../../../src/core/validators');
 describe('createCreditCardUseCase', () => {
   const creditcard = {};
   const repository = {
-    create: jest.fn()
+    create: jest.fn(),
+    get: jest.fn()
   };
   const userRepository = {
     get: jest.fn()
