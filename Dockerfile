@@ -8,7 +8,7 @@ RUN ls -a
 RUN npm i -g husky
 RUN npm i -g prisma
 RUN npm i -g typescript
-RUN npm ci --omit=dev
+RUN npm ci
 RUN npm run build
 # Defining environment variables
 ENV DATABASE_URL=$DATABASE_URL
