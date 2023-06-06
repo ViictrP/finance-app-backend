@@ -2,7 +2,7 @@ FROM node:16
 # Defining the working directory
 WORKDIR /usr/src/app
 # Copying app
-COPY dist dist
+COPY ./dist/ dist/
 COPY package.json package.json
 RUN ls
 # Installing dependecies
