@@ -9,6 +9,8 @@ import deleteTransactionUseCase from './deleteTransactionUseCase';
 import updateCreditCardUseCase from './updateCreditCardUseCase';
 import getBalanceUseCase from './getBalanceUseCase';
 import createRecurringExpensesUseCase from './createRecurringExpensesUseCase';
+import deleteCreditCardUseCase from './deleteCreditCardUseCase';
+import deleteRecurringExpenseUseCase from './deleteRecurringExpenseUseCase';
 
 export {
   createUserUseCase,
@@ -21,5 +23,7 @@ export {
   deleteTransactionUseCase,
   updateCreditCardUseCase,
   getBalanceUseCase,
-  createRecurringExpensesUseCase
+  createRecurringExpensesUseCase,
+  deleteCreditCardUseCase,
+  deleteRecurringExpenseUseCase
 };

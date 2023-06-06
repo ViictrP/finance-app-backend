@@ -5,9 +5,11 @@ const create = (creditCard: CreditCard) => {
   return prisma.creditCard.create({
     data: {
       ...creditCard,
+      deleted: false,
+      deleteDate: null,
       user: {
         connect: {
-          id: creditCard.user.id
+          id: creditCard.user.id,
         }
       },
       invoices: {
@@ -17,7 +19,7 @@ const create = (creditCard: CreditCard) => {
   });
 };
 
-const get = (filter: CreditCard) => {
+const get = (filter: CreditCard, deleted: boolean) => {
   let query = {};
 
   if (!!filter.id) {
@@ -28,21 +30,25 @@ const get = (filter: CreditCard) => {
 
   if (!!filter.number) {
     query = {
-      number_userId: {
-        number: filter.number,
-        userId: filter.user.id
-      }
+      number: filter.number,
+      userId: filter.user.id,
+      deleted
     };
   }
 
-  return prisma.creditCard.findUnique({
+  return prisma.creditCard.findFirst({
     where: {
-      ...query
+
+      ...query,
     },
     include: {
       invoices: {
         include: {
-          transactions: true
+          transactions: {
+            where: {
+              deleted: false
+            }
+          }
         }
       }
     }
@@ -53,13 +59,19 @@ const getMany = (user: User) => {
   return prisma.creditCard.findMany({
     where: {
       user: {
-        id: user.id
-      }
+        id: user.id,
+        deleted: false
+      },
+      deleted: false
     },
     include: {
       invoices: {
         include: {
-          transactions: true
+          transactions: {
+            where: {
+              deleted: false
+            }
+          }
         }
       }
     }
@@ -81,9 +93,22 @@ const update = (creditCard: CreditCard) => {
   });
 };
 
+const deleteOne = (creditCard: CreditCard) => {
+  return prisma.creditCard.update({
+    where: {
+      id: creditCard.id
+    },
+    data: {
+      deleted: true,
+      deleteDate: new Date()
+    }
+  });
+}
+
 export default {
   create,
   get,
   getMany,
-  update
+  update,
+  deleteOne
 };

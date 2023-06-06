@@ -11,7 +11,7 @@ async function createTransactionWithinInvoice(transaction: Transaction, creditCa
   const transactionDate = new Date(transaction.date);
   let yearIncrement = 1;
   log('[createTransactionUseCase]: getting credit card for this transaction', transaction);
-  const creditCard = await creditCardRepository.get(invoice.creditCard);
+  const creditCard = await creditCardRepository.get(invoice.creditCard, false);
   const installmentId = randomUUID();
 
   async function createNewInstallment(installmentNumber: number) {

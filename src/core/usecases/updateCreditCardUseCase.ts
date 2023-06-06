@@ -5,7 +5,7 @@ import { log } from '../logger/logger';
 const updateCreditCardUseCase = async (creditCard: CreditCard, repository: CreditCardRepository) => {
   const { id } = creditCard;
   log(`[updateCreditCardUseCase]: getting credit card data ${creditCard.title}`);
-  const savedCreditCard = await repository.get({ id } as any);
+  const savedCreditCard = await repository.get({ id } as CreditCard, false);
   if (!savedCreditCard) {
     log(`[updateUserUseCase]: credit card not found for the filter ${creditCard}`);
     throw new Error(`credit card not found by filter ${creditCard}`);
@@ -16,7 +16,7 @@ const updateCreditCardUseCase = async (creditCard: CreditCard, repository: Credi
     const existingCreditCard = await repository.get({
       number: creditCard.number,
       user: { id: creditCard.user.id },
-    } as any);
+    } as CreditCard, false);
     if (existingCreditCard) {
       log(`[updateUserUseCase]: you already have a credit card with this ${creditCard.number} number`);
       throw new Error(`credit card already exists for this number ${creditCard.number}`);

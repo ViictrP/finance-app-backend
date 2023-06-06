@@ -11,4 +11,6 @@ export default interface CreditCard {
   invoiceClosingDay: number;
   createAt: Date;
   backgroundColor: string;
+  deleted: boolean;
+  deleteDate?: Date;
 }

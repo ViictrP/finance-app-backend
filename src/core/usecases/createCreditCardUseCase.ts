@@ -12,6 +12,10 @@ const creditCardUseCase = async (creditCard: CreditCard, userRepository: UserRep
     log(`[creditCardUseCase]: credit card ${creditCard.title} has invalid data`);
     throw new Error(`the credit card ${creditCard.title} is invalid`);
   }
+  if (!!await repository.get(creditCard, false)) {
+    log(`[creditCardUseCase]: User already has the credit card ${creditCard.title}`);
+    throw new Error(`User already has the credit card ${creditCard.title}`);
+  }
   log('[creditCardUseCase]: finding the owner of the new credit card', creditCard.title);
   const user = await userRepository.get(creditCard.user);
   creditCard.user = { id: user!.id } as User;
