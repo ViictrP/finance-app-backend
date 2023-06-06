@@ -2,13 +2,12 @@ FROM node:16
 # Defining the working directory
 WORKDIR /usr/src/app
 # Copying app
-COPY ./dist ./dist
-COPY ./package*.json ./package*.json
+COPY dist dist
+COPY package.json package.json
 RUN ls
 # Installing dependecies
-RUN npm i -g husky
-RUN npm i -g prisma
-RUN npm ci --omit=dev
+#RUN npm i -g husky
+#RUN npm i -g prisma
 # Defining environment variables
 ENV DATABASE_URL=$DATABASE_URL
 ENV JWT_SECRET=$JWT_SECRET
