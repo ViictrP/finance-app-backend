@@ -8,7 +8,7 @@ RUN ls
 RUN npm i -g husky
 RUN npm i -g prisma
 RUN npm ci --omit=dev
-RUN npm build
+RUN npm run build
 # Defining environment variables
 ENV DATABASE_URL=$DATABASE_URL
 ENV JWT_SECRET=$JWT_SECRET
