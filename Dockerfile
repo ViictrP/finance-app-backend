@@ -3,6 +3,7 @@ FROM node:16
 WORKDIR /usr/src/app
 # Copying app
 COPY . .
+RUN ls
 # Installing dependecies
 RUN npm i -g husky
 RUN npm i -g prisma
@@ -13,6 +14,6 @@ ENV JWT_SECRET=$JWT_SECRET
 ENV TOKEN_HEADER_KEY=$TOKEN_HEADER_KEY
 ENV PORT=$PORT
 # Exposing the application
-EXPOSE 8080
+EXPOSE $PORT
 # Running the application
 CMD [ "npm", "start" ]
