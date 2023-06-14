@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18
 # Defining the working directory
 WORKDIR /usr/src/app
 # Copying app
