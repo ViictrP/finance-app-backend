@@ -1,5 +1,5 @@
 # FINANCE APP BACKEND
-![GitHub Actions](https://github.com/viictrp/finance-app-backend/actions/workflows/build.yml/badge.svg) ![Docker Image](https://github.com/viictrp/finance-app-backend/actions/workflows/docker-image.yml/badge.svg)
+![Build DEV](https://github.com/viictrp/finance-app-backend/actions/workflows/build-dev.yml/badge.svg) ![Build PROD](https://github.com/viictrp/finance-app-backend/actions/workflows/build-prod.yml/badge.svg)
 
 API for Finance App
 
