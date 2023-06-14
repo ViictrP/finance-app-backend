@@ -35,9 +35,9 @@ const getBalanceUseCase = async (filter: TransactionFilter, repository: UserRepo
 
   const expenses = transactionsAmount + recurringExpensesAmount + creditCardsAmount;
   return {
-    salary,
+    salary: Number(salary),
     expenses,
-    available: salary! - expenses,
+    available: Number(salary) - expenses,
     creditCardExpenses
   }
 };
