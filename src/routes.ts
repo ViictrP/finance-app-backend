@@ -45,5 +45,5 @@ router.post('/recurring-expenses', isAuthorizedMiddleware, postRecurringExpenses
 router.delete('/recurring-expenses/:id', isAuthorizedMiddleware, deleteRecurringExpenseUsecaseAdapter);
 
 // ============= MONTH CLOSURE ===========
-router.post('month-closures', isAuthorizedMiddleware, postMonthClosureUsecaseAdapter);
+router.post('/month-closures', isAuthorizedMiddleware, postMonthClosureUsecaseAdapter);
 export default router;
