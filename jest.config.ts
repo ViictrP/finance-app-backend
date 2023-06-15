@@ -17,7 +17,7 @@ export default {
     '!src/server.ts',
     '!src/routes.ts',
     '!**/src/**/index.ts',
-    '!**/src/**/entities/**.ts',
+    '!**/src/**/dto/**.ts',
     '!**/src/core/repositories/**.ts',
     '!**/src/core/enums/**.ts',
     '!**/src/infra/prisma.ts',

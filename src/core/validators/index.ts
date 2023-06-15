@@ -1,7 +1,7 @@
-import creditCardValidator from './creditCardValidator';
-import userValidator from './userValidator';
-import transactionValidator from './transactionValidator';
-import recurringExpenseValidator from './recurringExpenseValidator';
+import creditCardValidator from './credit-card.validator';
+import userValidator from './user.validator';
+import transactionValidator from './transaction.validator';
+import recurringExpenseValidator from './recurring-expense.validator';
 
 export {
   creditCardValidator,

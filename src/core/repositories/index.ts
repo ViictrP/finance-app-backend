@@ -1,8 +1,8 @@
-import { UserRepository } from './userRepository';
-import { CreditCardRepository } from './creditCardRepository';
-import { TransactionRepository } from './transactionRepository';
-import { RecurringExpenseRepository } from './recurringExpenseRepository';
-import { MonthClosureRepository } from './monthClosureRepository';
+import { UserRepository } from './user.repository';
+import { CreditCardRepository } from './credit-card.repository';
+import { TransactionRepository } from './transaction.repository';
+import { RecurringExpenseRepository } from './recurring-expense.repository';
+import { MonthClosureRepository } from './month-closure.repository';
 
 export {
   UserRepository,
