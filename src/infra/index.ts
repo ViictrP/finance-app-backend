@@ -1,9 +1,9 @@
-import userPrismaRepository from './userPrismaRepository';
-import creditCardPrismaRepository from './creditCardPrismaRepository';
-import transactionPrismaRepository from './transactionPrismaRepository';
-import invoicePrismaRepository from './invoicePrismaRepository';
-import recurringExpensePrismaRepository from './recurringExpensePrismaRepository';
-import monthClosurePrismaRepository from './monthClosurePrismaRepository';
+import userPrismaRepository from './user.prisma-repository';
+import creditCardPrismaRepository from './credit-card.prisma-repository';
+import transactionPrismaRepository from './transaction.prisma-repository';
+import invoicePrismaRepository from './invoice.prisma-repository';
+import recurringExpensePrismaRepository from './recurring-expense.prisma-repository';
+import monthClosurePrismaRepository from './month-closure.prisma-repository';
 
 export {
   userPrismaRepository,

@@ -1,8 +1,8 @@
-import User from './User';
-import CreditCard from './CreditCard';
-import Invoice from './Invoice';
-import Transaction from './Transaction';
-import RecurringExpense from './RecurringExpense';
-import MonthClosure from './MonthClosure';
+import User from './user';
+import CreditCard from './credit-card';
+import Invoice from './invoice';
+import Transaction from './transaction';
+import RecurringExpense from './recurring-expense';
+import MonthClosure from './month-closure';
 
 export { User, CreditCard, Invoice, Transaction, RecurringExpense, MonthClosure };

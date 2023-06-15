@@ -1,33 +1,33 @@
-import authenticationUseCaseAdapter from './authenticationUseCaseAdapter';
-import postUserUseCaseAdapter from './postUserUseCaseAdapter';
-import getMyProfileUseCaseAdapter from './getMyProfileUseCaseAdapter';
-import updateUserUseCaseAdapter from './updateUserUseCaseAdapter';
-import postCreditCardUseCaseAdapter from './postCreditCardUseCaseAdapter';
-import getCreditCardsUseCaseAdapter from './getCreditCardsUseCaseAdapter';
-import postTransactionUseCaseAdapter from './postTransactionUseCaseAdapter';
-import getInvoiceUseCaseAdapter from './getInvoiceUseCaseAdapter';
-import updateCreditCardUseCaseAdapter from './updateCreditCardUseCaseAdapter';
-import getBalanceUseCaseAdapter from './getBalanceUseCaseAdapter';
+import authenticationUsecaseAdapter from './authentication.usecase.adapter';
+import postUserUsecaseAdapter from './post-user.usecase.adapter';
+import getMyProfileUsecaseAdapter from './get-my-profile.usecase.adapter';
+import updateUserUsecaseAdapter from './update-user.usecase.adapter';
+import postCreditCardUsecaseAdapter from './post-credit-card.usecase.adapter';
+import getCreditCardsUsecaseAdapter from './get-credit-cards.usecase.adapter';
+import postTransactionUsecaseAdapter from './post-transaction.usecase.adapter';
+import getInvoiceUsecaseAdapter from './get-invoice.usecase.adapter';
+import updateCreditCardUsecaseAdapter from './update-credit-card.usecase.adapter';
+import getBalanceUsecaseAdapter from './get-balance.usecase.adapter';
 import backupAdapter from './backupAdapter';
-import deleteTransactionUseCaseAdapter from './deleteTransactionUseCaseAdapter';
-import postRecurringExpensesUseCaseAdapter from './postRecurringExpensesUseCaseAdapter';
-import deleteCreditCardUseCaseAdapter from './deleteCreditCardUseCaseAdapter';
-import deleteRecurringExpenseUseCaseAdapter from './deleteRecurringExpenseUseCaseAdapter';
+import deleteTransactionUsecaseAdapter from './delete-transaction.usecase.adapter';
+import postRecurringExpensesUsecaseAdapter from './post-recurring-expenses.usecase.adapter';
+import deleteCreditCardUsecaseAdapter from './delete-credit-card.usecase.adapter';
+import deleteRecurringExpenseUsecaseAdapter from './delete-recurring-expense.usecase.adapter';
 
 export {
-  authenticationUseCaseAdapter,
-  postUserUseCaseAdapter,
-  getMyProfileUseCaseAdapter,
-  updateUserUseCaseAdapter,
-  postCreditCardUseCaseAdapter,
-  getCreditCardsUseCaseAdapter,
-  postTransactionUseCaseAdapter,
-  getInvoiceUseCaseAdapter,
-  updateCreditCardUseCaseAdapter,
-  getBalanceUseCaseAdapter,
+  authenticationUsecaseAdapter,
+  postUserUsecaseAdapter,
+  getMyProfileUsecaseAdapter,
+  updateUserUsecaseAdapter,
+  postCreditCardUsecaseAdapter,
+  getCreditCardsUsecaseAdapter,
+  postTransactionUsecaseAdapter,
+  getInvoiceUsecaseAdapter,
+  updateCreditCardUsecaseAdapter,
+  getBalanceUsecaseAdapter,
   backupAdapter,
-  deleteTransactionUseCaseAdapter,
-  postRecurringExpensesUseCaseAdapter,
-  deleteCreditCardUseCaseAdapter,
-  deleteRecurringExpenseUseCaseAdapter
+  deleteTransactionUsecaseAdapter,
+  postRecurringExpensesUsecaseAdapter,
+  deleteCreditCardUsecaseAdapter,
+  deleteRecurringExpenseUsecaseAdapter
 };

@@ -1,29 +1,29 @@
-import createUserUseCase from './createUserUseCase';
-import getUserUseCase from './getUserUseCase';
-import updateUserUseCase from './updateUserUseCase';
-import createCreditCardUseCase from './createCreditCardUseCase';
-import getCreditCardsUseCase from './getCreditCardsUseCase';
-import createTransactionUseCase from './createTransactionUseCase';
-import getInvoiceUseCase from './getInvoiceUseCase';
-import deleteTransactionUseCase from './deleteTransactionUseCase';
-import updateCreditCardUseCase from './updateCreditCardUseCase';
-import getBalanceUseCase from './getBalanceUseCase';
-import createRecurringExpensesUseCase from './createRecurringExpensesUseCase';
-import deleteCreditCardUseCase from './deleteCreditCardUseCase';
-import deleteRecurringExpenseUseCase from './deleteRecurringExpenseUseCase';
+import createUserUsecase from './create-user.usecase';
+import getUserUsecase from './get-user.usecase';
+import updateUserUsecase from './update-user.usecase';
+import createCreditCardUseCase from './create-credit-card.usecase';
+import getCreditCardsUsecase from './get-credit-cards.usecase';
+import createTransactionUsecase from './create-transaction.usecase';
+import getInvoiceUsecase from './get-invoice.usecase';
+import deleteTransactionUsecase from './delete-transaction.usecase';
+import updateCreditCardUsecase from './update-credit-card.usecase';
+import getBalanceUsecase from './get-balance.usecase';
+import createRecurringExpensesUsecase from './create-recurring-expenses.usecase';
+import deleteCreditCardUsecase from './delete-credit-card.usecase';
+import deleteRecurringExpenseUsecase from './delete-recurring-expense.usecase';
 
 export {
-  createUserUseCase,
-  getUserUseCase,
-  updateUserUseCase,
+  createUserUsecase,
+  getUserUsecase,
+  updateUserUsecase,
   createCreditCardUseCase,
-  getCreditCardsUseCase,
-  createTransactionUseCase,
-  getInvoiceUseCase,
-  deleteTransactionUseCase,
-  updateCreditCardUseCase,
-  getBalanceUseCase,
-  createRecurringExpensesUseCase,
-  deleteCreditCardUseCase,
-  deleteRecurringExpenseUseCase
+  getCreditCardsUsecase,
+  createTransactionUsecase,
+  getInvoiceUsecase,
+  deleteTransactionUsecase,
+  updateCreditCardUsecase,
+  getBalanceUsecase,
+  createRecurringExpensesUsecase,
+  deleteCreditCardUsecase,
+  deleteRecurringExpenseUsecase
 };
