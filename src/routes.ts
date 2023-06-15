@@ -12,7 +12,9 @@ import {
   updateUserUsecaseAdapter,
   deleteTransactionUsecaseAdapter,
   postRecurringExpensesUsecaseAdapter,
-  deleteCreditCardUsecaseAdapter, deleteRecurringExpenseUsecaseAdapter,
+  deleteCreditCardUsecaseAdapter,
+  deleteRecurringExpenseUsecaseAdapter,
+  postMonthClosureUsecaseAdapter,
 } from './adapters';
 import { isAdminMiddleware, isAuthorizedMiddleware } from './adapters/middlewares';
 
@@ -41,4 +43,7 @@ router.post('/transactions', isAuthorizedMiddleware, postTransactionUsecaseAdapt
 router.delete('/transactions/:id', isAuthorizedMiddleware, deleteTransactionUsecaseAdapter);
 router.post('/recurring-expenses', isAuthorizedMiddleware, postRecurringExpensesUsecaseAdapter);
 router.delete('/recurring-expenses/:id', isAuthorizedMiddleware, deleteRecurringExpenseUsecaseAdapter);
+
+// ============= MONTH CLOSURE ===========
+router.post('month-closures', isAuthorizedMiddleware, postMonthClosureUsecaseAdapter);
 export default router;

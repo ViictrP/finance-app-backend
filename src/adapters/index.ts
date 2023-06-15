@@ -8,11 +8,12 @@ import postTransactionUsecaseAdapter from './post-transaction.usecase.adapter';
 import getInvoiceUsecaseAdapter from './get-invoice.usecase.adapter';
 import updateCreditCardUsecaseAdapter from './update-credit-card.usecase.adapter';
 import getBalanceUsecaseAdapter from './get-balance.usecase.adapter';
-import backupAdapter from './backupAdapter';
+import backupAdapter from './backup.adapter';
 import deleteTransactionUsecaseAdapter from './delete-transaction.usecase.adapter';
 import postRecurringExpensesUsecaseAdapter from './post-recurring-expenses.usecase.adapter';
 import deleteCreditCardUsecaseAdapter from './delete-credit-card.usecase.adapter';
 import deleteRecurringExpenseUsecaseAdapter from './delete-recurring-expense.usecase.adapter';
+import postMonthClosureUsecaseAdapter from './post-month-closure.usecase.adapter';
 
 export {
   authenticationUsecaseAdapter,
@@ -29,5 +30,6 @@ export {
   deleteTransactionUsecaseAdapter,
   postRecurringExpensesUsecaseAdapter,
   deleteCreditCardUsecaseAdapter,
-  deleteRecurringExpenseUsecaseAdapter
+  deleteRecurringExpenseUsecaseAdapter,
+  postMonthClosureUsecaseAdapter
 };
