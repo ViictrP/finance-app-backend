@@ -1,4 +1,4 @@
-import { User } from '../entities';
+import { CreditCard, RecurringExpense, Transaction, User } from '../entities';
 import { UserRepository } from '../repositories';
 import { log } from '../logger/logger';
 
@@ -10,7 +10,17 @@ type TransactionFilter = {
 
 type CreditCardsTotal = { [key: string]: number };
 
-const getBalanceUsecase = async (filter: TransactionFilter, repository: UserRepository) => {
+type Balance = {
+  salary: number;
+  expenses: number;
+  available: number;
+  creditCardExpenses: CreditCardsTotal;
+  transactions: Transaction[];
+  recurringExpenses: RecurringExpense[];
+  creditCards: CreditCard[];
+};
+
+const getBalanceUsecase = async (filter: TransactionFilter, repository: UserRepository): Promise<Balance> => {
   log('[getBalanceUsecase]: validating filter');
   if (!filter.user) {
     throw new Error('user is required to calculate the balance');
@@ -38,8 +48,11 @@ const getBalanceUsecase = async (filter: TransactionFilter, repository: UserRepo
     salary: Number(salary),
     expenses,
     available: Number(salary) - expenses,
-    creditCardExpenses
-  }
+    creditCardExpenses,
+    creditCards,
+    transactions,
+    recurringExpenses
+  } as Balance;
 };
 
 const doSum = (sum: number, current: number | string): number => sum + Number(current);
