@@ -47,6 +47,11 @@ const getIncludes = (month?: string, year?: number) => {
         deleted: false,
       },
     },
+    monthClosures: {
+      where: {
+        year: year ?? monthEnd.getFullYear()
+      }
+    }
   };
 };
 

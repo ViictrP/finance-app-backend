@@ -24,7 +24,7 @@ model User {
   recurringExpenses RecurringExpense[]
   deleted           Boolean            @default(false)
   deleteDate        DateTime?          @map("delete_date")
-  MonthClosure      MonthClosure[]
+  monthClosures      MonthClosure[]
 
   @@map("finance_app_user")
 }
