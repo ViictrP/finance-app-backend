@@ -11,4 +11,5 @@ export default interface MonthClosure {
   deleted: boolean;
   deleteDate: Date;
   createdAt: Date;
+  index?: number;
 }
