@@ -14,7 +14,7 @@ describe('GetUserUseCase', () => {
   });
 
   it('Should return the user', async () => {
-    (repository.get as jest.Mock).mockImplementation(() => ({ name: 'Test' }));
+    (repository.get as jest.Mock).mockImplementation(() => ({ name: 'Test', monthClosures: [] }));
     const user = {
       name: 'Test'
     };
