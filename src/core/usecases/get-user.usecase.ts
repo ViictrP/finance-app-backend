@@ -10,13 +10,7 @@ const getUserUsecase = async (user: User, repository: UserRepository): Promise<U
     log(`[getUserUseCase]: user not found for the filter ${user}`);
     throw new Error(`user not found by filter ${user}`);
   }
-
-  savedUser.monthClosures = savedUser.monthClosures
-    .map(m => {
-      m.index = MONTHS.indexOf(m.month);
-      return m;
-    })
-    .sort((m, n) => m.index! - n.index!);
+  savedUser.monthClosures = savedUser.monthClosures.reverse();
   return savedUser;
 };
 

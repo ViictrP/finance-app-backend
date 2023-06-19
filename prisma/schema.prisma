@@ -108,6 +108,7 @@ model MonthClosure {
   total      Decimal   @db.Decimal(10, 2)
   expenses   Decimal   @db.Decimal(10, 2)
   available  Decimal   @db.Decimal(10, 2)
+  index      Int       @default(0)
 
   @@map("month_closure")
 }

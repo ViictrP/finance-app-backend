@@ -48,11 +48,15 @@ const getIncludes = (month?: string, year?: number) => {
       },
     },
     monthClosures: {
+      take: 5,
       where: {
         year: year ?? monthEnd.getFullYear()
+      },
+      orderBy: {
+        index: 'desc'
       }
     }
-  };
+  } as any;
 };
 
 const create = (newUser: User) => {
