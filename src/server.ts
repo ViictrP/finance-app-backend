@@ -9,7 +9,7 @@ const app = express();
 log('[server]: Configuring CORS');
 app.use(cors({
   origin: process.env.FRONT_HOST,
-  allowedHeaders: ['OPTIONS', 'PATCH', 'POST', 'PUT', 'GET', 'DELETE']
+  methods: ['GET','HEAD','PUT','PATCH','POST','DELETE']
 }));
 
 log('[server]: Configuring the server');
