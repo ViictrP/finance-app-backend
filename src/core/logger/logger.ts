@@ -3,8 +3,9 @@ interface LoggerConfig {
 }
 
 const log = (message: string, data?: any, config?: LoggerConfig) => {
+  const now = new Date().toISOString();
   if (!config) {
-    console.log(message, data ?? '');
+    console.log(`${now} ${message}`, data ?? '');
     return;
   }
 
@@ -14,7 +15,7 @@ const log = (message: string, data?: any, config?: LoggerConfig) => {
       dataWithSensitiveInformation[prop] = "****";
     }
   });
-  console.log(message, dataWithSensitiveInformation);
+  console.log(`${now} ${message}`, dataWithSensitiveInformation);
 };
 
 export {
