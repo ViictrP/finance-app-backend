@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model UserDto {
+model User {
   id                String             @id @default(uuid())
   name              String
   lastname          String
@@ -19,24 +19,24 @@ model UserDto {
   active            Boolean            @default(true)
   createdAt         DateTime           @default(now()) @map("created_at")
   salary            Decimal?           @db.Decimal(10, 2)
-  creditCards       CreditCardDto[]
-  transactions      TransactionDto[]
+  creditCards       CreditCard[]
+  transactions      Transaction[]
   recurringExpenses RecurringExpense[]
   deleted           Boolean            @default(false)
   deleteDate        DateTime?          @map("delete_date")
-  monthClosures      MonthClosureDto[]
+  monthClosures      MonthClosure[]
 
   @@map("finance_app_user")
 }
 
-model CreditCardDto {
+model CreditCard {
   id                String    @id @default(uuid())
   userId            String    @map("user_id")
   title             String
   description       String
   number            String
-  user              UserDto      @relation(references: [id], fields: [userId], onDelete: Cascade)
-  invoices          InvoiceDto[]
+  user              User      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  invoices          Invoice[]
   invoiceClosingDay Int       @default(0) @map("invoice_closing_day")
   backgroundColor   String    @default("bg-zinc-900") @map("background_color")
   createAt          DateTime  @default(now()) @map("create_at")
@@ -47,11 +47,11 @@ model CreditCardDto {
   @@map("credit_card")
 }
 
-model InvoiceDto {
+model Invoice {
   id           String        @id @default(uuid())
   creditCardId String        @map("credit_card_id")
-  creditCard   CreditCardDto    @relation(references: [id], fields: [creditCardId], onDelete: Cascade)
-  transactions TransactionDto[]
+  creditCard   CreditCard    @relation(references: [id], fields: [creditCardId], onDelete: Cascade)
+  transactions Transaction[]
   createdAt    DateTime      @default(now()) @map("created_at")
   isClosed     Boolean       @default(false) @map("is_closed")
   year         Int
@@ -61,7 +61,7 @@ model InvoiceDto {
   @@map("invoice")
 }
 
-model TransactionDto {
+model Transaction {
   id                String    @id @default(uuid())
   description       String
   amount            Decimal   @db.Decimal(10, 2)
@@ -72,9 +72,9 @@ model TransactionDto {
   createdAt         DateTime  @default(now()) @map("created_at")
   date              DateTime
   invoiceId         String?   @map("invoice_id")
-  invoice           InvoiceDto?  @relation(references: [id], fields: [invoiceId], onDelete: Cascade)
+  invoice           Invoice?  @relation(references: [id], fields: [invoiceId], onDelete: Cascade)
   userId            String    @map("user_id")
-  user              UserDto      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  user              User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   category          String
   deleted           Boolean   @default(false)
   deleteDate        DateTime? @map("delete_date")
@@ -88,7 +88,7 @@ model RecurringExpense {
   amount      Decimal   @db.Decimal(10, 2)
   createdAt   DateTime  @default(now()) @map("created_at")
   userId      String    @map("user_id")
-  user        UserDto      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  user        User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   category    String
   deleted     Boolean   @default(false)
   deleteDate  DateTime? @map("delete_date")
@@ -96,12 +96,12 @@ model RecurringExpense {
   @@map("recurring_expense")
 }
 
-model MonthClosureDto {
+model MonthClosure {
   id         String    @id @default(uuid())
   month      String
   year       Int
   userId     String    @map("user_id")
-  user       UserDto      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  user       User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   deleted    Boolean   @default(false)
   deleteDate DateTime? @map("delete_date")
   createdAt  DateTime  @default(now()) @map("created_at")
