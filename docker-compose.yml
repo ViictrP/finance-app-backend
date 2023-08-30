@@ -9,6 +9,8 @@ services:
       - "15432:5432"
     networks:
       - postgres-compose-network
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
 
   pgadmin-compose:
     image: dpage/pgadmin4
