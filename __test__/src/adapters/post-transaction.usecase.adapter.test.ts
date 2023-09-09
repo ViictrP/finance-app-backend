@@ -1,3 +1,5 @@
+import { ValidationError } from '../../../src/core/errors';
+
 jest.mock('../../../src/core/usecases/create-transaction.usecase');
 import { createTransactionUsecase } from '../../../src/core/usecases';
 import postTransactionUsecaseAdapter from '../../../src/adapters/post-transaction.usecase.adapter';
@@ -32,12 +34,14 @@ describe('postTransactionUseCase', () => {
   });
 
   it('Should return 422 if an error occurs', async () => {
-    const useCase = createTransactionUsecase as jest.Mock;
-    useCase.mockImplementation(() => {
-      throw new Error();
-    });
-    const statusSpy = jest.spyOn(res, 'status');
-    await postTransactionUsecaseAdapter(req as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(422);
+    try {
+      const useCase = createTransactionUsecase as jest.Mock;
+      useCase.mockImplementation(() => {
+        throw new ValidationError('Error');
+      });
+      await postTransactionUsecaseAdapter(req as any, res as any);
+    } catch (error) {
+      expect(error.message).toEqual('Error');
+    }
   });
 });

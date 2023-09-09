@@ -5,6 +5,8 @@ import getUserUsecase from '../../core/usecases/get-user.usecase';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import AuthenticationDto from '../dto/authentication.dto';
+import { RequestError } from '../../core/errors/request.error';
+import { ValidationError } from '../../core/errors';
 
 const authenticationUsecase = async ({
                                        email,
@@ -15,13 +17,13 @@ const authenticationUsecase = async ({
   const user = await getUserUsecase({ email: lowerCasedEmail } as any, repository);
   if (!user) {
     log(`user not found for email ${email}`);
-    throw new Error(`user not found for email ${email}`);
+    throw new RequestError(`user not found for email ${email}`);
   }
   log('[authenticationUsecase]: validating credentials');
   const passwordIsEqual = await bcrypt.compare(password, user.password);
   if (!passwordIsEqual) {
     log('[authenticationUsecase]: invalid credentials');
-    throw new Error('invalid credentials');
+    throw new RequestError('invalid credentials');
   }
   const secret = process.env.JWT_SECRET;
   const data = { id: user.id, email: user.email, time: new Date() };

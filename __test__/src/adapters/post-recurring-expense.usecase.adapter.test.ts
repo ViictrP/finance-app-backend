@@ -2,6 +2,7 @@ import { RecurringExpense } from '../../../src/core/entities';
 import User from '../../../src/core/entities/user';
 import { createRecurringExpensesUsecase } from '../../../src/core/usecases';
 import { postRecurringExpensesUsecaseAdapter } from '../../../src/adapters';
+import { ValidationError } from '../../../src/core/errors';
 
 jest.mock('../../../src/core/usecases/create-recurring-expenses.usecase');
 describe('createRecurringExpenseUseCaseAdapter', () => {
@@ -46,12 +47,14 @@ describe('createRecurringExpenseUseCaseAdapter', () => {
   });
 
   it('Should return error if recurring expense is invalid', async () => {
-    const statusSpy = jest.spyOn(res, 'status');
-    const useCase = createRecurringExpensesUsecase as jest.Mock;
-    useCase.mockImplementation(() => {
-      throw new Error('Error');
-    });
-    await postRecurringExpensesUsecaseAdapter({ body: {} } as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(422);
+    try {
+      const useCase = createRecurringExpensesUsecase as jest.Mock;
+      useCase.mockImplementation(() => {
+        throw new ValidationError('Error');
+      });
+      await postRecurringExpensesUsecaseAdapter({ body: {} } as any, res as any);
+    } catch (error) {
+      expect(error.message).toEqual('Error');
+    }
   });
 });

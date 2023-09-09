@@ -1,5 +1,6 @@
 import { RecurringExpenseRepository } from '../repositories';
 import { log } from '../logger/logger';
+import { RequestError } from '../errors/request.error';
 
 const deleteRecurringExpenseUsecase = async (id: string, repository: RecurringExpenseRepository) => {
   log(`[deleteRecurringExpenseUseCase]: getting recurring expense information id `, id);
@@ -7,7 +8,7 @@ const deleteRecurringExpenseUsecase = async (id: string, repository: RecurringEx
 
   if (!recurringExpense) {
     log(`[deleteRecurringExpenseUseCase]: getting recurring expense information id `, id);
-    throw new Error(`recurring expense not found for id ${id}`);
+    throw new RequestError(`recurring expense not found for id ${id}`);
   }
 
   log(`[deleteRecurringExpenseUseCase]: deletting recurring expense information id `, id);

@@ -1,6 +1,7 @@
 import { CreditCardRepository } from '../repositories';
 import { log } from '../logger/logger';
 import { CreditCard } from '../entities';
+import { RequestError } from '../errors/request.error';
 
 const deleteCreditCardUsecase = async (id: string, repository: CreditCardRepository) => {
   log(`[deleteCreditCardUseCase]: getting credit card information id `, id);
@@ -8,7 +9,7 @@ const deleteCreditCardUsecase = async (id: string, repository: CreditCardReposit
 
   if (!creditCard) {
     log(`[deleteCreditCardUseCase]: getting credit card information id `, id);
-    throw new Error(`credit card not found for id ${id}`);
+    throw new RequestError(`credit card not found for id ${id}`);
   }
 
   log(`[deleteCreditCardUseCase]: deletting credit card information id `, id);

@@ -1,6 +1,7 @@
 import User from '../entities/user';
 import { log } from '../logger/logger';
 import { UserRepository } from '../repositories';
+import { RequestError } from '../errors/request.error';
 
 const updateUserUsecase = async (user: User, repository: UserRepository): Promise<User> => {
   const { id } = user;
@@ -8,7 +9,7 @@ const updateUserUsecase = async (user: User, repository: UserRepository): Promis
   const savedUser = await repository.get({ id } as any);
   if (!savedUser) {
     log(`[updateUserUseCase]: user not found for the filter ${user}`);
-    throw new Error(`user not found by filter ${user}`);
+    throw new RequestError(`user not found by filter ${user}`);
   }
   log(`[updateUserUseCase]: updating user data ${user.email}`);
   savedUser.email = user.email ?? savedUser.email;

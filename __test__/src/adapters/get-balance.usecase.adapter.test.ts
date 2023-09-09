@@ -1,5 +1,6 @@
 import { getBalanceUsecase } from '../../../src/core/usecases';
 import { getBalanceUsecaseAdapter } from '../../../src/adapters';
+import { ValidationError } from '../../../src/core/errors';
 
 jest.mock('../../../src/core/usecases/get-balance.usecase');
 
@@ -35,12 +36,14 @@ describe('getBalanceUseCaseAdapter', () => {
   });
 
   it('Should return 422 if an error occurs', async () => {
-    const useCase = getBalanceUsecase as jest.Mock;
-    useCase.mockImplementation(() => {
-      throw new Error();
-    });
-    const statusSpy = jest.spyOn(res, 'status');
-    await getBalanceUsecaseAdapter(req as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(422);
+    try {
+      const useCase = getBalanceUsecase as jest.Mock;
+      useCase.mockImplementation(() => {
+        throw new ValidationError('Invalid');
+      });
+      await getBalanceUsecaseAdapter(req as any, res as any);
+    } catch (error) {
+      expect(error.message).toEqual('Invalid');
+    }
   });
 });

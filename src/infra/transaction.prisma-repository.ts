@@ -71,7 +71,7 @@ const create = (transaction: Transaction) => {
 
 const get = (filter: Transaction) => {
   return prisma.transaction.findUnique({
-    where: { ...filter },
+    where: { ...filter } as any,
   });
 };
 

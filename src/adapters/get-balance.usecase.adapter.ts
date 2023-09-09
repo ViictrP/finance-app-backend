@@ -4,17 +4,12 @@ import { userPrismaRepository } from '../infra';
 import { Request, Response } from 'express';
 
 const getBalanceUsecaseAdapter = async (req: Request, res: Response) => {
-  try {
-    const { user } = res.locals;
-    const { month, year } = req.query as unknown as { month: string, year: number };
-    log(`[getBalanceUseCaseAdapter]: getting user ${user.id} balance by month and year`);
-    const balance = await getBalanceUsecase({ user, month, year: Number(year) }, userPrismaRepository as any);
-    log(`[getBalanceUseCaseAdapter]: balance calculated`);
-    res.status(200).json(balance);
-  } catch (error) {
-    log(`[getBalanceUseCaseAdapter]: an error occured while calculating the balance [${error}]`);
-    res.status(422).json({ error });
-  }
+  const { user } = res.locals;
+  const { month, year } = req.query as unknown as { month: string, year: number };
+  log(`[getBalanceUseCaseAdapter]: getting user ${user.id} balance by month and year`);
+  const balance = await getBalanceUsecase({ user, month, year: Number(year) }, userPrismaRepository as any);
+  log(`[getBalanceUseCaseAdapter]: balance calculated`);
+  return res.status(200).json(balance);
 };
 
 export default getBalanceUsecaseAdapter;
