@@ -4,21 +4,24 @@ import { CreditCard, Invoice, User } from '../entities';
 import { creditCardValidator } from '../validators';
 import { CreditCardRepository } from '../repositories';
 import { MONTHS } from '../enums/month.enum';
+import { ValidationError } from '../errors';
+import { RequestError } from '../errors/request.error';
 
 const creditCardUseCase = async (creditCard: CreditCard, userRepository: UserRepository, repository: CreditCardRepository): Promise<CreditCard> => {
   log(`[creditCardUseCase]: validating credit card ${creditCard.title} information`);
   const isValid = creditCardValidator(creditCard);
   if (!isValid) {
     log(`[creditCardUseCase]: credit card ${creditCard.title} has invalid data`);
-    throw new Error(`the credit card ${creditCard.title} is invalid`);
+    throw new ValidationError(`the credit card ${creditCard.title} is invalid`);
   }
-  if (!!await repository.get(creditCard, false)) {
+  const hasCreditCard = await repository.get(creditCard, false);
+  if (!!hasCreditCard) {
     log(`[creditCardUseCase]: User already has the credit card ${creditCard.title}`);
-    throw new Error(`User already has the credit card ${creditCard.title}`);
+    throw new RequestError(`User already has the credit card ${creditCard.title}`);
   }
   log('[creditCardUseCase]: finding the owner of the new credit card', creditCard.title);
   const user = await userRepository.get(creditCard.user);
-  creditCard.user = { id: user!.id } as User;
+  creditCard.user = { id: user?.id } as User;
   log('[creditCardUseCase]: creating a new invoice for this credit card', creditCard.title);
   const today = new Date();
   const invoice = {

@@ -72,7 +72,7 @@ const create = (newUser: User) => {
 
 const get = (filter: User, month?: string, year?: number) => {
   return prisma.user.findUnique({
-    where: { ...filter },
+    where: { ...filter } as any,
     include: getIncludes(month, year),
   });
 };

@@ -5,3 +5,4 @@ dist
 # Keep environment variables out of version control
 .env
 ./package-lock.json
+postgres_data

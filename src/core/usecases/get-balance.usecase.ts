@@ -1,6 +1,7 @@
 import { CreditCard, RecurringExpense, Transaction, User } from '../entities';
 import { UserRepository } from '../repositories';
 import { log } from '../logger/logger';
+import { RequestError } from '../errors/request.error';
 
 type TransactionFilter = {
   user: User;
@@ -23,7 +24,7 @@ type Balance = {
 const getBalanceUsecase = async (filter: TransactionFilter, repository: UserRepository): Promise<Balance> => {
   log('[getBalanceUsecase]: validating filter');
   if (!filter.user) {
-    throw new Error('user is required to calculate the balance');
+    throw new RequestError('user is required to calculate the balance');
   }
   const { user, month, year } = filter;
   log(`[getBalanceUseCase]: getting the transactions of ${month}/${year}`);

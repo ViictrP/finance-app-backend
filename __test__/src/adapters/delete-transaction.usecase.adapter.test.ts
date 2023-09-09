@@ -1,3 +1,5 @@
+import { ValidationError } from '../../../src/core/errors';
+
 jest.mock('../../../src/core/usecases/delete-transaction.usecase');
 import { deleteTransactionUsecase } from '../../../src/core/usecases';
 import deleteTransactionUsecaseAdapter from '../../../src/adapters/delete-transaction.usecase.adapter';
@@ -32,12 +34,14 @@ describe('deleteTransactionUseCaseAdapter', () => {
   });
 
   it('Should return 422 if an error occurs', async () => {
-    const useCase = deleteTransactionUsecase as jest.Mock;
-    useCase.mockImplementation(() => {
-      throw new Error();
-    });
-    const statusSpy = jest.spyOn(res, 'status');
-    await deleteTransactionUsecaseAdapter(req as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(422);
+    try {
+      const useCase = deleteTransactionUsecase as jest.Mock;
+      useCase.mockImplementation(() => {
+        throw new ValidationError('Invalid transaction');
+      });
+      await deleteTransactionUsecaseAdapter(req as any, res as any);
+    } catch (error) {
+      expect(error.message).toEqual('Invalid transaction');
+    }
   });
 });

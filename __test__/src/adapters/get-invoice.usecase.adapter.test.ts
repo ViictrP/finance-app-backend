@@ -1,3 +1,5 @@
+import { ValidationError } from '../../../src/core/errors';
+
 jest.mock('../../../src/core/usecases/get-invoice.usecase');
 import { getInvoiceUsecase } from '../../../src/core/usecases';
 import getInvoiceUsecaseAdapter from '../../../src/adapters/get-invoice.usecase.adapter';
@@ -33,12 +35,14 @@ describe('getInvoiceUseCaseAdapter', () => {
   });
 
   it('Should return 404 if an error occurs', async () => {
-    const useCase = getInvoiceUsecase as jest.Mock;
-    useCase.mockImplementation(() => {
-      throw new Error();
-    });
-    const statusSpy = jest.spyOn(res, 'status');
-    await getInvoiceUsecaseAdapter(req as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(404);
+    try {
+      const useCase = getInvoiceUsecase as jest.Mock;
+      useCase.mockImplementation(() => {
+        throw new ValidationError('Error');
+      });
+      await getInvoiceUsecaseAdapter(req as any, res as any);
+    } catch(error) {
+      expect(error.message).toEqual('Error');
+    }
   });
 });

@@ -4,6 +4,23 @@ import { log } from '../logger/logger';
 import { MONTHS } from '../enums/month.enum';
 import { transactionValidator } from '../validators';
 import { randomUUID } from 'crypto';
+import { ValidationError } from '../errors';
+
+const createTransactionUsecase = async (transaction: Transaction, creditCardRepository: CreditCardRepository, userRepository: UserRepository, repository: TransactionRepository) => {
+  log('[createTransactionUsecase]: validating new transaction', transaction);
+  const isValid = transactionValidator(transaction);
+  if (!isValid) {
+    log(`[createTransactionUseCase]: transaction ${transaction.description} has invalid data`);
+    throw new ValidationError(`the transaction ${transaction.description} is invalid`);
+  }
+  transaction.date = new Date(transaction.date);
+  const { invoice, user } = transaction;
+  if (invoice) {
+    return await createTransactionWithinInvoice(transaction, creditCardRepository, invoice, repository);
+  } else {
+    return await createTransactionWithoutInvoice(transaction, userRepository, user, repository);
+  }
+};
 
 async function createTransactionWithinInvoice(transaction: Transaction, creditCardRepository: CreditCardRepository, invoice: Invoice, repository: TransactionRepository) {
   transaction.installmentAmount = transaction.installmentAmount > 0 ? Number(transaction.installmentAmount) : 1;
@@ -22,7 +39,7 @@ async function createTransactionWithinInvoice(transaction: Transaction, creditCa
     newTransaction.amount = transactionAmout;
     newTransaction.installmentNumber = installmentNumber + 1;
     newTransaction.installmentId = installmentId;
-    populateWithInvoice(newTransaction, invoice, creditCard);
+    populateWithInvoice(newTransaction, creditCard);
     log('[createTransactionUsecase]: persisting new transaction for invoice', transaction);
     await repository.createInvoiceTransaction(newTransaction);
     return newTransaction;
@@ -45,23 +62,7 @@ async function createTransactionWithoutInvoice(transaction: Transaction, userRep
   return repository.create(transaction);
 }
 
-const createTransactionUsecase = async (transaction: Transaction, creditCardRepository: CreditCardRepository, userRepository: UserRepository, repository: TransactionRepository) => {
-  log('[createTransactionUsecase]: validating new transaction', transaction);
-  const isValid = transactionValidator(transaction);
-  if (!isValid) {
-    log(`[createTransactionUseCase]: transaction ${transaction.description} has invalid data`);
-    throw new Error(`the transaction ${transaction.description} is invalid`);
-  }
-  transaction.date = new Date(transaction.date);
-  const { invoice, user } = transaction;
-  if (invoice) {
-    return await createTransactionWithinInvoice(transaction, creditCardRepository, invoice, repository);
-  } else {
-    return await createTransactionWithoutInvoice(transaction, userRepository, user, repository);
-  }
-};
-
-const populateWithInvoice = (transaction: Transaction, invoice: Invoice, creditCard: CreditCard) => {
+const populateWithInvoice = (transaction: Transaction, creditCard: CreditCard) => {
   const day = transaction.date.getDate();
   let month = MONTHS[transaction.date.getMonth()];
   let year = transaction.date.getFullYear();

@@ -1,6 +1,7 @@
 import { CreditCard } from '../entities';
 import { CreditCardRepository } from '../repositories';
 import { log } from '../logger/logger';
+import { RequestError } from '../errors/request.error';
 
 const updateCreditCardUsecase = async (creditCard: CreditCard, repository: CreditCardRepository) => {
   const { id } = creditCard;
@@ -8,7 +9,7 @@ const updateCreditCardUsecase = async (creditCard: CreditCard, repository: Credi
   const savedCreditCard = await repository.get({ id } as CreditCard, false);
   if (!savedCreditCard) {
     log(`[updateUserUseCase]: credit card not found for the filter ${creditCard}`);
-    throw new Error(`credit card not found by filter ${creditCard}`);
+    throw new RequestError(`credit card not found by filter ${creditCard}`);
   }
 
   if (creditCard.number !== savedCreditCard.number) {
@@ -19,7 +20,7 @@ const updateCreditCardUsecase = async (creditCard: CreditCard, repository: Credi
     } as CreditCard, false);
     if (existingCreditCard) {
       log(`[updateUserUseCase]: you already have a credit card with this ${creditCard.number} number`);
-      throw new Error(`credit card already exists for this number ${creditCard.number}`);
+      throw new RequestError(`credit card already exists for this number ${creditCard.number}`);
     }
   }
 

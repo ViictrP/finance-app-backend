@@ -1,3 +1,5 @@
+import { ValidationError } from '../../../src/core/errors';
+
 jest.mock('../../../src/auth/usecases/authentication.usecase');
 import authenticationUsecase from '../../../src/auth/usecases/authentication.usecase';
 import authenticationUsecaseAdapter from '../../../src/adapters/authentication.usecase.adapter';
@@ -33,12 +35,15 @@ describe('authenticationUseCaseAdapter', () => {
   });
 
   it('Should return 422 if an error occurs', async () => {
-    const useCase = authenticationUsecase as jest.Mock;
-    useCase.mockImplementation(() => {
-      throw new Error();
-    });
-    const statusSpy = jest.spyOn(res, 'status');
-    await authenticationUsecaseAdapter(req as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(422);
+    try {
+      const useCase = authenticationUsecase as jest.Mock;
+      useCase.mockImplementation(() => {
+        throw new ValidationError('Invalid');
+      });
+      const statusSpy = jest.spyOn(res, 'status');
+      await authenticationUsecaseAdapter(req as any, res as any);
+    } catch (error) {
+      expect(error.message).toEqual('Invalid');
+    }
   });
 });

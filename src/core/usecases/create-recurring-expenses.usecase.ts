@@ -1,9 +1,10 @@
 import RecurringExpense from '../entities/recurring-expense';
 import { UserRepository } from '../repositories';
-import { RecurringExpenseRepository } from '../repositories/recurring-expense.repository';
+import { RecurringExpenseRepository } from '../repositories';
 import { log } from '../logger/logger';
 import { User } from '../entities';
 import { recurringExpenseValidator } from '../validators';
+import { ValidationError } from '../errors';
 
 const createRecurringExpensesUsecase = async (
   recurringExpense: RecurringExpense,
@@ -13,7 +14,7 @@ const createRecurringExpensesUsecase = async (
   const isValid = recurringExpenseValidator(recurringExpense);
   if (!isValid) {
     log(`[createRecurringExpensesUseCase]: recurring expense has invalid data`);
-    throw new Error(`The recurring expense ${recurringExpense.description} has invalid data`);
+    throw new ValidationError(`The recurring expense ${recurringExpense.description} has invalid data`);
   }
 
   const user = await userRepository.get(recurringExpense.user);

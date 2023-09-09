@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import routes from './routes';
 import { log } from './core/logger/logger';
+import errorHandler from './adapters/handlers/error.handler';
 
 log('[server]: Creating the server');
 const app = express();
@@ -17,6 +18,9 @@ app.use(express.json());
 
 log('[server]: Loading the routes');
 app.use(routes);
+
+// ============= ERROR HANDLING ===========
+app.use(errorHandler);
 
 const port = process.env.PORT || 3333;
 app.listen(port, () => {

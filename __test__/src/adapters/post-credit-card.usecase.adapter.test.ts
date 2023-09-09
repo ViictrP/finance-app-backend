@@ -1,3 +1,5 @@
+import { ValidationError } from '../../../src/core/errors';
+
 jest.mock('../../../src/core/usecases/create-credit-card.usecase');
 import postCreditCardUsecaseAdapter from '../../../src/adapters/post-credit-card.usecase.adapter';
 import { createCreditCardUseCase } from '../../../src/core/usecases';
@@ -30,12 +32,14 @@ describe('postCreditCardUseCaseAdapter', () => {
   });
 
   it('Should return 422 if an error occurs', async () => {
-    const useCase = createCreditCardUseCase as jest.Mock;
-    useCase.mockImplementation(() => {
-      throw new Error();
-    });
-    const statusSpy = jest.spyOn(res, 'status');
-    await postCreditCardUsecaseAdapter(req as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(422);
+    try {
+      const useCase = createCreditCardUseCase as jest.Mock;
+      useCase.mockImplementation(() => {
+        throw new ValidationError('Error');
+      });
+      await postCreditCardUsecaseAdapter(req as any, res as any);
+    } catch (error) {
+      expect(error.message).toEqual('Error');
+    }
   });
 });

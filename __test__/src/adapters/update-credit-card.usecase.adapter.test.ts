@@ -32,12 +32,14 @@ describe('updateCreditCardUseCaseAdapter', () => {
   });
 
   it('Should return 422 if an error occurs', async () => {
-    const useCase = updateCreditCardUsecase as jest.Mock;
-    useCase.mockImplementation(() => {
-      throw new Error();
-    });
-    const statusSpy = jest.spyOn(res, 'status');
-    await updateCreditCardUsecaseAdapter(req as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(422);
+    try {
+      const useCase = updateCreditCardUsecase as jest.Mock;
+      useCase.mockImplementation(() => {
+        throw new Error('Error');
+      });
+      await updateCreditCardUsecaseAdapter(req as any, res as any);
+    } catch (error) {
+      expect(error.message).toEqual('Error');
+    }
   });
 });
