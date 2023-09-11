@@ -13,7 +13,7 @@ spec:
         app: finance-app-backend
     spec:
       containers:
-        - image: <docker image>
+        - image: <docker image:v1.0.0>
           name: finance-app-backend
           resources:
             requests:
@@ -58,7 +58,7 @@ metadata:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
   rules:
-    - host: <host>
+    - host: api.host.com
       http:
         paths:
           - backend:
