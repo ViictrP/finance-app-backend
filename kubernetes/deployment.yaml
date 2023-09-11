@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finance-app-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: finance-app-backend
+  template:
+    metadata:
+      labels:
+        app: finance-app-backend
+    spec:
+      containers:
+        - image: <docker image>
+          name: finance-app-backend
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: database_uri
+                  name: backend-database
+            - name: JWT_SECRET
+              value: <jwt secret>
+            - name: TOKEN_HEADER_KEY
+              value: <token header key>
+            - name: PORT
+              value: '8080'
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: finance-app-backend
+spec:
+  selector:
+    app: finance-app-backend
+  ports:
+    - port: 80
+      name: http
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: finance-app-backend
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+    - host: <host>
+      http:
+        paths:
+          - backend:
+              service:
+                name: finance-app-backend
+                port:
+                  name: http
+            path: /
+            pathType: ImplementationSpecific
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-database
+type: Opaque
+stringData:
+  database_uri: "<database uri>"
+
