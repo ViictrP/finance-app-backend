@@ -40,7 +40,7 @@ describe('deleteTransactionUseCaseAdapter', () => {
         throw new ValidationError('Invalid transaction');
       });
       await deleteTransactionUsecaseAdapter(req as any, res as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual('Invalid transaction');
     }
   });

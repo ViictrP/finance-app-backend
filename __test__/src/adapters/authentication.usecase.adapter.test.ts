@@ -42,7 +42,7 @@ describe('authenticationUseCaseAdapter', () => {
       });
       const statusSpy = jest.spyOn(res, 'status');
       await authenticationUsecaseAdapter(req as any, res as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual('Invalid');
     }
   });

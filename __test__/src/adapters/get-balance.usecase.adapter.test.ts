@@ -42,7 +42,7 @@ describe('getBalanceUseCaseAdapter', () => {
         throw new ValidationError('Invalid');
       });
       await getBalanceUsecaseAdapter(req as any, res as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual('Invalid');
     }
   });

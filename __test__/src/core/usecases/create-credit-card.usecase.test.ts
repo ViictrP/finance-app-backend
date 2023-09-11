@@ -27,7 +27,7 @@ describe('creditCardUseCase', () => {
 
     try {
       await creditCardUseCase(creditCard, userRepository as UserRepository, repository as CreditCardRepository);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toBe('the credit card Credit Card 1 is invalid');
     }
   });
@@ -102,7 +102,7 @@ describe('creditCardUseCase', () => {
 
     try {
       await creditCardUseCase(creditCard, userRepository as UserRepository, repository as CreditCardRepository);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toBe('the credit card Credit Card 1 is invalid');
     }
   });
@@ -118,7 +118,7 @@ describe('creditCardUseCase', () => {
 
     try {
       await creditCardUseCase(creditCard, userRepository as UserRepository, repository as CreditCardRepository);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toBe(
         'User already has the credit card Credit Card 1'
       );

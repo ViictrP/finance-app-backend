@@ -38,7 +38,7 @@ describe('postUserUseCaseAdapter', () => {
         throw new Error('Error');
       });
       await postUserUsecaseAdapter(req as any, res as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual('Error')
     }
   });

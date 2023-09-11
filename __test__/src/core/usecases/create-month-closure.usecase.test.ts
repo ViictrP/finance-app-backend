@@ -26,7 +26,7 @@ describe('createMonthClosureUsecase', () => {
     available: 800,
     expenses: 200,
     deleted: false,
-    deleteDate: null,
+    deleteDate: undefined,
     createdAt: new Date(),
   };
 
@@ -44,7 +44,7 @@ describe('createMonthClosureUsecase', () => {
       available: 800,
       expenses: 200,
       deleted: false,
-      deleteDate: null,
+      deleteDate: undefined,
       createdAt: new Date(),
     };
     const repository: Partial<MonthClosureRepository> = {
@@ -55,7 +55,7 @@ describe('createMonthClosureUsecase', () => {
     };
 
     // Act
-    const result = await createMonthClosureUsecase(monthClosure as MonthClosure, repository as MonthClosureRepository, userRepository as UserRepository);
+    const result = await createMonthClosureUsecase(monthClosure as unknown as MonthClosure, repository as MonthClosureRepository, userRepository as UserRepository);
 
     // Assert
     expect(repository.create).toHaveBeenCalledWith(monthClosure);
@@ -85,7 +85,7 @@ describe('createMonthClosureUsecase', () => {
       available: 800,
       expenses: 200,
       deleted: false,
-      deleteDate: null,
+      deleteDate: undefined,
       createdAt: new Date(),
     };
     const repository: Partial<MonthClosureRepository> = {
@@ -96,7 +96,7 @@ describe('createMonthClosureUsecase', () => {
     };
 
     // Act & Assert
-    await expect(createMonthClosureUsecase(monthClosure as MonthClosure, repository as MonthClosureRepository, userRepository as UserRepository)).rejects.toThrow(ValidationError);
+    await expect(createMonthClosureUsecase(monthClosure as unknown as MonthClosure, repository as MonthClosureRepository, userRepository as UserRepository)).rejects.toThrow(ValidationError);
   });
 
   it('should find the user in the repository', async () => {
@@ -108,7 +108,7 @@ describe('createMonthClosureUsecase', () => {
     };
 
     // Act
-    await createMonthClosureUsecase(monthClosure, repository as MonthClosureRepository, userRepository as UserRepository);
+    await createMonthClosureUsecase(monthClosure as unknown as MonthClosure, repository as MonthClosureRepository, userRepository as UserRepository);
 
     // Assert
     expect(userRepository.get).toHaveBeenCalledWith(monthClosure.user);
@@ -139,7 +139,7 @@ describe('createMonthClosureUsecase', () => {
       available: 800,
       expenses: 200,
       deleted: false,
-      deleteDate: null,
+      deleteDate: undefined,
       createdAt: new Date(),
     };
     const repository: Partial<MonthClosureRepository> = {
@@ -150,7 +150,7 @@ describe('createMonthClosureUsecase', () => {
     };
 
     // Act
-    await createMonthClosureUsecase(monthClosure, repository as MonthClosureRepository, userRepository as UserRepository);
+    await createMonthClosureUsecase(monthClosure as unknown as MonthClosure, repository as MonthClosureRepository, userRepository as UserRepository);
 
     // Assert
     expect(monthClosure.index).toBe(0);

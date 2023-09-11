@@ -35,7 +35,7 @@ describe('getMyProfileUseCaseAdapter', () => {
         throw new ValidationError('Error');
       });
       await getMyProfileUsecaseAdapter({} as any, res as any);
-    } catch(error) {
+    } catch (error: any) {
       expect(error.message).toEqual('Error');
     }
   });
