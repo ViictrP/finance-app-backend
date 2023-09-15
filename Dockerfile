@@ -1,8 +1,8 @@
 FROM node:18
-# Defining the working directory
-WORKDIR /usr/src/app
 # Copying app
 COPY . .
+# Defining the working directory
+WORKDIR /usr/src/app
 # Installing dependecies
 RUN npm i -g husky
 RUN npm i -g prisma
