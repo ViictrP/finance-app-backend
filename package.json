@@ -8,8 +8,8 @@
     "test": "jest --coverage --silent test",
     "test:silent": "jest --coverage --silent --noStackTrace test",
     "build": "tsc",
-    "start": "npx prisma migrate deploy && node dist/index.js",
-    "dev": "ts-node-dev src/index.ts",
+    "start": "npx prisma migrate deploy && node ./dist/index.js",
+    "dev": "ts-node-dev ./src/index.ts",
     "prepare": "husky install"
   },
   "repository": {

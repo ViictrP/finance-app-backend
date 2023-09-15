@@ -17,4 +17,4 @@ ENV PORT=$PORT
 # Exposing the application
 EXPOSE $PORT
 # Running the application
-CMD [ "npm", "start" ]
+ENTRYPOINT [ "npm", "start" ]
