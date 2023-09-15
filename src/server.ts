@@ -6,6 +6,8 @@ import { errorHandler } from './adapters/handlers';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
+require('dotenv').config();
+
 log('[server]: Creating the server');
 const server = express();
 
