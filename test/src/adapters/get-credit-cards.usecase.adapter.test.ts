@@ -40,7 +40,7 @@ describe('getCreditCardsUseCaseAdapter', () => {
         throw new ValidationError('Invalid');
       });
       await getCreditCardsUsecaseAdapter(req as any, res as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual('Invalid');
     }
   });

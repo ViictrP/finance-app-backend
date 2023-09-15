@@ -34,7 +34,7 @@ describe('createRecurringExpenseUseCaseAdapter', () => {
       user: { id: 'TEST' } as User,
       category: 'OTHER',
       deleted: false,
-      deleteDate: null
+      deleteDate: undefined
     };
     const useCase = createRecurringExpensesUsecase as jest.Mock;
     useCase.mockImplementation(() => (data));
@@ -53,7 +53,7 @@ describe('createRecurringExpenseUseCaseAdapter', () => {
         throw new ValidationError('Error');
       });
       await postRecurringExpensesUsecaseAdapter({ body: {} } as any, res as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual('Error');
     }
   });

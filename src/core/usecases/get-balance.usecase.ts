@@ -2,6 +2,7 @@ import { CreditCard, RecurringExpense, Transaction, User } from '../entities';
 import { UserRepository } from '../repositories';
 import { log } from '../logger/logger';
 import { RequestError } from '../errors/request.error';
+import { NotFoundError } from '../errors/not-found.error';
 
 type TransactionFilter = {
   user: User;
@@ -22,40 +23,48 @@ type Balance = {
 };
 
 const getBalanceUsecase = async (filter: TransactionFilter, repository: UserRepository): Promise<Balance> => {
-  log('[getBalanceUsecase]: validating filter');
-  if (!filter.user) {
-    throw new RequestError('user is required to calculate the balance');
-  }
-  const { user, month, year } = filter;
-  log(`[getBalanceUseCase]: getting the transactions of ${month}/${year}`);
-  const { creditCards, transactions, recurringExpenses, salary } = await repository.get(user, month, year) as User;
+  validateFilter(filter);
+  log(`[getBalanceUseCase]: getting the transactions of ${filter.month}/${filter.year}`);
+  const user = await repository.get(filter.user, filter.month, filter.year) as User;
 
-  const transactionsAmount = transactions.reduce((sum, current) => doSum(sum, current.amount), 0);
-  const recurringExpensesAmount = recurringExpenses.reduce((sum, current) => doSum(sum, current.amount), 0);
+  if (!user) {
+    log(`[getBalanceUseCase]: user not found for the filter ${filter.user}`);
+    throw new NotFoundError(`user not found for the filter ${filter.user}`);
+  }
+
+  const salaryNumber = +user.salary!;
+
+  const transactionsAmount = user.transactions.reduce((sum, current) => sum + Number(current.amount), 0);
+  const recurringExpensesAmount = user.recurringExpenses.reduce((sum, current) => sum + Number(current.amount), 0);
 
   const creditCardExpenses: CreditCardsTotal = {};
-  const creditCardsAmount = creditCards.reduce((sum, current) => {
+  let creditCardsAmount = 0;
+  for (const current of user.creditCards) {
     const invoice = current.invoices[0];
     const amount = !!invoice ? invoice.transactions.reduce((sum, current) => {
-      return sum + Number(current.amount);
+      return sum + +current.amount;
     }, 0) : 0;
-    const creditCardSum = sum + Number(amount);
-    creditCardExpenses[current.id] = amount;
-    return creditCardSum;
-  }, 0);
+    const creditCardSum = creditCardsAmount + +amount;
+    creditCardExpenses[current.id] = +amount;
+    creditCardsAmount = creditCardSum;
+  }
 
   const expenses = transactionsAmount + recurringExpensesAmount + creditCardsAmount;
   return {
-    salary: Number(salary),
+    salary: salaryNumber,
     expenses,
-    available: Number(salary) - expenses,
+    available: salaryNumber - expenses,
     creditCardExpenses,
-    creditCards,
-    transactions,
-    recurringExpenses
+    creditCards: user.creditCards,
+    transactions: user.transactions,
+    recurringExpenses: user.recurringExpenses
   } as Balance;
 };
 
-const doSum = (sum: number, current: number | string): number => sum + Number(current);
+const validateFilter = (filter: TransactionFilter) => {
+  if (!filter.user) {
+    throw new RequestError('user is required to calculate the balance');
+  }
+};
 
 export default getBalanceUsecase;

@@ -18,7 +18,6 @@ import {
   updateUserUsecaseAdapter,
 } from './adapters';
 import { isAdminMiddleware, isAuthorizedMiddleware } from './adapters/middlewares';
-import { CreditCard } from './core/entities';
 
 const router = express.Router();
 

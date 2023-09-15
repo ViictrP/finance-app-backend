@@ -3,26 +3,27 @@ import cors from 'cors';
 import routes from './routes';
 import { log } from './core/logger/logger';
 import { errorHandler } from './adapters/handlers';
+import helmet from 'helmet';
+import morgan from 'morgan';
+
+require('dotenv').config();
 
 log('[server]: Creating the server');
-const app = express();
+const server = express();
 
-log('[server]: Configuring CORS');
-app.use(cors({
+log('[server]: Configuring the server');
+server.use(morgan('dev'));
+server.use(helmet());
+server.use(cors({
   origin: process.env.FRONT_HOST,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
 }));
-
-log('[server]: Configuring the server');
-app.use(express.json());
+server.use(express.json());
 
 log('[server]: Loading the routes');
-app.use(routes);
+server.use(routes);
 
 // ============= ERROR HANDLING ===========
-app.use(errorHandler);
+server.use(errorHandler);
 
-const port = process.env.PORT || 3333;
-app.listen(port, () => {
-  log(`[server]: HTTP server running at port ${port}`);
-});
+export default server;

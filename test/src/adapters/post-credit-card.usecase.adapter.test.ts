@@ -38,7 +38,7 @@ describe('postCreditCardUseCaseAdapter', () => {
         throw new ValidationError('Error');
       });
       await postCreditCardUsecaseAdapter(req as any, res as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual('Error');
     }
   });

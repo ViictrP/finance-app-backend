@@ -16,6 +16,7 @@ describe('UserDto validator', () => {
       salary: 1000,
       creditCards: [],
       transactions: [],
+      monthClosures: [],
       delete: false
     };
     const valid = userValidator(user);
