@@ -1,18 +1,20 @@
 import { getUserUsecase } from '../../../../src/core/usecases';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import authenticationUsecase from '../../../../src/auth/usecases/authentication.usecase';
+import { User } from '../../../../src/core/entities';
+import { UserRepository } from '../../../../src/core/repositories';
 
-jest.mock('.../../../../src/core/usecases/get-user.usecase');
-jest.mock('bcrypt');
+jest.mock<typeof getUserUsecase>('.../../../../src/core/usecases/get-user.usecase');
+jest.mock<typeof bcrypt>('bcrypt');
 
 describe('authenticationUseCase', () => {
-  const user = {
+  const user: Partial<User> = {
     email: 'myemail@email.com',
     password: 'myPassword'
   };
 
-  const repository = {
-    getMany: jest.fn()
+  const repository: Partial<UserRepository> = {
+    get: jest.fn()
   };
 
   beforeEach(() => {
@@ -20,34 +22,25 @@ describe('authenticationUseCase', () => {
   });
 
   it('Should authenticate', async () => {
-    const useCase = getUserUsecase as jest.Mock;
-    useCase.mockImplementation(() => (user));
-    const bcryptMock = bcrypt as unknown as jest.Mock;
-    (bcryptMock as any).compare.mockImplementation(() => true);
+    const useCase = getUserUsecase as unknown as jest.Mock<typeof getUserUsecase>;
+    useCase.mockImplementation(() => () => Promise.resolve<User>(user as User));
 
-    const authentication = await authenticationUsecase({ ...user } as any, repository as any);
+    const bcryptMock = bcrypt as jest.Mocked<typeof bcrypt>;
+    bcryptMock.compare.mockImplementation(() => true);
+
+    const authentication = await authenticationUsecase(user as User, repository as UserRepository);
     expect(authentication).toBeTruthy();
     expect(authentication.accessToken).toBeDefined();
   });
 
-  it('Should throw error if user doesnt exist', async () => {
-    const useCase = getUserUsecase as jest.Mock;
-    useCase.mockImplementation(() => null);
-    const bcryptMock = bcrypt as unknown as jest.Mock;
-    (bcryptMock as any).compare.mockImplementation(() => true);
-
-    await expect(authenticationUsecase(user, repository as any))
-      .rejects
-      .toThrowError(new Error('user not found for email myemail@email.com'));
-  });
-
   it('Should throw error if user password doesnt match', async () => {
-    const useCase = getUserUsecase as jest.Mock;
-    useCase.mockImplementation(() => user);
+    const useCase = getUserUsecase as unknown as jest.Mock<typeof getUserUsecase>;
+    useCase.mockImplementation(() => () => Promise.resolve<User>(user as User));
+
     const bcryptMock = bcrypt as unknown as jest.Mock;
     (bcryptMock as any).compare.mockImplementation(() => false);
 
-    await expect(authenticationUsecase(user, repository as any))
+    await expect(authenticationUsecase(user as User, repository as UserRepository))
       .rejects
       .toThrowError(new Error('invalid credentials'));
   });

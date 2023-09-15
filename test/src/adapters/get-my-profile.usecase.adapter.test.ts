@@ -1,12 +1,12 @@
-// @ts-ignore
 import request from 'supertest';
-import { ValidationError } from '../../../src/core/errors';
-import { getUserUsecase } from '../../../src/core/usecases';
 import server from '../../../src/server';
 import { isAuthorizedMiddleware } from '../../../src/adapters/middlewares';
+import { userPrismaRepository } from '../../../src/infra';
+import { UserRepository } from '../../../src/core/repositories';
+import { User } from '../../../src/core/entities';
 
-jest.mock('../../../src/core/usecases/get-user.usecase');
-jest.mock('../../../src/adapters/middlewares/is-authorized.middleware');
+jest.mock<typeof isAuthorizedMiddleware>('../../../src/adapters/middlewares/is-authorized.middleware');
+jest.mock<typeof userPrismaRepository>('../../../src/infra/user.prisma-repository');
 
 describe('getMyProfileUseCaseAdapter', () => {
 
@@ -14,28 +14,26 @@ describe('getMyProfileUseCaseAdapter', () => {
 
   it('Should return 422 if an error occurs', (done) => {
     const user = { id: 'test' };
-    const middleware = isAuthorizedMiddleware as jest.Mock;
-    middleware.mockImplementation((req, res, next) => {
+    const middleware = isAuthorizedMiddleware as jest.Mock<typeof isAuthorizedMiddleware>;
+    middleware.mockImplementation((_, res, next) => {
       res.locals.user = user;
       return next();
     });
 
-    const useCase = getUserUsecase as jest.Mock;
-    useCase.mockImplementation(() => {
-      throw new ValidationError('Error');
-    });
+    const repository = userPrismaRepository as unknown as jest.Mocked<UserRepository>;
+    repository.get.mockImplementation(() => Promise.resolve<User | null>(null));
 
     request(server)
       .get('/me')
       .set('Accept', 'application/json')
       .expect('Content-Type', 'text/html; charset=utf-8')
-      .expect(422, 'Error', done);
+      .expect(404, 'user not found by filter [object Object]', done);
   });
 
   it('Should return a unauthorized', (done) => {
-    const middleware = isAuthorizedMiddleware as jest.Mock;
-    middleware.mockImplementation((req, res, next) => {
-      res.status(401).json({ message: 'unauthorized' });
+    const middleware = isAuthorizedMiddleware as jest.Mock<typeof isAuthorizedMiddleware>;
+    middleware.mockImplementation((_1, res, _3) => {
+      return res.status(401).json({ message: 'unauthorized' });
     });
 
     request(server)
@@ -46,15 +44,15 @@ describe('getMyProfileUseCaseAdapter', () => {
   });
 
   it('Should return a message', (done) => {
-    const user = { id: 'test' };
-    const middleware = isAuthorizedMiddleware as jest.Mock;
-    middleware.mockImplementation((req, res, next) => {
+    const user: Partial<User> = { id: 'test', monthClosures: [] };
+    const middleware = isAuthorizedMiddleware as jest.Mock<typeof isAuthorizedMiddleware>;
+    middleware.mockImplementation((_, res, next) => {
       res.locals.user = user;
       return next();
     });
 
-    const useCase = getUserUsecase as jest.Mock;
-    useCase.mockImplementation(() => (user));
+    const repository = userPrismaRepository as unknown as jest.Mocked<UserRepository>;
+    repository.get.mockImplementation(() => Promise.resolve<User>(user as User));
 
     request(server)
       .get('/me')

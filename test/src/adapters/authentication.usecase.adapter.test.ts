@@ -1,49 +1,72 @@
-import { ValidationError } from '../../../src/core/errors';
+import request from 'supertest';
+import server from '../../../src/server';
+import { User } from '../../../src/core/entities';
+import { userPrismaRepository } from '../../../src/infra';
+import * as bcrypt from 'bcrypt';
+import { UserRepository } from '../../../src/core/repositories';
 
-jest.mock('../../../src/auth/usecases/authentication.usecase');
-import authenticationUsecase from '../../../src/auth/usecases/authentication.usecase';
-import authenticationUsecaseAdapter from '../../../src/adapters/authentication.usecase.adapter';
+jest.mock<typeof userPrismaRepository>('../../../src/infra/user.prisma-repository');
+jest.mock<typeof bcrypt>('bcrypt');
 
 
 describe('authenticationUseCaseAdapter', () => {
-  const res = {
-    locals: {
-      user: {
-        id: 'test'
-      }
-    },
-    json: function(err: any) {
-      return err;
-    },
-    status: function() {
-      return this;
-    }
-  };
-  const req = {
-    body: {},
-    params: { id: 'test' }
-  };
 
-  it('Should return success after deleting the transaction', async () => {
-    const useCase = authenticationUsecase as jest.Mock;
-    useCase.mockImplementation(() => ({ accessToken: 'accesstoken' }));
-    const statusSpy = jest.spyOn(res, 'status');
-    const jsonSpy = jest.spyOn(res, 'json');
-    await authenticationUsecaseAdapter(req as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(201);
-    expect(jsonSpy).toHaveBeenCalledWith({ accessToken: 'accesstoken' });
+  beforeEach(() => {
+    process.env.JWT_SECRET = 'secret';
   });
 
-  it('Should return 422 if an error occurs', async () => {
-    try {
-      const useCase = authenticationUsecase as jest.Mock;
-      useCase.mockImplementation(() => {
-        throw new ValidationError('Invalid');
-      });
-      const statusSpy = jest.spyOn(res, 'status');
-      await authenticationUsecaseAdapter(req as any, res as any);
-    } catch (error: any) {
-      expect(error.message).toEqual('Invalid');
-    }
+  it('Should return a valid token', (done) => {
+    const hash = bcrypt as jest.Mocked<typeof bcrypt>;
+    hash.compare.mockImplementation(() => Promise.resolve<boolean>(true));
+
+    const user: Partial<User> = {
+      id: 'test',
+      email: 'a@a.com',
+      password: 'password',
+      monthClosures: []
+    };
+
+    const repository = userPrismaRepository as unknown as jest.Mocked<UserRepository>;
+    repository.get.mockImplementation(() => (Promise.resolve<User>(user as User)));
+
+    request(server)
+      .post('/login')
+      .set('Content-Type', 'application/json')
+      .send({ email: 'a@a.com', password: 'password' })
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(201, done);
+  });
+
+  it('Should return an error if user doesnt exist', (done) => {
+    const repository = userPrismaRepository as unknown as jest.Mocked<UserRepository>;
+    repository.get.mockImplementation(() => (Promise.resolve<User | null>(null)));
+
+    request(server)
+      .post('/login')
+      .set('Content-Type', 'application/json')
+      .send({ email: 'a@a.com', password: 'password' })
+      .expect('Content-Type', 'text/html; charset=utf-8')
+      .expect(404, 'user not found by filter [object Object]', done);
+  });
+
+  it('Should return an error if password doesnt match', (done) => {
+    const hash = bcrypt as jest.Mocked<typeof bcrypt>;
+    hash.compare.mockImplementation(() => Promise.resolve<boolean>(false));
+    const user: Partial<User> = {
+      id: 'test',
+      email: 'a@a.com',
+      password: 'password',
+      monthClosures: []
+    };
+
+    const repository = userPrismaRepository as unknown as jest.Mocked<UserRepository>;
+    repository.get.mockImplementation(() => (Promise.resolve<User>(user as User)));
+
+    request(server)
+      .post('/login')
+      .set('Content-Type', 'application/json')
+      .send({ email: 'a@a.com', password: 'password' })
+      .expect('Content-Type', 'text/html; charset=utf-8')
+      .expect(400, 'invalid credentials', done);
   });
 });

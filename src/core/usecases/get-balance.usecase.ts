@@ -2,6 +2,7 @@ import { CreditCard, RecurringExpense, Transaction, User } from '../entities';
 import { UserRepository } from '../repositories';
 import { log } from '../logger/logger';
 import { RequestError } from '../errors/request.error';
+import { NotFoundError } from '../errors/not-found.error';
 
 type TransactionFilter = {
   user: User;
@@ -24,17 +25,21 @@ type Balance = {
 const getBalanceUsecase = async (filter: TransactionFilter, repository: UserRepository): Promise<Balance> => {
   validateFilter(filter);
   log(`[getBalanceUseCase]: getting the transactions of ${filter.month}/${filter.year}`);
-  const { user, month, year } = filter;
-  const { creditCards, transactions, recurringExpenses, salary } = await repository.get(user, month, year) as User;
+  const user = await repository.get(filter.user, filter.month, filter.year) as User;
 
-  const salaryNumber = +salary!;
+  if (!user) {
+    log(`[getBalanceUseCase]: user not found for the filter ${filter.user}`);
+    throw new NotFoundError(`user not found for the filter ${filter.user}`);
+  }
 
-  const transactionsAmount = transactions.reduce((sum, current) => sum + Number(current.amount), 0);
-  const recurringExpensesAmount = recurringExpenses.reduce((sum, current) => sum + Number(current.amount), 0);
+  const salaryNumber = +user.salary!;
+
+  const transactionsAmount = user.transactions.reduce((sum, current) => sum + Number(current.amount), 0);
+  const recurringExpensesAmount = user.recurringExpenses.reduce((sum, current) => sum + Number(current.amount), 0);
 
   const creditCardExpenses: CreditCardsTotal = {};
   let creditCardsAmount = 0;
-  for (const current of creditCards) {
+  for (const current of user.creditCards) {
     const invoice = current.invoices[0];
     const amount = !!invoice ? invoice.transactions.reduce((sum, current) => {
       return sum + +current.amount;
@@ -50,9 +55,9 @@ const getBalanceUsecase = async (filter: TransactionFilter, repository: UserRepo
     expenses,
     available: salaryNumber - expenses,
     creditCardExpenses,
-    creditCards,
-    transactions,
-    recurringExpenses
+    creditCards: user.creditCards,
+    transactions: user.transactions,
+    recurringExpenses: user.recurringExpenses
   } as Balance;
 };
 

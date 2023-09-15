@@ -1,47 +1,46 @@
-import { ValidationError } from '../../../src/core/errors';
+import request from 'supertest';
+import { isAuthorizedMiddleware } from '../../../src/adapters/middlewares';
+import server from '../../../src/server';
+import { TransactionRepository } from '../../../src/core/repositories';
+import { transactionPrismaRepository } from '../../../src/infra';
+import { Transaction } from '../../../src/core/entities';
 
-jest.mock('../../../src/core/usecases/delete-transaction.usecase');
-import { deleteTransactionUsecase } from '../../../src/core/usecases';
-import deleteTransactionUsecaseAdapter from '../../../src/adapters/delete-transaction.usecase.adapter';
+jest.mock<typeof isAuthorizedMiddleware>('../../../src/adapters/middlewares/is-authorized.middleware');
+jest.mock<TransactionRepository>('../../../src/infra/transaction.prisma-repository');
 
 
 describe('deleteTransactionUseCaseAdapter', () => {
-  const res = {
-    locals: {
-      user: {
-        id: 'test'
-      }
-    },
-    json: function(err: any) {
-      return err;
-    },
-    status: function() {
-      return this;
-    }
-  };
-  const req = {
-    body: {},
-    params: { id: 'test' }
-  };
 
-  it('Should return success after deleting the transaction', async () => {
-    const useCase = deleteTransactionUsecase as jest.Mock;
-    useCase.mockImplementation(() => ({ id: 'test' }));
-    const statusSpy = jest.spyOn(res, 'status');
-    const _req = { ...req, query: { all: false } };
-    await deleteTransactionUsecaseAdapter(_req as any, res as any);
-    expect(statusSpy).toHaveBeenCalledWith(204);
+  it('Should return a message', (done) => {
+    const user = { id: 'test' };
+    const middleware = isAuthorizedMiddleware as jest.Mock<typeof isAuthorizedMiddleware>;
+    middleware.mockImplementation((_, res, next) => {
+      res.locals.user = user;
+      return next();
+    });
+
+    const repository = transactionPrismaRepository as unknown as jest.Mocked<TransactionRepository>;
+    repository.deleteTransaction.mockImplementation(() => Promise.resolve<void>(undefined));
+    repository.get.mockImplementation(() => Promise.resolve<Transaction>({ id: 'test' } as Transaction));
+
+    request(server)
+      .delete('/transactions/test')
+      .expect(204, '', done);
   });
 
-  it('Should return 422 if an error occurs', async () => {
-    try {
-      const useCase = deleteTransactionUsecase as jest.Mock;
-      useCase.mockImplementation(() => {
-        throw new ValidationError('Invalid transaction');
-      });
-      await deleteTransactionUsecaseAdapter(req as any, res as any);
-    } catch (error: any) {
-      expect(error.message).toEqual('Invalid transaction');
-    }
+  it('Should return an error if the transaction doesnt exist', (done) => {
+    const user = { id: 'test' };
+    const middleware = isAuthorizedMiddleware as jest.Mock<typeof isAuthorizedMiddleware>;
+    middleware.mockImplementation((_, res, next) => {
+      res.locals.user = user;
+      return next();
+    });
+
+    const repository = transactionPrismaRepository as unknown as jest.Mocked<TransactionRepository>;
+    repository.get.mockImplementation(() => Promise.resolve<Transaction | null>(null));
+
+    request(server)
+      .delete('/transactions/test')
+      .expect(404, 'transaction not found for id test', done);
   });
 });
