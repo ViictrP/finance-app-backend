@@ -1,6 +1,6 @@
 FROM node:18
 # Copying app
-COPY . .
+COPY . ./usr/src/app
 # Defining the working directory
 WORKDIR /usr/src/app
 # Installing dependecies
