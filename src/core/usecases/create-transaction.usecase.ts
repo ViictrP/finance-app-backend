@@ -32,7 +32,7 @@ async function createTransactionWithinInvoice(transaction: Transaction, creditCa
   const installmentId = randomUUID();
 
   async function createNewInstallment(installmentNumber: number) {
-    const newTransaction = { ...transaction };
+    const newTransaction: Transaction = { ...transaction };
     const monthIndex = transactionDate.getMonth();
     newTransaction.date.setMonth(monthIndex + installmentNumber);
     newTransaction.date.setFullYear(transactionDate.getFullYear());
@@ -83,7 +83,7 @@ const populateWithInvoice = (transaction: Transaction, creditCard: CreditCard) =
       year: year,
       isClosed: false,
       creditCard: creditCard,
-    } as any;
+    } as Partial<Invoice> as Invoice;
   }
   transaction.invoice = { ..._invoice, creditCard: creditCard };
 };

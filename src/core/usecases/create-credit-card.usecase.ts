@@ -24,7 +24,7 @@ const creditCardUseCase = async (creditCard: CreditCard, userRepository: UserRep
   creditCard.user = { id: user?.id } as User;
   log('[creditCardUseCase]: creating a new invoice for this credit card', creditCard.title);
   const today = new Date();
-  const invoice = {
+  const invoice: Partial<Invoice> = {
     month: MONTHS[today.getMonth()],
     year: today.getFullYear(),
     isClosed: false
