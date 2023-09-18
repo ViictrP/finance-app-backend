@@ -15,7 +15,7 @@ const createMonthClosureUsecase = async (monthClosure: MonthClosure, repository:
 
   log('[createMonthClosureUsecase]: finding the owner of the new month closure', `${monthClosure.month}/${monthClosure.year}`);
   const user = await userRepository.get(monthClosure.user);
-  const modifiedMonthClosure = {...monthClosure};
+  const modifiedMonthClosure: MonthClosure = {...monthClosure};
   modifiedMonthClosure.user = { id: user?.id } as User;
   modifiedMonthClosure.index = MONTHS.indexOf(monthClosure.month);
 

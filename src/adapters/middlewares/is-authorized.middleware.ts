@@ -6,9 +6,9 @@ const isAuthorizedMiddleware = (req: Request, res: Response, next: NextFunction)
   try {
     const { headers } = req;
     log('[isAuthorizedMiddleware]: verifying if user is authorized');
-    const token = headers[process.env.TOKEN_HEADER_KEY as string] as string;
+    const token = headers[process.env.TOKEN_HEADER_KEY!] as string;
     log('[isAuthorizedMiddleware]: extracting user data from access token');
-    const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as any;
+    const { id } = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
     log(`[isAuthorizedMiddleware]: user ${id} is authorized`);
     res.locals.user = {
       id

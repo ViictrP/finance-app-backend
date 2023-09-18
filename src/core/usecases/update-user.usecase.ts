@@ -4,9 +4,9 @@ import { UserRepository } from '../repositories';
 import { RequestError } from '../errors/request.error';
 
 const updateUserUsecase = async (user: User, repository: UserRepository): Promise<User> => {
-  const { id } = user;
+  const { id }: Partial<User> = user;
   log(`[updateUserUseCase]: getting user data ${user.email}`);
-  const savedUser = await repository.get({ id } as any);
+  const savedUser = await repository.get({ id } as User);
   if (!savedUser) {
     log(`[updateUserUseCase]: user not found for the filter ${user}`);
     throw new RequestError(`user not found by filter ${user}`);
