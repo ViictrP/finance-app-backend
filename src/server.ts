@@ -14,8 +14,9 @@ const server = express();
 log('[server]: Configuring the server');
 server.use(morgan('dev'));
 server.use(helmet());
+
 server.use(cors({
-  origin: process.env.FRONT_HOST,
+  origin: process.env.FRONT_HOST?.split(','),
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
 }));
 server.use(express.json());
