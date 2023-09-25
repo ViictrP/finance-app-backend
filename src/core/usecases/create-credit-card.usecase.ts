@@ -4,8 +4,7 @@ import { CreditCard, Invoice, User } from '../entities';
 import { creditCardValidator } from '../validators';
 import { CreditCardRepository } from '../repositories';
 import { MONTHS } from '../enums/month.enum';
-import { ValidationError } from '../errors';
-import { RequestError } from '../errors/request.error';
+import {RequestError, ValidationError} from '../errors';
 
 const creditCardUseCase = async (creditCard: CreditCard, userRepository: UserRepository, repository: CreditCardRepository): Promise<CreditCard> => {
   log(`[creditCardUseCase]: validating credit card ${creditCard.title} information`);

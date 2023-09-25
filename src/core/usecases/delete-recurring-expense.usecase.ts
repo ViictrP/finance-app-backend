@@ -1,6 +1,6 @@
 import { RecurringExpenseRepository } from '../repositories';
 import { log } from '../logger/logger';
-import { RequestError } from '../errors/request.error';
+import {RequestError} from "../errors";
 
 const deleteRecurringExpenseUsecase = async (id: string, repository: RecurringExpenseRepository) => {
   log(`[deleteRecurringExpenseUseCase]: getting recurring expense information id `, id);

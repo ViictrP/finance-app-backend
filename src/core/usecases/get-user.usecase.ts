@@ -1,8 +1,7 @@
 import { log } from '../logger/logger';
 import { User } from '../entities';
 import { UserRepository } from '../repositories';
-import { RequestError } from '../errors/request.error';
-import { NotFoundError } from '../errors/not-found.error';
+import {NotFoundError} from "../errors";
 
 const getUserUsecase = async (user: User, repository: UserRepository): Promise<User> => {
   log(`[getUserUseCase]: getting user by filter: ${user}`);

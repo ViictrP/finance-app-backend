@@ -1,8 +1,7 @@
 import { CreditCard, RecurringExpense, Transaction, User } from '../entities';
 import { UserRepository } from '../repositories';
 import { log } from '../logger/logger';
-import { RequestError } from '../errors/request.error';
-import { NotFoundError } from '../errors/not-found.error';
+import {NotFoundError, RequestError} from "../errors";
 
 type TransactionFilter = {
   user: User;

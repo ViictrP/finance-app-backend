@@ -1,11 +1,10 @@
-import { TransactionRepository } from '../repositories';
-import { log } from '../logger/logger';
-import { RequestError } from '../errors/request.error';
-import { NotFoundError } from '../errors/not-found.error';
+import {TransactionRepository} from '../repositories';
+import {log} from '../logger/logger';
+import {NotFoundError} from "../errors";
 
 const deleteTransactionUsecase = async (id: string, all: boolean, repository: TransactionRepository) => {
   log(`[deleteTransactionUseCase]: getting transaction information id `, id);
-  const transaction = await repository.get({ id } as any);
+  const transaction = await repository.get({id} as any);
 
   if (!transaction) {
     log(`[deleteTransactionUseCase]: getting transaction information id `, id);
