@@ -1,7 +1,7 @@
 import { UserRepository } from '../../../../src/core/repositories';
 import { getBalanceUsecase } from '../../../../src/core/usecases';
 import { User } from '../../../../src/core/entities';
-import { RequestError } from '../../../../src/core/errors/request.error';
+import {RequestError} from "../../../../src/core/errors";
 
 describe('getBalanceUsecase', () => {
   type TransactionFilter = {

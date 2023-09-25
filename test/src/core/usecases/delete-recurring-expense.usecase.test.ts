@@ -1,6 +1,6 @@
 import { deleteRecurringExpenseUsecase } from '../../../../src/core/usecases';
-import { RequestError } from '../../../../src/core/errors/request.error';
 import { RecurringExpenseRepository } from '../../../../src/core/repositories';
+import {RequestError} from "../../../../src/core/errors";
 
 describe('deleteRecurringExpenseUsecase', () => {
 
