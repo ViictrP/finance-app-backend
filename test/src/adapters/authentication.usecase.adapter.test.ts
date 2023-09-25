@@ -46,7 +46,7 @@ describe('authenticationUseCaseAdapter', () => {
       .set('Content-Type', 'application/json')
       .send({ email: 'a@a.com', password: 'password' })
       .expect('Content-Type', 'text/html; charset=utf-8')
-      .expect(404, 'user not found by filter [object Object]', done);
+      .expect(400, 'invalid credentials', done);
   });
 
   it('Should return an error if password doesnt match', (done) => {
