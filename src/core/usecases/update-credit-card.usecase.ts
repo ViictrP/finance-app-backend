@@ -1,7 +1,7 @@
 import { CreditCard } from '../entities';
 import { CreditCardRepository } from '../repositories';
 import { log } from '../logger/logger';
-import { RequestError } from '../errors/request.error';
+import {RequestError} from "../errors";
 
 const updateCreditCardUsecase = async (creditCard: CreditCard, repository: CreditCardRepository) => {
   const { id } = creditCard;

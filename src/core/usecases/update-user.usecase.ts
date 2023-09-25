@@ -1,7 +1,7 @@
 import User from '../entities/user';
 import { log } from '../logger/logger';
 import { UserRepository } from '../repositories';
-import { RequestError } from '../errors/request.error';
+import {RequestError} from "../errors";
 
 const updateUserUsecase = async (user: User, repository: UserRepository): Promise<User> => {
   const { id }: Partial<User> = user;
