@@ -5,6 +5,10 @@ import { log } from './core/logger/logger';
 import { errorHandler } from './adapters/handlers';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import {
+  oAuth0CheckAuthentication,
+  oAuth0CheckAuthorization
+} from './adapters/middlewares';
 
 require('dotenv').config();
 
@@ -14,11 +18,15 @@ const server = express();
 log('[server]: Configuring the server');
 server.use(morgan('dev'));
 server.use(helmet());
+server.use(oAuth0CheckAuthentication);
+server.use(oAuth0CheckAuthorization);
 
-server.use(cors({
-  origin: process.env.FRONT_HOST?.split(','),
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-}));
+server.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
+  })
+);
 server.use(express.json());
 
 log('[server]: Loading the routes');
