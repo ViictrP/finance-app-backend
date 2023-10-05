@@ -23,7 +23,7 @@ server.use(oAuth0CheckAuthorization);
 
 server.use(
   cors({
-    origin: '*',
+    origin: process.env.FRONT_HOST?.split(','),
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
   })
 );
