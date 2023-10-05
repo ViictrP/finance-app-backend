@@ -24,7 +24,7 @@ server.use(oAuth0CheckAuthorization);
 server.use(
   cors({
     origin: process.env.FRONT_HOST?.split(','),
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
+    methods: ['OPTIONS', 'GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
   })
 );
 server.use(express.json());
