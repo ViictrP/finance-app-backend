@@ -21,12 +21,7 @@ server.use(helmet());
 server.use(oAuth0CheckAuthentication);
 server.use(oAuth0CheckAuthorization);
 
-server.use(
-  cors({
-    origin: process.env.FRONT_HOST?.split(','),
-    methods: ['OPTIONS', 'GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
-  })
-);
+server.use(cors());
 server.use(express.json());
 
 log('[server]: Loading the routes');
