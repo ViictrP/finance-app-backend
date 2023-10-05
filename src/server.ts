@@ -16,7 +16,12 @@ log('[server]: Creating the server');
 const server = express();
 
 log('[server]: Configuring the server');
-server.use(cors());
+server.use(
+  cors({
+    origin: process.env.FRONT_HOST?.split(','),
+    methods: ['OPTIONS', 'GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
+  })
+);
 server.use(morgan('dev'));
 server.use(helmet());
 server.use(oAuth0CheckAuthentication);
