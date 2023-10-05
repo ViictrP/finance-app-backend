@@ -16,12 +16,12 @@ log('[server]: Creating the server');
 const server = express();
 
 log('[server]: Configuring the server');
+server.use(cors());
 server.use(morgan('dev'));
 server.use(helmet());
 server.use(oAuth0CheckAuthentication);
 server.use(oAuth0CheckAuthorization);
 
-server.use(cors());
 server.use(express.json());
 
 log('[server]: Loading the routes');
