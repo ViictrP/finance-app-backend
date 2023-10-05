@@ -1,26 +1,34 @@
 import request from 'supertest';
 import server from '../../../src/server';
-import { isAuthorizedMiddleware } from '../../../src/adapters/middlewares';
+import {
+  oAuth0CheckAuthentication,
+  oAuth0CheckAuthorization
+} from '../../../src/adapters/middlewares';
 import { userPrismaRepository } from '../../../src/infra';
 import { UserRepository } from '../../../src/core/repositories';
 import { User } from '../../../src/core/entities';
 
-jest.mock<typeof isAuthorizedMiddleware>('../../../src/adapters/middlewares/is-authorized.middleware');
-jest.mock<typeof userPrismaRepository>('../../../src/infra/user.prisma-repository');
+jest.mock<typeof oAuth0CheckAuthentication>(
+  '../../../src/adapters/middlewares/oauth0-authentication.middleware'
+);
+jest.mock<typeof oAuth0CheckAuthorization>(
+  '../../../src/adapters/middlewares/oauth0-authorization.middleware'
+);
+jest.mock<typeof userPrismaRepository>(
+  '../../../src/infra/user.prisma-repository'
+);
 
 describe('getMyProfileUseCaseAdapter', () => {
+  const checkAuthorizationMock = oAuth0CheckAuthorization as jest.Mock;
+  const checkAuthenticationMock = oAuth0CheckAuthentication as jest.Mock;
 
   afterEach(() => jest.clearAllMocks());
 
   it('Should return 422 if an error occurs', (done) => {
-    const user = { id: 'test' };
-    const middleware = isAuthorizedMiddleware as jest.Mock<typeof isAuthorizedMiddleware>;
-    middleware.mockImplementation((_, res, next) => {
-      res.locals.user = user;
-      return next();
-    });
+    defaultMockAuth({ id: 'test' });
 
-    const repository = userPrismaRepository as unknown as jest.Mocked<UserRepository>;
+    const repository =
+      userPrismaRepository as unknown as jest.Mocked<UserRepository>;
     repository.get.mockImplementation(() => Promise.resolve<User | null>(null));
 
     request(server)
@@ -31,8 +39,7 @@ describe('getMyProfileUseCaseAdapter', () => {
   });
 
   it('Should return a unauthorized', (done) => {
-    const middleware = isAuthorizedMiddleware as jest.Mock<typeof isAuthorizedMiddleware>;
-    middleware.mockImplementation((_1, res, _3) => {
+    checkAuthenticationMock.mockImplementation((_1, res, _3) => {
       return res.status(401).json({ message: 'unauthorized' });
     });
 
@@ -45,14 +52,13 @@ describe('getMyProfileUseCaseAdapter', () => {
 
   it('Should return a message', (done) => {
     const user: Partial<User> = { id: 'test', monthClosures: [] };
-    const middleware = isAuthorizedMiddleware as jest.Mock<typeof isAuthorizedMiddleware>;
-    middleware.mockImplementation((_, res, next) => {
-      res.locals.user = user;
-      return next();
-    });
+    defaultMockAuth(user);
 
-    const repository = userPrismaRepository as unknown as jest.Mocked<UserRepository>;
-    repository.get.mockImplementation(() => Promise.resolve<User>(user as User));
+    const repository =
+      userPrismaRepository as unknown as jest.Mocked<UserRepository>;
+    repository.get.mockImplementation(() =>
+      Promise.resolve<User>(user as User)
+    );
 
     request(server)
       .get('/me')
@@ -60,4 +66,16 @@ describe('getMyProfileUseCaseAdapter', () => {
       .expect('Content-Type', /json/)
       .expect(200, user, done);
   });
+
+  const defaultMockAuth = (user: Partial<User>) => {
+    checkAuthorizationMock.mockImplementation((_, res, next) => {
+      res.locals.user = user;
+      return next();
+    });
+
+    checkAuthenticationMock.mockImplementation((_, res, next) => {
+      res.locals.user = user;
+      return next();
+    });
+  };
 });

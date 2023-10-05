@@ -1,4 +1,3 @@
-import authenticationUsecaseAdapter from './authentication.usecase.adapter';
 import postUserUsecaseAdapter from './post-user.usecase.adapter';
 import getMyProfileUsecaseAdapter from './get-my-profile.usecase.adapter';
 import updateUserUsecaseAdapter from './update-user.usecase.adapter';
@@ -16,7 +15,6 @@ import deleteRecurringExpenseUsecaseAdapter from './delete-recurring-expense.use
 import postMonthClosureUsecaseAdapter from './post-month-closure.usecase.adapter';
 
 export {
-  authenticationUsecaseAdapter,
   postUserUsecaseAdapter,
   getMyProfileUsecaseAdapter,
   updateUserUsecaseAdapter,

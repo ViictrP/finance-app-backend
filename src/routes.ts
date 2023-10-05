@@ -1,6 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
 import {
-  authenticationUsecaseAdapter,
   backupAdapter,
   deleteCreditCardUsecaseAdapter,
   deleteRecurringExpenseUsecaseAdapter,
@@ -17,7 +16,6 @@ import {
   updateCreditCardUsecaseAdapter,
   updateUserUsecaseAdapter
 } from './adapters';
-import { isAdminMiddleware } from './adapters/middlewares';
 
 const router = express.Router();
 
@@ -39,22 +37,18 @@ async function commonRouter<T>(
 // ============= BACKUP ============
 const backupRoute = (req: Request, res: Response, next: NextFunction) =>
   commonRouter(req, res, next, backupAdapter);
-router.get('/admin/backup', isAdminMiddleware, backupRoute);
+router.get('/admin/backup', backupRoute);
 
 // ============= USER ==============
 const postUserRoute = (req: Request, res: Response, next: NextFunction) =>
   commonRouter(req, res, next, postUserUsecaseAdapter);
-const authenticationRoute = (req: Request, res: Response, next: NextFunction) =>
-  commonRouter(req, res, next, authenticationUsecaseAdapter);
 const updateUserRoute = (req: Request, res: Response, next: NextFunction) =>
   commonRouter(req, res, next, updateUserUsecaseAdapter);
 const getMyProfileRoute = (req: Request, res: Response, next: NextFunction) =>
   commonRouter(req, res, next, getMyProfileUsecaseAdapter);
 const getBalanceRoute = (req: Request, res: Response, next: NextFunction) =>
   commonRouter(req, res, next, getBalanceUsecaseAdapter);
-
 router.post('/users', postUserRoute);
-router.post('/login', authenticationRoute);
 router.put('/users', updateUserRoute);
 router.get('/me', getMyProfileRoute);
 router.get('/balances', getBalanceRoute);
