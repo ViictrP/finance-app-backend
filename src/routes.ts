@@ -16,8 +16,10 @@ import {
   updateCreditCardUsecaseAdapter,
   updateUserUsecaseAdapter
 } from './adapters';
+import firebaseAuthentication from "./adapters/middlewares/firebase-authentication.middleware";
 
 const router = express.Router();
+router.use(firebaseAuthentication);
 
 type Adapter<T> = (req: Request, res: Response) => Promise<T>;
 
