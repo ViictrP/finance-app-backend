@@ -6,3 +6,4 @@ dist
 .env
 ./package-lock.json
 postgres_data
+./config/firebase-private-key.json
