@@ -1,14 +1,14 @@
 import { UserRepository } from '../../../../src/core/repositories';
 import { getBalanceUsecase } from '../../../../src/core/usecases';
 import { User } from '../../../../src/core/entities';
-import {RequestError} from "../../../../src/core/errors";
+import { RequestError } from '../../../../src/core/errors';
 
 describe('getBalanceUsecase', () => {
   type TransactionFilter = {
-    user: User;
+    email: string;
     month: string;
     year: number;
-  }
+  };
 
   // Tests that the function returns a Balance object with correct salary, expenses, and available properties when given a valid TransactionFilter and UserRepository
   it('should return a Balance object with correct salary, expenses, and available properties when given a valid TransactionFilter and UserRepository', async () => {
@@ -27,20 +27,7 @@ describe('getBalanceUsecase', () => {
 
     // Define the filter
     const filter = {
-      user: {
-        id: '1',
-        name: 'John',
-        lastname: 'Doe',
-        email: 'john.doe@example.com',
-        password: 'password',
-        active: true,
-        createdAt: new Date(),
-        creditCards: [],
-        transactions: [],
-        recurringExpenses: [],
-        monthClosures: [],
-        delete: false
-      },
+      email: 'john.doe@example.com',
       month: 'January',
       year: 2022
     };
@@ -159,20 +146,7 @@ describe('getBalanceUsecase', () => {
 
     // Define the filter
     const filter: TransactionFilter = {
-      user: {
-        id: '1',
-        name: 'John',
-        lastname: 'Doe',
-        email: 'john.doe@example.com',
-        password: 'password',
-        active: true,
-        createdAt: new Date(),
-        creditCards: [],
-        transactions: [],
-        recurringExpenses: [],
-        monthClosures: [],
-        delete: false
-      },
+      email: 'john.doe@example.com',
       month: 'January',
       year: 2022
     };
@@ -201,7 +175,9 @@ describe('getBalanceUsecase', () => {
     };
 
     // Call the function and expect it to throw a RequestError
-    await expect(getBalanceUsecase(filter as TransactionFilter, mockUserRepository)).rejects.toThrow(RequestError);
+    await expect(
+      getBalanceUsecase(filter as TransactionFilter, mockUserRepository)
+    ).rejects.toThrow(RequestError);
   });
 
   // Tests that the function returns a Balance object with 0 expenses and correct salary and available properties when given a User with no transactions, recurringExpenses, or creditCards
@@ -221,20 +197,7 @@ describe('getBalanceUsecase', () => {
 
     // Define the filter
     const filter: TransactionFilter = {
-      user: {
-        id: '1',
-        name: 'John',
-        lastname: 'Doe',
-        email: 'john.doe@example.com',
-        password: 'password',
-        active: true,
-        createdAt: new Date(),
-        creditCards: [],
-        transactions: [],
-        recurringExpenses: [],
-        monthClosures: [],
-        delete: false
-      },
+      email: 'john.doe@example.com',
       month: 'January',
       year: 2022
     };
@@ -247,5 +210,4 @@ describe('getBalanceUsecase', () => {
     expect(result.salary).toBe(5000);
     expect(result.available).toBe(5000);
   });
-
 });

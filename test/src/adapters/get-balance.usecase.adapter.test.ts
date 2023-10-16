@@ -3,24 +3,17 @@ import server from '../../../src/server';
 import { User } from '../../../src/core/entities';
 import { userPrismaRepository } from '../../../src/infra';
 import { UserRepository } from '../../../src/core/repositories';
-import {
-  oAuth0CheckAuthentication,
-  oAuth0CheckAuthorization
-} from '../../../src/adapters/middlewares';
+import { firebaseAuthentication } from '../../../src/adapters/middlewares';
 
-jest.mock<typeof oAuth0CheckAuthentication>(
-  '../../../src/adapters/middlewares/oauth0-authentication.middleware'
-);
-jest.mock<typeof oAuth0CheckAuthorization>(
-  '../../../src/adapters/middlewares/oauth0-authorization.middleware'
+jest.mock<typeof firebaseAuthentication>(
+  '../../../src/adapters/middlewares/firebase-authentication.middleware'
 );
 jest.mock<typeof userPrismaRepository>(
   '../../../src/infra/user.prisma-repository'
 );
 
 describe('getBalanceUseCaseAdapter', () => {
-  const checkAuthorizationMock = oAuth0CheckAuthorization as jest.Mock;
-  const checkAuthenticationMock = oAuth0CheckAuthentication as jest.Mock;
+  const checkAuthorizationMock = firebaseAuthentication as jest.Mock;
 
   it("Should return user's balance", (done) => {
     const user: Partial<User> = {
@@ -32,7 +25,7 @@ describe('getBalanceUseCaseAdapter', () => {
       monthClosures: []
     };
 
-    defaultMockAuth(user);
+    defaultMockAuth('a@a.com');
 
     const repository =
       userPrismaRepository as unknown as jest.Mocked<UserRepository>;
@@ -66,11 +59,11 @@ describe('getBalanceUseCaseAdapter', () => {
       .get('/balances')
       .set('Accept', 'application/json')
       .expect('Content-Type', 'text/html; charset=utf-8')
-      .expect(400, 'user is required to calculate the balance', done);
+      .expect(400, `User's email is required to calculate the balance`, done);
   });
 
   it('Should return an error if user doesnt exist', (done) => {
-    defaultMockAuth({ id: 'test' });
+    defaultMockAuth('a@a.com');
 
     const repository =
       userPrismaRepository as unknown as jest.Mocked<UserRepository>;
@@ -80,17 +73,12 @@ describe('getBalanceUseCaseAdapter', () => {
       .get('/balances')
       .set('Accept', 'application/json')
       .expect('Content-Type', 'text/html; charset=utf-8')
-      .expect(404, 'user not found for the filter [object Object]', done);
+      .expect(404, 'user not found for the filter a@a.com', done);
   });
 
-  const defaultMockAuth = (user: Partial<User>) => {
-    checkAuthorizationMock.mockImplementation((_, res, next) => {
-      res.locals.user = user;
-      return next();
-    });
-
-    checkAuthenticationMock.mockImplementation((_, res, next) => {
-      res.locals.user = user;
+  const defaultMockAuth = (email: string) => {
+    checkAuthorizationMock.mockImplementation((req, _, next) => {
+      req.email = email;
       return next();
     });
   };

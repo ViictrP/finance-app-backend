@@ -3,28 +3,20 @@ import server from '../../../src/server';
 import { TransactionRepository } from '../../../src/core/repositories';
 import { transactionPrismaRepository } from '../../../src/infra';
 import { Transaction, User } from '../../../src/core/entities';
-import {
-  oAuth0CheckAuthentication,
-  oAuth0CheckAuthorization
-} from '../../../src/adapters/middlewares';
+import { firebaseAuthentication } from '../../../src/adapters/middlewares';
 
-jest.mock<typeof oAuth0CheckAuthentication>(
-  '../../../src/adapters/middlewares/oauth0-authentication.middleware'
-);
-jest.mock<typeof oAuth0CheckAuthorization>(
-  '../../../src/adapters/middlewares/oauth0-authorization.middleware'
+jest.mock<typeof firebaseAuthentication>(
+  '../../../src/adapters/middlewares/firebase-authentication.middleware'
 );
 jest.mock<TransactionRepository>(
   '../../../src/infra/transaction.prisma-repository'
 );
 
 describe('deleteTransactionUseCaseAdapter', () => {
-  const checkAuthorizationMock = oAuth0CheckAuthorization as jest.Mock;
-  const checkAuthenticationMock = oAuth0CheckAuthentication as jest.Mock;
+  const checkAuthorizationMock = firebaseAuthentication as jest.Mock;
 
   it('Should return a message', (done) => {
-    const user = { id: 'test' };
-    defaultMockAuth(user);
+    defaultMockAuth('a@a.com');
 
     const repository =
       transactionPrismaRepository as unknown as jest.Mocked<TransactionRepository>;
@@ -39,8 +31,7 @@ describe('deleteTransactionUseCaseAdapter', () => {
   });
 
   it('Should return an error if the transaction doesnt exist', (done) => {
-    const user = { id: 'test' };
-    defaultMockAuth(user);
+    defaultMockAuth('a@a.com');
 
     const repository =
       transactionPrismaRepository as unknown as jest.Mocked<TransactionRepository>;
@@ -53,14 +44,9 @@ describe('deleteTransactionUseCaseAdapter', () => {
       .expect(404, 'transaction not found for id test', done);
   });
 
-  const defaultMockAuth = (user: Partial<User>) => {
-    checkAuthorizationMock.mockImplementation((_, res, next) => {
-      res.locals.user = user;
-      return next();
-    });
-
-    checkAuthenticationMock.mockImplementation((_, res, next) => {
-      res.locals.user = user;
+  const defaultMockAuth = (email: string) => {
+    checkAuthorizationMock.mockImplementation((req, _, next) => {
+      req.email = email;
       return next();
     });
   };

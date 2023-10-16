@@ -29,9 +29,16 @@ describe('createTransactionUsecase', () => {
       const transaction: Partial<Transaction> = {
         description: 'invalid transaction'
       };
-      await createTransactionUsecase(transaction as Transaction, creditCardRepository, userRepository, repository);
+      await createTransactionUsecase(
+        transaction as Transaction,
+        creditCardRepository,
+        userRepository,
+        repository
+      );
     } catch (error: any) {
-      expect(error.message).toStrictEqual('the transaction invalid transaction is invalid')
+      expect(error.message).toStrictEqual(
+        'the transaction invalid transaction is invalid'
+      );
     }
   });
 
@@ -49,7 +56,12 @@ describe('createTransactionUsecase', () => {
       category: 'food',
       deleted: false
     };
-    await createTransactionUsecase(transaction as Transaction, creditCardRepository, userRepository, repository);
+    await createTransactionUsecase(
+      transaction as Transaction,
+      creditCardRepository,
+      userRepository,
+      repository
+    );
     expect(repository.create).toHaveBeenCalledWith(transaction);
   });
 
@@ -70,13 +82,52 @@ describe('createTransactionUsecase', () => {
         month: 'OUT',
         year: 2023,
         isClosed: false,
-        creditCard: { id: '1', name: 'Credit Card 1', invoiceClosingDay: 10, invoices: [] }
+        creditCard: {
+          id: '1',
+          name: 'Credit Card 1',
+          invoiceClosingDay: 10,
+          invoices: []
+        }
       } as any
     };
-    jest.spyOn(creditCardRepository, 'get').mockImplementation(() => transaction.invoice!.creditCard);
-    await createTransactionUsecase(transaction as Transaction, creditCardRepository, userRepository, repository);
+    jest
+      .spyOn(creditCardRepository, 'get')
+      .mockImplementation(() => transaction.invoice!.creditCard);
 
-    expect(repository.createInvoiceTransaction).toHaveBeenCalledWith(expect.objectContaining(transaction));
+    await createTransactionUsecase(
+      transaction as Transaction,
+      creditCardRepository,
+      userRepository,
+      repository
+    );
+
+    expect(repository.createInvoiceTransaction).toHaveBeenCalledWith(
+      expect.objectContaining({
+        amount: 100,
+        category: 'food',
+        createdAt: expect.any(Date),
+        date: expect.any(Date),
+        deleted: false,
+        description: 'Transaction 1',
+        id: '1',
+        installmentAmount: 1,
+        installmentId: expect.any(String),
+        installmentNumber: 1,
+        invoice: {
+          creditCard: {
+            id: '1',
+            invoiceClosingDay: 10,
+            invoices: [],
+            name: 'Credit Card 1'
+          },
+          isClosed: false,
+          month: 'NOV',
+          year: 2023
+        },
+        isInstallment: false,
+        user: { id: '1', name: 'John Doe' }
+      })
+    );
   });
 
   it('should create a valid transaction within an invoice on january of next year', async () => {
@@ -96,13 +147,27 @@ describe('createTransactionUsecase', () => {
         month: 'JAN',
         year: 2024,
         isClosed: false,
-        creditCard: { id: '1', name: 'Credit Card 1', invoiceClosingDay: 1, invoices: [] }
+        creditCard: {
+          id: '1',
+          name: 'Credit Card 1',
+          invoiceClosingDay: 1,
+          invoices: []
+        }
       } as any
     };
-    jest.spyOn(creditCardRepository, 'get').mockImplementation(() => transaction.invoice!.creditCard);
-    await createTransactionUsecase(transaction as Transaction, creditCardRepository, userRepository, repository);
+    jest
+      .spyOn(creditCardRepository, 'get')
+      .mockImplementation(() => transaction.invoice!.creditCard);
+    await createTransactionUsecase(
+      transaction as Transaction,
+      creditCardRepository,
+      userRepository,
+      repository
+    );
 
-    expect(repository.createInvoiceTransaction).toHaveBeenCalledWith(expect.objectContaining(transaction));
+    expect(repository.createInvoiceTransaction).toHaveBeenCalledWith(
+      expect.objectContaining(transaction)
+    );
   });
 
   it('should create a transaction with installment within an invoice', async () => {
@@ -123,11 +188,23 @@ describe('createTransactionUsecase', () => {
         month: 'January',
         year: 2022,
         isClosed: false,
-        creditCard: { id: '1', name: 'Credit Card 1', invoiceClosingDay: 10, invoices: [] }
+        creditCard: {
+          id: '1',
+          name: 'Credit Card 1',
+          invoiceClosingDay: 10,
+          invoices: []
+        }
       } as any
     };
-    jest.spyOn(creditCardRepository, 'get').mockImplementation(() => transaction.invoice!.creditCard);
-    await createTransactionUsecase(transaction as Transaction, creditCardRepository, userRepository, repository);
+    jest
+      .spyOn(creditCardRepository, 'get')
+      .mockImplementation(() => transaction.invoice!.creditCard);
+    await createTransactionUsecase(
+      transaction as Transaction,
+      creditCardRepository,
+      userRepository,
+      repository
+    );
     expect(repository.createInvoiceTransaction).toHaveBeenCalledTimes(3);
   });
 
@@ -148,12 +225,25 @@ describe('createTransactionUsecase', () => {
         month: 'OUT',
         year: 2023,
         isClosed: false,
-        creditCard: { id: '1', name: 'Credit Card 1', invoiceClosingDay: 10, invoices: [] }
+        creditCard: {
+          id: '1',
+          name: 'Credit Card 1',
+          invoiceClosingDay: 10,
+          invoices: []
+        }
       } as any
     };
-    jest.spyOn(creditCardRepository, 'get').mockImplementation(() => transaction.invoice!.creditCard);
-    await createTransactionUsecase(transaction as Transaction, creditCardRepository, userRepository, repository);
-    expect(repository.createInvoiceTransaction).toHaveBeenCalledWith(expect.objectContaining(transaction));
+    jest
+      .spyOn(creditCardRepository, 'get')
+      .mockImplementation(() => transaction.invoice!.creditCard);
+    await createTransactionUsecase(
+      transaction as Transaction,
+      creditCardRepository,
+      userRepository,
+      repository
+    );
+    expect(repository.createInvoiceTransaction).toHaveBeenCalledWith(
+      expect.objectContaining(transaction)
+    );
   });
-
 });
