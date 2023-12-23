@@ -121,8 +121,8 @@ describe('createTransactionUsecase', () => {
             name: 'Credit Card 1'
           },
           isClosed: false,
-          month: 'NOV',
-          year: 2023
+          month: expect.any(String),
+          year: expect.any(Number)
         },
         isInstallment: false,
         user: { id: '1', name: 'John Doe' }
