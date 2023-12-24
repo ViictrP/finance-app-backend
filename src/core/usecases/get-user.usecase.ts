@@ -1,9 +1,12 @@
 import { log } from '../logger/logger';
-import { User } from '../entities';
-import { UserRepository } from '../repositories';
-import {NotFoundError} from "../errors";
+import User from '../entities/user';
+import UserRepository from '../repositories/user.repository';
+import NotFoundError from '../errors/not-found.error';
 
-const getUserUsecase = async (user: User, repository: UserRepository): Promise<User> => {
+const getUserUsecase = async (
+  user: User,
+  repository: UserRepository
+): Promise<User> => {
   log(`[getUserUseCase]: getting user by filter: ${user}`);
   const savedUser = await repository.get(user);
   if (!savedUser) {

@@ -1,13 +1,13 @@
-import { createRecurringExpensesUsecase } from '../../../../src/core/usecases';
+import createRecurringExpensesUsecase from '../../../../src/core/usecases/create-recurring-expenses.usecase';
 
 describe('createRecurringExpensesUseCase', () => {
   const user = { id: 'test' };
   const repository = {
-    create: jest.fn(),
+    create: jest.fn()
   };
 
   const userRepository = {
-    get: jest.fn(),
+    get: jest.fn()
   };
 
   it('Should create recurring expense with success', async () => {
@@ -15,7 +15,11 @@ describe('createRecurringExpensesUseCase', () => {
     repository.create.mockImplementation(() => expense);
     userRepository.get.mockImplementation(() => user);
 
-    const created = await createRecurringExpensesUsecase(expense as any, repository as any, userRepository as any);
+    const created = await createRecurringExpensesUsecase(
+      expense as any,
+      repository as any,
+      userRepository as any
+    );
 
     expect(created).toEqual(expense);
   });
@@ -25,8 +29,14 @@ describe('createRecurringExpensesUseCase', () => {
     repository.create.mockImplementation(() => expense);
     userRepository.get.mockImplementation(() => user);
 
-    await expect(createRecurringExpensesUsecase(expense as any, repository as any, userRepository as any))
-      .rejects
-      .toThrowError(new Error('The recurring expense null has invalid data'));
+    await expect(
+      createRecurringExpensesUsecase(
+        expense as any,
+        repository as any,
+        userRepository as any
+      )
+    ).rejects.toThrowError(
+      new Error('The recurring expense null has invalid data')
+    );
   });
 });

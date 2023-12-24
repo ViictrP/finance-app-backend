@@ -1,5 +1,5 @@
 jest.mock('../../../src/core/usecases/update-user.usecase');
-import { updateUserUsecase } from '../../../src/core/usecases';
+import updateUserUsecase from '../../../src/core/usecases/update-user.usecase';
 import updateUserUsecaseAdapter from '../../../src/adapters/update-user.usecase.adapter';
 
 describe('updateUserUseCaseAdapter', () => {
@@ -9,10 +9,10 @@ describe('updateUserUseCaseAdapter', () => {
         id: 'test'
       }
     },
-    json: function(err: any) {
+    json: function (err: any) {
       return err;
     },
-    status: function() {
+    status: function () {
       return this;
     }
   };

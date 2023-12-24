@@ -1,11 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import routes from './routes';
-import {log} from './core/logger/logger';
-import {errorHandler} from './adapters/handlers';
+import { log } from './core/logger/logger';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import '../config/firebase.config';
+import errorHandler from './adapters/handlers/error.handler';
 
 require('dotenv').config();
 

@@ -1,5 +1,5 @@
-import { MonthClosure } from '../entities';
+import MonthClosure from '../entities/month-closure';
 
-export type MonthClosureRepository = {
+export default interface MonthClosureRepository {
   create: (monthClosure: MonthClosure) => Promise<MonthClosure>;
 }

@@ -1,5 +1,7 @@
-import creditCardUseCase from '../../../../src/core/usecases/create-credit-card.usecase';
-import { CreditCardRepository, UserRepository } from '../../../../src/core/repositories';
+import createCreditCardUseCase from '../../../../src/core/usecases/create-credit-card.usecase';
+import UserRepository from '../../../../src/core/repositories/user.repository';
+
+import CreditCardRepository from '../../../../src/core/repositories/credit-card.repository';
 
 describe('creditCardUseCase', () => {
   const creditCard = {
@@ -26,7 +28,11 @@ describe('creditCardUseCase', () => {
     };
 
     try {
-      await creditCardUseCase(creditCard, userRepository as UserRepository, repository as CreditCardRepository);
+      await createCreditCardUseCase(
+        creditCard,
+        userRepository as UserRepository,
+        repository as CreditCardRepository
+      );
     } catch (error: any) {
       expect(error.message).toBe('the credit card Credit Card 1 is invalid');
     }
@@ -42,7 +48,11 @@ describe('creditCardUseCase', () => {
       create: jest.fn().mockResolvedValue(creditCard)
     };
 
-    await creditCardUseCase(creditCard, userRepository as UserRepository, repository as CreditCardRepository);
+    await createCreditCardUseCase(
+      creditCard,
+      userRepository as UserRepository,
+      repository as CreditCardRepository
+    );
 
     expect(repository.create).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -68,7 +78,7 @@ describe('creditCardUseCase', () => {
       create: jest.fn().mockResolvedValue(creditCard)
     };
 
-    const result = await creditCardUseCase(
+    const result = await createCreditCardUseCase(
       creditCard,
       userRepository as UserRepository,
       repository as CreditCardRepository
@@ -101,7 +111,11 @@ describe('creditCardUseCase', () => {
     };
 
     try {
-      await creditCardUseCase(creditCard, userRepository as UserRepository, repository as CreditCardRepository);
+      await createCreditCardUseCase(
+        creditCard,
+        userRepository as UserRepository,
+        repository as CreditCardRepository
+      );
     } catch (error: any) {
       expect(error.message).toBe('the credit card Credit Card 1 is invalid');
     }
@@ -117,7 +131,11 @@ describe('creditCardUseCase', () => {
     };
 
     try {
-      await creditCardUseCase(creditCard, userRepository as UserRepository, repository as CreditCardRepository);
+      await createCreditCardUseCase(
+        creditCard,
+        userRepository as UserRepository,
+        repository as CreditCardRepository
+      );
     } catch (error: any) {
       expect(error.message).toBe(
         'User already has the credit card Credit Card 1'

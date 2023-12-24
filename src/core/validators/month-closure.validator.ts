@@ -1,5 +1,5 @@
-import { MonthClosure } from '../entities';
 import propertyValidator from './property.validator';
+import MonthClosure from '../entities/month-closure';
 
 const monthClosureValidator = (monthClosure: MonthClosure): boolean => {
   const hasMonth = propertyValidator('month', monthClosure);

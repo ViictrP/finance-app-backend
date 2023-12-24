@@ -1,6 +1,6 @@
-import { User } from '../entities';
+import User from '../entities/user';
 
-export type UserRepository = {
+export default interface UserRepository {
   create: (user: User) => Promise<User>;
   get: (user: User, month?: string, year?: number) => Promise<User | null>;
   update: (user: User) => Promise<User>;

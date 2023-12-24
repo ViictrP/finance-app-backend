@@ -1,7 +1,7 @@
-import { ValidationError } from '../../../src/core/errors';
+import ValidationError from '../../../src/core/errors/validation.error';
 
 jest.mock('../../../src/core/usecases/get-invoice.usecase');
-import { getInvoiceUsecase } from '../../../src/core/usecases';
+import getInvoiceUsecase from '../../../src/core/usecases/get-invoice.usecase';
 import getInvoiceUsecaseAdapter from '../../../src/adapters/get-invoice.usecase.adapter';
 
 describe('getInvoiceUseCaseAdapter', () => {
@@ -11,17 +11,17 @@ describe('getInvoiceUseCaseAdapter', () => {
         id: 'test'
       }
     },
-    json: function(err: any) {
+    json: function (err: any) {
       return err;
     },
-    status: function() {
+    status: function () {
       return this;
     }
   };
   const req = {
     body: {},
     params: { id: 'test' },
-    query: { month: 'JUL', year: 2022}
+    query: { month: 'JUL', year: 2022 }
   };
 
   it('Should return success after getting the invoice by month and year', async () => {

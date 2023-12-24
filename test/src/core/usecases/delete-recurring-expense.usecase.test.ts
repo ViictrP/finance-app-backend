@@ -1,65 +1,81 @@
-import { deleteRecurringExpenseUsecase } from '../../../../src/core/usecases';
-import { RecurringExpenseRepository } from '../../../../src/core/repositories';
-import {RequestError} from "../../../../src/core/errors";
+import deleteRecurringExpenseUsecase from '../../../../src/core/usecases/delete-recurring-expense.usecase';
+import RecurringExpenseRepository from '../../../../src/core/repositories/recurring-expense.repository';
+import RequestError from '../../../../src/core/errors/request.error';
 
 describe('deleteRecurringExpenseUsecase', () => {
+  // Tests that the function successfully deletes a recurring expense with a valid id
+  it('should successfully delete a recurring expense with a valid id', async () => {
+    // Arrange
+    const id = 'validId';
+    const repository: Partial<RecurringExpenseRepository> = {
+      get: jest.fn().mockResolvedValue({ id: 'validId' }),
+      deleteOne: jest.fn().mockResolvedValue({ id: 'validId' })
+    };
 
-    // Tests that the function successfully deletes a recurring expense with a valid id
-    it('should successfully delete a recurring expense with a valid id', async () => {
-      // Arrange
-      const id = 'validId';
-      const repository: Partial<RecurringExpenseRepository> = {
-        get: jest.fn().mockResolvedValue({ id: 'validId' }),
-        deleteOne: jest.fn().mockResolvedValue({ id: 'validId' }),
-      };
+    // Act
+    await deleteRecurringExpenseUsecase(
+      id,
+      repository as RecurringExpenseRepository
+    );
 
-      // Act
-      await deleteRecurringExpenseUsecase(id, repository as RecurringExpenseRepository);
+    // Assert
+    expect(repository.get).toHaveBeenCalledWith(id);
+    expect(repository.deleteOne).toHaveBeenCalledWith({ id: 'validId' });
+  });
 
-      // Assert
-      expect(repository.get).toHaveBeenCalledWith(id);
-      expect(repository.deleteOne).toHaveBeenCalledWith({ id: 'validId' });
-    });
+  // Tests that the function throws a RequestError if the recurring expense is not found for the given id
+  it('should throw a RequestError if the recurring expense is not found for the given id', async () => {
+    // Arrange
+    const id = 'invalidId';
+    const repository: Partial<RecurringExpenseRepository> = {
+      get: jest.fn().mockResolvedValue(null)
+    };
 
-    // Tests that the function throws a RequestError if the recurring expense is not found for the given id
-    it('should throw a RequestError if the recurring expense is not found for the given id', async () => {
-      // Arrange
-      const id = 'invalidId';
-      const repository: Partial<RecurringExpenseRepository> = {
-        get: jest.fn().mockResolvedValue(null),
-      };
+    // Act and Assert
+    await expect(
+      deleteRecurringExpenseUsecase(
+        id,
+        repository as RecurringExpenseRepository as RecurringExpenseRepository
+      )
+    ).rejects.toThrow(RequestError);
+    expect(repository.get).toHaveBeenCalledWith(id);
+  });
 
-      // Act and Assert
-      await expect(deleteRecurringExpenseUsecase(id, repository as RecurringExpenseRepository as RecurringExpenseRepository)).rejects.toThrow(RequestError);
-      expect(repository.get).toHaveBeenCalledWith(id);
-    });
+  // Tests that the function throws an error if the repository get method throws an error
+  it('should throw an error if the repository get method throws an error', async () => {
+    // Arrange
+    const id = 'validId';
+    const repository: Partial<RecurringExpenseRepository> = {
+      get: jest.fn().mockRejectedValue(new Error('Repository error'))
+    };
 
-    // Tests that the function throws an error if the repository get method throws an error
-    it('should throw an error if the repository get method throws an error', async () => {
-      // Arrange
-      const id = 'validId';
-      const repository: Partial<RecurringExpenseRepository> = {
-        get: jest.fn().mockRejectedValue(new Error('Repository error')),
-      };
+    // Act and Assert
+    await expect(
+      deleteRecurringExpenseUsecase(
+        id,
+        repository as RecurringExpenseRepository
+      )
+    ).rejects.toThrow(Error);
+    expect(repository.get).toHaveBeenCalledWith(id);
+  });
 
-      // Act and Assert
-      await expect(deleteRecurringExpenseUsecase(id, repository as RecurringExpenseRepository)).rejects.toThrow(Error);
-      expect(repository.get).toHaveBeenCalledWith(id);
-    });
+  // Tests that the function throws an error if the repository deleteOne method throws an error
+  it('should throw an error if the repository deleteOne method throws an error', async () => {
+    // Arrange
+    const id = 'validId';
+    const repository: Partial<RecurringExpenseRepository> = {
+      get: jest.fn().mockResolvedValue({ id: 'validId' }),
+      deleteOne: jest.fn().mockRejectedValue(new Error('Repository error'))
+    };
 
-    // Tests that the function throws an error if the repository deleteOne method throws an error
-    it('should throw an error if the repository deleteOne method throws an error', async () => {
-      // Arrange
-      const id = 'validId';
-      const repository: Partial<RecurringExpenseRepository> = {
-        get: jest.fn().mockResolvedValue({ id: 'validId' }),
-        deleteOne: jest.fn().mockRejectedValue(new Error('Repository error')),
-      };
-
-      // Act and Assert
-      await expect(deleteRecurringExpenseUsecase(id, repository as RecurringExpenseRepository)).rejects.toThrow(Error);
-      expect(repository.get).toHaveBeenCalledWith(id);
-      expect(repository.deleteOne).toHaveBeenCalledWith({ id: 'validId' });
-    });
-
+    // Act and Assert
+    await expect(
+      deleteRecurringExpenseUsecase(
+        id,
+        repository as RecurringExpenseRepository
+      )
+    ).rejects.toThrow(Error);
+    expect(repository.get).toHaveBeenCalledWith(id);
+    expect(repository.deleteOne).toHaveBeenCalledWith({ id: 'validId' });
+  });
 });

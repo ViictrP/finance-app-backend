@@ -1,5 +1,5 @@
-import { Transaction } from '../core/entities';
 import { prisma } from './prisma';
+import Transaction from '../core/entities/transaction';
 
 const createInvoiceTransaction = (transaction: Transaction) => {
   const invoice = transaction.invoice!;
@@ -17,8 +17,8 @@ const createInvoiceTransaction = (transaction: Transaction) => {
       deleteDate: null,
       user: {
         connect: {
-          id: transaction.user.id,
-        },
+          id: transaction.user.id
+        }
       },
       invoice: {
         connectOrCreate: {
@@ -26,7 +26,7 @@ const createInvoiceTransaction = (transaction: Transaction) => {
             month_year_creditCardId: {
               month: invoice.month,
               year: invoice.year,
-              creditCardId: invoice.creditCard.id,
+              creditCardId: invoice.creditCard.id
             }
           },
           create: {
@@ -35,13 +35,13 @@ const createInvoiceTransaction = (transaction: Transaction) => {
             isClosed: false,
             creditCard: {
               connect: {
-                id: invoice.creditCard.id,
-              },
-            },
-          },
-        },
-      },
-    },
+                id: invoice.creditCard.id
+              }
+            }
+          }
+        }
+      }
+    }
   });
 };
 
@@ -59,26 +59,26 @@ const create = (transaction: Transaction) => {
       deleteDate: null,
       user: {
         connect: {
-          id: transaction.user.id,
-        },
-      },
+          id: transaction.user.id
+        }
+      }
     },
     include: {
-      invoice: true,
-    },
+      invoice: true
+    }
   });
 };
 
 const get = (filter: Transaction) => {
   return prisma.transaction.findUnique({
-    where: { ...filter } as any,
+    where: { ...filter } as any
   });
 };
 
 const update = (transaction: Transaction) => {
   return prisma.transaction.update({
     where: {
-      id: transaction.id,
+      id: transaction.id
     },
     data: {
       amount: transaction.amount,
@@ -86,15 +86,15 @@ const update = (transaction: Transaction) => {
       isInstallment: transaction.isInstallment,
       installmentAmount: transaction.installmentAmount ?? 0,
       category: transaction.category,
-      date: transaction.date,
-    },
+      date: transaction.date
+    }
   });
 };
 
 const deleteTransaction = (transaction: Transaction, all: boolean) => {
   const data = {
     deleted: true,
-    deleteDate: new Date(),
+    deleteDate: new Date()
   };
   if (all) {
     return prisma.transaction.updateMany({

@@ -1,7 +1,11 @@
-import { CreditCard, RecurringExpense, Transaction, User } from '../entities';
-import { UserRepository } from '../repositories';
 import { log } from '../logger/logger';
-import { NotFoundError, RequestError } from '../errors';
+import Transaction from '../entities/transaction';
+import RecurringExpense from '../entities/recurring-expense';
+import CreditCard from '../entities/credit-card';
+import UserRepository from '../repositories/user.repository';
+import User from '../entities/user';
+import NotFoundError from '../errors/not-found.error';
+import RequestError from '../errors/request.error';
 
 type TransactionFilter = {
   email: string;

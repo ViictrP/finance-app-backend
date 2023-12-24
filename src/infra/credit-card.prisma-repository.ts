@@ -1,5 +1,6 @@
-import { CreditCard, Invoice, User } from '../core/entities';
 import { prisma } from './prisma';
+import CreditCard from '../core/entities/credit-card';
+import User from '../core/entities/user';
 
 const create = (creditCard: CreditCard) => {
   return prisma.creditCard.create({
@@ -9,7 +10,7 @@ const create = (creditCard: CreditCard) => {
       deleteDate: null,
       user: {
         connect: {
-          id: creditCard.user.id,
+          id: creditCard.user.id
         }
       },
       invoices: {
@@ -25,7 +26,7 @@ const get = (filter: CreditCard, deleted: boolean) => {
   if (!!filter.id) {
     query = {
       id: filter.id
-    }
+    };
   }
 
   if (!!filter.number) {
@@ -38,8 +39,7 @@ const get = (filter: CreditCard, deleted: boolean) => {
 
   return prisma.creditCard.findFirst({
     where: {
-
-      ...query,
+      ...query
     },
     include: {
       invoices: {
@@ -103,7 +103,7 @@ const deleteOne = (creditCard: CreditCard) => {
       deleteDate: new Date()
     }
   });
-}
+};
 
 export default {
   create,

@@ -4,9 +4,9 @@
  */
 
 export default {
+  setupFiles: ['<rootDir>/.jest/set-env-vars.ts'],
   clearMocks: true,
   collectCoverage: true,
-  coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   testMatch: ['**/?(*.)+(spec|test).ts'],
   transform: {

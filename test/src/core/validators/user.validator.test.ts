@@ -1,8 +1,7 @@
-import { User } from '../../../../src/core/entities';
-import { userValidator } from '../../../../src/core/validators';
+import User from '../../../../src/core/entities/user';
+import userValidator from '../../../../src/core/validators/user.validator';
 
 describe('UserDto validator', () => {
-
   it('Should return true if user is valid', () => {
     const user: User = {
       recurringExpenses: [],

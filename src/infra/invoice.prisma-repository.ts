@@ -1,5 +1,5 @@
-import { Invoice } from '../core/entities';
 import { prisma } from './prisma';
+import Invoice from '../core/entities/invoice';
 
 const get = (invoice: Invoice) => {
   return prisma.invoice.findUnique({
@@ -8,7 +8,7 @@ const get = (invoice: Invoice) => {
         month: invoice.month,
         year: invoice.year,
         creditCardId: invoice.creditCard.id
-      },
+      }
     },
     include: {
       transactions: {
@@ -22,4 +22,4 @@ const get = (invoice: Invoice) => {
 
 export default {
   get
-}
+};

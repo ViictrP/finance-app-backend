@@ -1,4 +1,4 @@
-import { getCreditCardsUsecase } from '../../../../src/core/usecases';
+import getCreditCardsUsecase from '../../../../src/core/usecases/get-credit-cards.usecase';
 
 describe('GetCreditCardsUseCase', () => {
   const repository = {
@@ -6,7 +6,7 @@ describe('GetCreditCardsUseCase', () => {
   };
 
   it('Should return the list of credit cards', async () => {
-    (repository.getMany as jest.Mock).mockImplementation(() => ([]));
+    (repository.getMany as jest.Mock).mockImplementation(() => []);
 
     const results = await getCreditCardsUsecase({} as any, repository as any);
     expect(results).toBeTruthy();

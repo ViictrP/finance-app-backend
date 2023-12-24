@@ -1,5 +1,5 @@
-import { createTransactionUsecase } from '../../../../src/core/usecases';
-import { Transaction } from '../../../../src/core/entities';
+import createTransactionUsecase from '../../../../src/core/usecases/create-transaction.usecase';
+import Transaction from '../../../../src/core/entities/transaction';
 
 describe('createTransactionUsecase', () => {
   const creditCardRepository = {

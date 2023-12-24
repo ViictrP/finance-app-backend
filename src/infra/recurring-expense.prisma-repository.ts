@@ -1,5 +1,5 @@
-import { RecurringExpense } from '../core/entities';
 import { prisma } from './prisma';
+import RecurringExpense from '../core/entities/recurring-expense';
 
 const create = (recurringExpense: RecurringExpense) => {
   return prisma.recurringExpense.create({
@@ -32,10 +32,10 @@ const deleteOne = (recurringExpense: RecurringExpense) => {
       deleteDate: new Date()
     }
   });
-}
+};
 
 export default {
   create,
   get,
   deleteOne
-}
+};

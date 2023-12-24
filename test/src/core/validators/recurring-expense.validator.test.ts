@@ -1,5 +1,5 @@
-import { RecurringExpense } from '../../../../src/core/entities';
-import { recurringExpenseValidator } from '../../../../src/core/validators';
+import RecurringExpense from '../../../../src/core/entities/recurring-expense';
+import recurringExpenseValidator from '../../../../src/core/validators/recurring-expense.validator';
 
 describe('recurringExpenseValidator', () => {
   it('Should return true if the recurring expense is valid', () => {

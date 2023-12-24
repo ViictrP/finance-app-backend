@@ -1,5 +1,5 @@
-import { CreditCard } from '../../../../src/core/entities';
-import { creditCardValidator } from '../../../../src/core/validators';
+import CreditCard from '../../../../src/core/entities/credit-card';
+import creditCardValidator from '../../../../src/core/validators/credit-card.validator';
 
 describe('Credit Card Validator', () => {
   it('Should return true if credit card is valid', () => {
@@ -28,7 +28,7 @@ describe('Credit Card Validator', () => {
       user: {} as any,
       invoices: [],
       invoiceClosingDay: 1,
-      createAt: new Date(),
+      createAt: new Date()
     };
     const valid = creditCardValidator(creditCard as any);
 

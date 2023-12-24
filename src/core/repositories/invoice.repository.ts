@@ -1,5 +1,5 @@
-import { Invoice } from '../entities';
+import Invoice from '../entities/invoice';
 
-export type InvoiceRepository = {
+export default interface InvoiceRepository {
   get(invoice: Invoice): Promise<Invoice>;
 }

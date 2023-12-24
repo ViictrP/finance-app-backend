@@ -1,5 +1,5 @@
-import { CreditCard } from '../entities';
 import propertyValidator from './property.validator';
+import CreditCard from '../entities/credit-card';
 
 const creditCardValidator = (creditCard: CreditCard): boolean => {
   const hasTitle = propertyValidator('title', creditCard);

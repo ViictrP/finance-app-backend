@@ -1,5 +1,5 @@
 jest.mock('../../../src/core/usecases/create-user.usecase');
-import { createUserUsecase } from '../../../src/core/usecases';
+import createUserUsecase from '../../../src/core/usecases/create-user.usecase';
 import postUserUsecaseAdapter from '../../../src/adapters/post-user.usecase.adapter';
 
 describe('postUserUseCaseAdapter', () => {
@@ -9,10 +9,10 @@ describe('postUserUseCaseAdapter', () => {
         id: 'test'
       }
     },
-    json: function(err: any) {
+    json: function (err: any) {
       return err;
     },
-    status: function() {
+    status: function () {
       return this;
     }
   };
@@ -39,7 +39,7 @@ describe('postUserUseCaseAdapter', () => {
       });
       await postUserUsecaseAdapter(req as any, res as any);
     } catch (error: any) {
-      expect(error.message).toEqual('Error')
+      expect(error.message).toEqual('Error');
     }
   });
 });

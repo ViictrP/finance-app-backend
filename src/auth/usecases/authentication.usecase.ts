@@ -1,12 +1,12 @@
 import UserDto from '../dto/user.dto';
-import {log} from '../../core/logger/logger';
-import {UserRepository} from '../../core/repositories';
+import { log } from '../../core/logger/logger';
 import getUserUsecase from '../../core/usecases/get-user.usecase';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import AuthenticationDto from '../dto/authentication.dto';
-import {User} from '../../core/entities';
-import {RequestError} from "../../core/errors";
+import UserRepository from '../../core/repositories/user.repository';
+import User from '../../core/entities/user';
+import RequestError from '../../core/errors/request.error';
 
 type JwtData = {
   id: string;
@@ -14,13 +14,13 @@ type JwtData = {
   time: Date;
 };
 
-const authenticationUsecase = async ({
-                                       email,
-                                       password,
-                                     }: UserDto, repository: UserRepository): Promise<AuthenticationDto> => {
+const authenticationUsecase = async (
+  { email, password }: UserDto,
+  repository: UserRepository
+): Promise<AuthenticationDto> => {
   try {
     log(`[authenticationUseCase]: getting user by email: ${email}`);
-    const userDto: Partial<User> = {email: email.toLowerCase()};
+    const userDto: Partial<User> = { email: email.toLowerCase() };
     const user = await getUserUsecase(userDto as User, repository);
 
     log('[authenticationUsecase]: validating credentials');
@@ -30,8 +30,8 @@ const authenticationUsecase = async ({
       throw new RequestError('invalid credentials');
     }
     const secret = process.env.JWT_SECRET!;
-    const data: JwtData = {id: user.id, email: user.email, time: new Date()};
-    return {accessToken: jwt.sign(data, secret)};
+    const data: JwtData = { id: user.id, email: user.email, time: new Date() };
+    return { accessToken: jwt.sign(data, secret) };
   } catch (error: any) {
     log(`[authenticationUsecase]: ${error.message}`);
     throw new RequestError('invalid credentials');

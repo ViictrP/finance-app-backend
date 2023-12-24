@@ -1,9 +1,12 @@
 import User from '../entities/user';
 import { log } from '../logger/logger';
-import { UserRepository } from '../repositories';
-import {RequestError} from "../errors";
+import UserRepository from '../repositories/user.repository';
+import RequestError from '../errors/request.error';
 
-const updateUserUsecase = async (user: User, repository: UserRepository): Promise<User> => {
+const updateUserUsecase = async (
+  user: User,
+  repository: UserRepository
+): Promise<User> => {
   const { id }: Partial<User> = user;
   log(`[updateUserUseCase]: getting user data ${user.email}`);
   const savedUser = await repository.get({ id } as User);

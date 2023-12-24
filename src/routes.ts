@@ -1,22 +1,20 @@
 import express, { NextFunction, Request, Response } from 'express';
-import {
-  backupAdapter,
-  deleteCreditCardUsecaseAdapter,
-  deleteRecurringExpenseUsecaseAdapter,
-  deleteTransactionUsecaseAdapter,
-  getBalanceUsecaseAdapter,
-  getCreditCardsUsecaseAdapter,
-  getInvoiceUsecaseAdapter,
-  getMyProfileUsecaseAdapter,
-  postCreditCardUsecaseAdapter,
-  postMonthClosureUsecaseAdapter,
-  postRecurringExpensesUsecaseAdapter,
-  postTransactionUsecaseAdapter,
-  postUserUsecaseAdapter,
-  updateCreditCardUsecaseAdapter,
-  updateUserUsecaseAdapter
-} from './adapters';
-import firebaseAuthentication from "./adapters/middlewares/firebase-authentication.middleware";
+import firebaseAuthentication from './adapters/middlewares/firebase-authentication.middleware';
+import backupAdapter from './adapters/backup.adapter';
+import postUserUsecaseAdapter from './adapters/post-user.usecase.adapter';
+import updateUserUsecaseAdapter from './adapters/update-user.usecase.adapter';
+import getMyProfileUsecaseAdapter from './adapters/get-my-profile.usecase.adapter';
+import getBalanceUsecaseAdapter from './adapters/get-balance.usecase.adapter';
+import postCreditCardUsecaseAdapter from './adapters/post-credit-card.usecase.adapter';
+import getCreditCardsUsecaseAdapter from './adapters/get-credit-cards.usecase.adapter';
+import getInvoiceUsecaseAdapter from './adapters/get-invoice.usecase.adapter';
+import updateCreditCardUsecaseAdapter from './adapters/update-credit-card.usecase.adapter';
+import deleteCreditCardUsecaseAdapter from './adapters/delete-credit-card.usecase.adapter';
+import postTransactionUsecaseAdapter from './adapters/post-transaction.usecase.adapter';
+import deleteTransactionUsecaseAdapter from './adapters/delete-transaction.usecase.adapter';
+import postRecurringExpensesUsecaseAdapter from './adapters/post-recurring-expenses.usecase.adapter';
+import deleteRecurringExpenseUsecaseAdapter from './adapters/delete-recurring-expense.usecase.adapter';
+import postMonthClosureUsecaseAdapter from './adapters/post-month-closure.usecase.adapter';
 
 const router = express.Router();
 router.use(firebaseAuthentication);

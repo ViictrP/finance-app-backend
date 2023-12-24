@@ -1,9 +1,9 @@
 import request from 'supertest';
 import server from '../../../src/server';
-import { firebaseAuthentication } from '../../../src/adapters/middlewares';
-import { userPrismaRepository } from '../../../src/infra';
-import { UserRepository } from '../../../src/core/repositories';
-import { User } from '../../../src/core/entities';
+import firebaseAuthentication from '../../../src/adapters/middlewares/firebase-authentication.middleware';
+import userPrismaRepository from '../../../src/infra/user.prisma-repository';
+import UserRepository from '../../../src/core/repositories/user.repository';
+import User from '../../../src/core/entities/user';
 
 jest.mock<typeof firebaseAuthentication>(
   '../../../src/adapters/middlewares/firebase-authentication.middleware'

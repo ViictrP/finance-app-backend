@@ -1,5 +1,5 @@
-import { User } from '../entities';
 import propertyValidator from './property.validator';
+import User from '../entities/user';
 
 const userValidator = (user: User) => {
   const hasName = propertyValidator('name', user);

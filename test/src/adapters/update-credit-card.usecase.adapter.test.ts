@@ -1,5 +1,5 @@
 jest.mock('../../../src/core/usecases/update-credit-card.usecase');
-import { updateCreditCardUsecase } from '../../../src/core/usecases';
+import updateCreditCardUsecase from '../../../src/core/usecases/update-credit-card.usecase';
 import updateCreditCardUsecaseAdapter from '../../../src/adapters/update-credit-card.usecase.adapter';
 
 describe('updateCreditCardUseCaseAdapter', () => {
@@ -9,10 +9,10 @@ describe('updateCreditCardUseCaseAdapter', () => {
         id: 'test'
       }
     },
-    json: function(err: any) {
+    json: function (err: any) {
       return err;
     },
-    status: function() {
+    status: function () {
       return this;
     }
   };
@@ -28,7 +28,10 @@ describe('updateCreditCardUseCaseAdapter', () => {
     const jsonSpy = jest.spyOn(res, 'json');
     await updateCreditCardUsecaseAdapter(req as any, res as any);
     expect(statusSpy).toHaveBeenCalledWith(200);
-    expect(jsonSpy).toHaveBeenCalledWith({ id: 'test', path: '/credit-cards/test' });
+    expect(jsonSpy).toHaveBeenCalledWith({
+      id: 'test',
+      path: '/credit-cards/test'
+    });
   });
 
   it('Should return 422 if an error occurs', async () => {

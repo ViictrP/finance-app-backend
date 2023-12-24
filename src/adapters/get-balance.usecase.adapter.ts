@@ -1,9 +1,9 @@
 import { log } from '../core/logger/logger';
-import { getBalanceUsecase } from '../core/usecases';
-import { userPrismaRepository } from '../infra';
 import { Request, Response } from 'express';
-import { UserRepository } from '../core/repositories';
 import { AuthenticatedRequest } from './middlewares/firebase-authentication.middleware';
+import getBalanceUsecase from '../core/usecases/get-balance.usecase';
+import userPrismaRepository from '../infra/user.prisma-repository';
+import UserRepository from '../core/repositories/user.repository';
 
 const getBalanceUsecaseAdapter = async (req: Request, res: Response) => {
   const email = (req as AuthenticatedRequest).email;

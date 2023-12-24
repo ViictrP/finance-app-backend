@@ -1,7 +1,7 @@
-import { ValidationError } from '../../../src/core/errors';
+import ValidationError from '../../../src/core/errors/validation.error';
 
 jest.mock('../../../src/core/usecases/create-transaction.usecase');
-import { createTransactionUsecase } from '../../../src/core/usecases';
+import createTransactionUsecase from '../../../src/core/usecases/create-transaction.usecase';
 import postTransactionUsecaseAdapter from '../../../src/adapters/post-transaction.usecase.adapter';
 
 describe('postTransactionUseCase', () => {
@@ -11,10 +11,10 @@ describe('postTransactionUseCase', () => {
         id: 'test'
       }
     },
-    json: function(err: any) {
+    json: function (err: any) {
       return err;
     },
-    status: function() {
+    status: function () {
       return this;
     }
   };
@@ -30,7 +30,10 @@ describe('postTransactionUseCase', () => {
     const jsonSpy = jest.spyOn(res, 'json');
     await postTransactionUsecaseAdapter(req as any, res as any);
     expect(statusSpy).toHaveBeenCalledWith(201);
-    expect(jsonSpy).toHaveBeenCalledWith({ id: 'test', path: '/transactions/test' });
+    expect(jsonSpy).toHaveBeenCalledWith({
+      id: 'test',
+      path: '/transactions/test'
+    });
   });
 
   it('Should return 422 if an error occurs', async () => {

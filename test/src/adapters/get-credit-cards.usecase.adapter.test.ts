@@ -1,7 +1,7 @@
-import { ValidationError } from '../../../src/core/errors';
+import ValidationError from '../../../src/core/errors/validation.error';
 
 jest.mock('../../../src/core/usecases/get-credit-cards.usecase');
-import { getCreditCardsUsecase } from '../../../src/core/usecases';
+import getCreditCardsUsecase from '../../../src/core/usecases/get-credit-cards.usecase';
 import getCreditCardsUsecaseAdapter from '../../../src/adapters/get-credit-cards.usecase.adapter';
 
 describe('getCreditCardsUseCaseAdapter', () => {
@@ -11,10 +11,10 @@ describe('getCreditCardsUseCaseAdapter', () => {
         id: 'test'
       }
     },
-    json: function(err: any) {
+    json: function (err: any) {
       return err;
     },
-    status: function() {
+    status: function () {
       return this;
     }
   };

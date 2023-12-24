@@ -1,6 +1,6 @@
-import { User } from '../core/entities';
 import { prisma } from './prisma';
 import { MONTHS } from '../core/enums/month.enum';
+import User from '../core/entities/user';
 
 const getIncludes = (month?: string, year?: number) => {
   const monthStart = new Date();
@@ -11,41 +11,50 @@ const getIncludes = (month?: string, year?: number) => {
   return {
     creditCards: {
       where: {
-        deleted: false,
+        deleted: false
       },
       include: {
         invoices: {
           where: {
             month: month ?? MONTHS[monthStart.getMonth()],
-            year: year ?? monthStart.getFullYear(),
+            year: year ?? monthStart.getFullYear()
           },
           include: {
             transactions: {
               where: {
-                deleted: false,
-              },
-            },
-          },
-        },
-      },
+                deleted: false
+              }
+            }
+          }
+        }
+      }
     },
     recurringExpenses: {
       where: {
         deleted: false,
         createdAt: {
-          lte: month && year ? new Date(year, MONTHS.indexOf(month), 31).toISOString() : monthEnd.toISOString(),
+          lte:
+            month && year
+              ? new Date(year, MONTHS.indexOf(month), 31).toISOString()
+              : monthEnd.toISOString()
         }
-      },
+      }
     },
     transactions: {
       where: {
         invoice: null,
         date: {
-          gte: month && year ? new Date(year, MONTHS.indexOf(month), 1).toISOString() : monthStart.toISOString(),
-          lte: month && year ? new Date(year, MONTHS.indexOf(month), 31).toISOString() : monthEnd.toISOString(),
+          gte:
+            month && year
+              ? new Date(year, MONTHS.indexOf(month), 1).toISOString()
+              : monthStart.toISOString(),
+          lte:
+            month && year
+              ? new Date(year, MONTHS.indexOf(month), 31).toISOString()
+              : monthEnd.toISOString()
         },
-        deleted: false,
-      },
+        deleted: false
+      }
     },
     monthClosures: {
       take: 5,
@@ -66,26 +75,26 @@ const create = (newUser: User) => {
       deleted: false,
       deleteDate: null
     } as any,
-    include: getIncludes(),
+    include: getIncludes()
   });
 };
 
 const get = (filter: User, month?: string, year?: number) => {
   return prisma.user.findUnique({
     where: { ...filter } as any,
-    include: getIncludes(month, year),
+    include: getIncludes(month, year)
   });
 };
 
 const update = (user: User) => {
   return prisma.user.update({
     where: {
-      id: user.id,
+      id: user.id
     },
     data: {
-      ...user,
+      ...user
     } as any,
-    include: getIncludes(),
+    include: getIncludes()
   });
 };
 

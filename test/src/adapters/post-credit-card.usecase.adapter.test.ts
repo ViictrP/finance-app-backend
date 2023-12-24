@@ -1,8 +1,8 @@
-import { ValidationError } from '../../../src/core/errors';
+import ValidationError from '../../../src/core/errors/validation.error';
 
 jest.mock('../../../src/core/usecases/create-credit-card.usecase');
 import postCreditCardUsecaseAdapter from '../../../src/adapters/post-credit-card.usecase.adapter';
-import { createCreditCardUseCase } from '../../../src/core/usecases';
+import createCreditCardUseCase from '../../../src/core/usecases/create-credit-card.usecase';
 
 describe('postCreditCardUseCaseAdapter', () => {
   const res = {
@@ -11,10 +11,10 @@ describe('postCreditCardUseCaseAdapter', () => {
         id: 'test'
       }
     },
-    json: function(err: any) {
+    json: function (err: any) {
       return err;
     },
-    status: function() {
+    status: function () {
       return this;
     }
   };
@@ -28,7 +28,10 @@ describe('postCreditCardUseCaseAdapter', () => {
     useCase.mockImplementation(() => ({ id: 'test' }));
     const jsonSpy = jest.spyOn(res, 'json');
     await postCreditCardUsecaseAdapter(req as any, res as any);
-    expect(jsonSpy).toHaveBeenCalledWith({ id: 'test', path: '/credit-cards/test' });
+    expect(jsonSpy).toHaveBeenCalledWith({
+      id: 'test',
+      path: '/credit-cards/test'
+    });
   });
 
   it('Should return 422 if an error occurs', async () => {

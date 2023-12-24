@@ -1,5 +1,5 @@
 import propertyValidator from './property.validator';
-import { Transaction } from '../entities';
+import Transaction from '../entities/transaction';
 
 const transactionValidator = (transaction: Transaction) => {
   const hasDescription = propertyValidator('description', transaction);

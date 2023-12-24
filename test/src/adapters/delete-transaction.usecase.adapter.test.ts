@@ -1,9 +1,9 @@
 import request from 'supertest';
 import server from '../../../src/server';
-import { TransactionRepository } from '../../../src/core/repositories';
-import { transactionPrismaRepository } from '../../../src/infra';
-import { Transaction, User } from '../../../src/core/entities';
-import { firebaseAuthentication } from '../../../src/adapters/middlewares';
+import TransactionRepository from '../../../src/core/repositories/transaction.repository';
+import transactionPrismaRepository from '../../../src/infra/transaction.prisma-repository';
+import Transaction from '../../../src/core/entities/transaction';
+import firebaseAuthentication from '../../../src/adapters/middlewares/firebase-authentication.middleware';
 
 jest.mock<typeof firebaseAuthentication>(
   '../../../src/adapters/middlewares/firebase-authentication.middleware'

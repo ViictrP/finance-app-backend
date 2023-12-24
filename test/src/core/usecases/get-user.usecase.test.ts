@@ -1,5 +1,5 @@
-import { getUserUsecase } from '../../../../src/core/usecases';
-import { User } from '../../../../src/core/entities';
+import getUserUsecase from '../../../../src/core/usecases/get-user.usecase';
+import User from '../../../../src/core/entities/user';
 
 describe('GetUserUseCase', () => {
   const repository = {
@@ -10,11 +10,14 @@ describe('GetUserUseCase', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    jest.resetAllMocks()
+    jest.resetAllMocks();
   });
 
   it('Should return the user', async () => {
-    (repository.get as jest.Mock).mockImplementation(() => ({ name: 'Test', monthClosures: [] }));
+    (repository.get as jest.Mock).mockImplementation(() => ({
+      name: 'Test',
+      monthClosures: []
+    }));
     const user = {
       name: 'Test'
     };
@@ -32,11 +35,10 @@ describe('GetUserUseCase', () => {
       name: 'Test'
     };
 
-    await expect(getUserUsecase(
-      user as User,
-      repository as any
-    ))
-      .rejects
-      .toThrowError(new Error(`user not found by filter [object Object]`))
+    await expect(
+      getUserUsecase(user as User, repository as any)
+    ).rejects.toThrowError(
+      new Error(`user not found by filter [object Object]`)
+    );
   });
 });

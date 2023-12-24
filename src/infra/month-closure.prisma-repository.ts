@@ -1,5 +1,5 @@
-import { MonthClosure } from '../core/entities';
 import { prisma } from './prisma';
+import MonthClosure from '../core/entities/month-closure';
 
 const create = (monthClosure: MonthClosure) => {
   return prisma.monthClosure.create({
@@ -10,7 +10,6 @@ const create = (monthClosure: MonthClosure) => {
       user: {
         connect: {
           id: monthClosure.user.id
-
         }
       }
     }
