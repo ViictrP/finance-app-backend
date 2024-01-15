@@ -59,11 +59,13 @@ const getIncludes = (month?: string, year?: number) => {
     monthClosures: {
       take: 5,
       where: {
-        year: year ?? monthEnd.getFullYear()
+        year: {
+          gte: monthStart.getFullYear() - 1,
+          lte: monthEnd.getFullYear()
+        },
+        deleted: false
       },
-      orderBy: {
-        index: 'desc'
-      }
+      orderBy: [{ index: 'desc' }, { year: 'asc' }]
     }
   } as any;
 };

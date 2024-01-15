@@ -6,7 +6,7 @@ const create = (monthClosure: MonthClosure) => {
     data: {
       ...monthClosure,
       deleted: false,
-      deleteDate: new Date(),
+      deleteDate: null,
       user: {
         connect: {
           id: monthClosure.user.id
