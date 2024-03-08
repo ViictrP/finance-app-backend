@@ -14,10 +14,10 @@ const create = (recurringExpense: RecurringExpense) => {
   });
 };
 
-const get = (recurringExpense: RecurringExpense) => {
+const get = (recurringExpenseId: string) => {
   return prisma.recurringExpense.findUnique({
     where: {
-      id: recurringExpense.id
+      id: recurringExpenseId
     }
   });
 };
