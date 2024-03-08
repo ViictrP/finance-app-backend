@@ -73,7 +73,11 @@ const getIncludes = (month?: string, year?: number) => {
 const create = (newUser: User) => {
   return prisma.user.create({
     data: {
-      ...newUser,
+      name: newUser.name,
+      lastname: newUser.lastname,
+      email: newUser.lastname,
+      password: newUser.password,
+      salary: newUser.salary,
       deleted: false,
       deleteDate: null
     } as any,
