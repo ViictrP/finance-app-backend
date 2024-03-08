@@ -75,7 +75,7 @@ const create = (newUser: User) => {
     data: {
       name: newUser.name,
       lastname: newUser.lastname,
-      email: newUser.lastname,
+      email: newUser.email,
       password: newUser.password,
       salary: newUser.salary,
       deleted: false,
@@ -87,7 +87,7 @@ const create = (newUser: User) => {
 
 const get = (filter: User, month?: string, year?: number) => {
   return prisma.user.findUnique({
-    where: { ...filter } as any,
+    where: { ...filter, deleted: false } as any,
     include: getIncludes(month, year)
   });
 };
