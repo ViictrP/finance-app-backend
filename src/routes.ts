@@ -15,9 +15,11 @@ import deleteTransactionUsecaseAdapter from './adapters/delete-transaction.useca
 import postRecurringExpensesUsecaseAdapter from './adapters/post-recurring-expenses.usecase.adapter';
 import deleteRecurringExpenseUsecaseAdapter from './adapters/delete-recurring-expense.usecase.adapter';
 import postMonthClosureUsecaseAdapter from './adapters/post-month-closure.usecase.adapter';
+import profileMiddleware from './adapters/middlewares/profile.middleware';
 
 const router = express.Router();
 router.use(firebaseAuthentication);
+router.use(profileMiddleware);
 
 type Adapter<T> = (req: Request, res: Response) => Promise<T>;
 

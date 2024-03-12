@@ -37,8 +37,7 @@ const createCreditCardUseCase = async (
     '[creditCardUseCase]: finding the owner of the new credit card',
     creditCard.title
   );
-  const user = await userRepository.get(creditCard.user);
-  creditCard.user = { id: user?.id } as User;
+  creditCard.user = { id: creditCard.user.id } as User;
   log(
     '[creditCardUseCase]: creating a new invoice for this credit card',
     creditCard.title
