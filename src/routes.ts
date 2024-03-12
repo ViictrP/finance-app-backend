@@ -19,7 +19,6 @@ import profileMiddleware from './adapters/middlewares/profile.middleware';
 
 const router = express.Router();
 router.use(firebaseAuthentication);
-router.use(profileMiddleware);
 
 type Adapter<T> = (req: Request, res: Response) => Promise<T>;
 
@@ -76,7 +75,7 @@ const deleteCreditCardRoute = (
   next: NextFunction
 ) => commonRouter(req, res, next, deleteCreditCardUsecaseAdapter);
 
-router.post('/credit-cards', postCreditCardRoute);
+router.post('/credit-cards', profileMiddleware, postCreditCardRoute);
 router.get('/credit-cards', getCreditCardsRoute);
 router.get('/credit-cards/:id/invoices', getCreditCardInvoicesRoute);
 router.put('/credit-cards/:id', updateCreditCardRoute);
