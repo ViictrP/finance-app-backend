@@ -4,9 +4,13 @@ import User from '../../../src/core/entities/user';
 import userPrismaRepository from '../../../src/infra/user.prisma-repository';
 import UserRepository from '../../../src/core/repositories/user.repository';
 import firebaseAuthentication from '../../../src/adapters/middlewares/firebase-authentication.middleware';
+import profileMiddleware from '../../../src/adapters/middlewares/profile.middleware';
 
 jest.mock<typeof firebaseAuthentication>(
   '../../../src/adapters/middlewares/firebase-authentication.middleware'
+);
+jest.mock<typeof profileMiddleware>(
+  '../../../src/adapters/middlewares/profile.middleware'
 );
 jest.mock<typeof userPrismaRepository>(
   '../../../src/infra/user.prisma-repository'
@@ -14,6 +18,7 @@ jest.mock<typeof userPrismaRepository>(
 
 describe('getBalanceUseCaseAdapter', () => {
   const checkAuthorizationMock = firebaseAuthentication as jest.Mock;
+  const profileMiddlewareMock = profileMiddleware as jest.Mock;
 
   it("Should return user's balance", (done) => {
     const user: Partial<User> = {
@@ -81,5 +86,7 @@ describe('getBalanceUseCaseAdapter', () => {
       req.email = email;
       return next();
     });
+
+    profileMiddlewareMock.mockImplementation((__, _, next) => next());
   };
 });

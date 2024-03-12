@@ -4,9 +4,13 @@ import firebaseAuthentication from '../../../src/adapters/middlewares/firebase-a
 import userPrismaRepository from '../../../src/infra/user.prisma-repository';
 import UserRepository from '../../../src/core/repositories/user.repository';
 import User from '../../../src/core/entities/user';
+import profileMiddleware from '../../../src/adapters/middlewares/profile.middleware';
 
 jest.mock<typeof firebaseAuthentication>(
   '../../../src/adapters/middlewares/firebase-authentication.middleware'
+);
+jest.mock<typeof profileMiddleware>(
+  '../../../src/adapters/middlewares/profile.middleware'
 );
 jest.mock<typeof userPrismaRepository>(
   '../../../src/infra/user.prisma-repository'
@@ -14,6 +18,7 @@ jest.mock<typeof userPrismaRepository>(
 
 describe('getMyProfileUseCaseAdapter', () => {
   const checkAuthorizationMock = firebaseAuthentication as jest.Mock;
+  const profileMiddlewareMock = profileMiddleware as jest.Mock;
 
   afterEach(() => jest.clearAllMocks());
 
@@ -65,5 +70,7 @@ describe('getMyProfileUseCaseAdapter', () => {
       req.email = 'a@a.com';
       return next();
     });
+
+    profileMiddlewareMock.mockImplementation((__, _, next) => next());
   };
 });
