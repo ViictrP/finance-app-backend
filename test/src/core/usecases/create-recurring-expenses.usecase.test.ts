@@ -17,8 +17,7 @@ describe('createRecurringExpensesUseCase', () => {
 
     const created = await createRecurringExpensesUsecase(
       expense as any,
-      repository as any,
-      userRepository as any
+      repository as any
     );
 
     expect(created).toEqual(expense);
@@ -32,8 +31,7 @@ describe('createRecurringExpensesUseCase', () => {
     await expect(
       createRecurringExpensesUsecase(
         expense as any,
-        repository as any,
-        userRepository as any
+        repository as any
       )
     ).rejects.toThrowError(
       new Error('The recurring expense null has invalid data')
