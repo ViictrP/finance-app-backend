@@ -32,7 +32,7 @@ const get = (filter: CreditCard, deleted: boolean) => {
   if (!!filter.number) {
     query = {
       number: filter.number,
-      userId: filter.user.id,
+      userId: (filter as any).userId,
       deleted
     };
   }

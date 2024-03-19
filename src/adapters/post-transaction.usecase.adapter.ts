@@ -2,31 +2,35 @@ import { Request, Response } from 'express';
 import { log } from '../core/logger/logger';
 import createTransactionUsecase from '../core/usecases/create-transaction.usecase';
 import creditCardPrismaRepository from '../infra/credit-card.prisma-repository';
-import userPrismaRepository from '../infra/user.prisma-repository';
 import transactionPrismaRepository from '../infra/transaction.prisma-repository';
-import UserRepository from '../core/repositories/user.repository';
 import TransactionRepository from '../core/repositories/transaction.repository';
+import Transaction from '../core/entities/transaction';
+import { RequestWithProfile } from './middlewares/profile.middleware';
 
 const postTransactionUsecaseAdapter = async (req: Request, res: Response) => {
   const { body } = req;
-  const { user } = res.locals;
-  body.user = user;
-  log(
-    '[postTransactionUsecaseAdapter]: save new transaction request received with body {}',
-    body
-  );
-  const newCreditCard = await createTransactionUsecase(
-    body,
+
+  const transaction: Partial<Transaction> = {
+    amount: body.amount,
+    description: body.description,
+    isInstallment: body.isInstallment,
+    installmentNumber: body.installmentNumber,
+    date: body.date,
+    invoice: body.invoice,
+    user: (req as RequestWithProfile).profile,
+    category: body.category
+  }
+
+  log('[postTransactionUsecaseAdapter]: save new transaction request received with body {}', body);
+  const newTransaction = await createTransactionUsecase(
+    transaction as Transaction,
     creditCardPrismaRepository as any,
-    userPrismaRepository as unknown as UserRepository,
     transactionPrismaRepository as unknown as TransactionRepository
   );
-  log(
-    `[createTransactionUseCaseAdapter]: new transaction [id]: ${newCreditCard.id} saved`
-  );
+  log(`[createTransactionUseCaseAdapter]: new transaction [id]: ${newTransaction.id} saved`);
   const hateoas = {
-    ...newCreditCard,
-    path: `/transactions/${newCreditCard.id}`
+    ...newTransaction,
+    path: `/transactions/${newTransaction.id}`
   };
   return res.status(201).json(hateoas);
 };

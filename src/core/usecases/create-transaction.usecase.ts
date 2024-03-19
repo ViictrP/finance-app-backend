@@ -5,7 +5,6 @@ import ValidationError from '../errors/validation.error';
 import Transaction from '../entities/transaction';
 import CreditCardRepository from '../repositories/credit-card.repository';
 import CreditCard from '../entities/credit-card';
-import UserRepository from '../repositories/user.repository';
 import User from '../entities/user';
 import Invoice from '../entities/invoice';
 import TransactionRepository from '../repositories/transaction.repository';
@@ -14,18 +13,13 @@ import transactionValidator from '../validators/transaction.validator';
 const createTransactionUsecase = async (
   transaction: Transaction,
   creditCardRepository: CreditCardRepository,
-  userRepository: UserRepository,
   repository: TransactionRepository
 ) => {
   log('[createTransactionUsecase]: validating new transaction', transaction);
   const isValid = transactionValidator(transaction);
   if (!isValid) {
-    log(
-      `[createTransactionUseCase]: transaction ${transaction.description} has invalid data`
-    );
-    throw new ValidationError(
-      `the transaction ${transaction.description} is invalid`
-    );
+    log(`[createTransactionUseCase]: transaction ${transaction.description} has invalid data`);
+    throw new ValidationError(`the transaction ${transaction.description} is invalid`);
   }
   transaction.date = new Date(transaction.date);
   const { invoice, user } = transaction;
@@ -37,12 +31,7 @@ const createTransactionUsecase = async (
       repository
     );
   } else {
-    return await createTransactionWithoutInvoice(
-      transaction,
-      userRepository,
-      user,
-      repository
-    );
+    return await createTransactionWithoutInvoice(transaction, user, repository);
   }
 };
 
@@ -52,17 +41,11 @@ async function createTransactionWithinInvoice(
   invoice: Invoice,
   repository: TransactionRepository
 ) {
-  transaction.installmentAmount =
-    transaction.installmentAmount > 0
-      ? Number(transaction.installmentAmount)
-      : 1;
+  transaction.installmentAmount = transaction.installmentAmount > 0 ? Number(transaction.installmentAmount) : 1;
   const transactionAmout = transaction.amount / transaction.installmentAmount;
   const transactionDate = new Date(transaction.date);
   let yearIncrement = 1;
-  log(
-    '[createTransactionUsecase]: getting credit card for this transaction',
-    transaction
-  );
+  log('[createTransactionUsecase]: getting credit card for this transaction', transaction);
   const creditCard = await creditCardRepository.get(invoice.creditCard, false);
   const installmentId = randomUUID();
 
@@ -75,10 +58,7 @@ async function createTransactionWithinInvoice(
     newTransaction.installmentNumber = installmentNumber + 1;
     newTransaction.installmentId = installmentId;
     populateWithInvoice(newTransaction, creditCard);
-    log(
-      '[createTransactionUsecase]: persisting new transaction for invoice',
-      transaction
-    );
+    log('[createTransactionUsecase]: persisting new transaction for invoice', transaction);
     await repository.createInvoiceTransaction(newTransaction);
     return newTransaction;
   }
@@ -96,20 +76,11 @@ async function createTransactionWithinInvoice(
 
 async function createTransactionWithoutInvoice(
   transaction: Transaction,
-  userRepository: UserRepository,
   user: User,
   repository: TransactionRepository
 ) {
-  log(
-    '[createTransactionUsecase]: getting user for this transaction',
-    transaction
-  );
-  const _user = await userRepository.get(user!);
-  transaction.user = _user!;
-  log(
-    '[createTransactionUsecase]: persisting new transaction for user',
-    transaction
-  );
+  transaction.user = user!;
+  log('[createTransactionUsecase]: persisting new transaction for user', transaction);
   return repository.create(transaction);
 }
 
@@ -128,18 +99,12 @@ const populateWithInvoice = (
     }
     month = MONTHS[nextMonthIndex];
   }
-  log(
-    '[createTransactionUsecase]: getting the invoice for this transaction',
-    transaction
-  );
+  log('[createTransactionUsecase]: getting the invoice for this transaction', transaction);
   let _invoice = creditCard.invoices.filter(
     (invoice) => invoice.month === month && invoice.year === year
   )[0];
   if (!_invoice) {
-    log(
-      '[createTransactionUsecase]: invoice doesnt exist yet, creating a new one',
-      transaction
-    );
+    log('[createTransactionUsecase]: invoice doesnt exist yet, creating a new one', transaction);
     _invoice = {
       month: month,
       year: year,

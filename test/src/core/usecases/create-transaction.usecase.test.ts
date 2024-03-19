@@ -9,12 +9,6 @@ describe('createTransactionUsecase', () => {
     update: jest.fn(),
     deleteOne: jest.fn()
   };
-  const userRepository = {
-    create: jest.fn(),
-    get: jest.fn(),
-    update: jest.fn(),
-    deleteOne: jest.fn()
-  };
   const repository = {
     create: jest.fn(),
     createInvoiceTransaction: jest.fn(),
@@ -32,7 +26,6 @@ describe('createTransactionUsecase', () => {
       await createTransactionUsecase(
         transaction as Transaction,
         creditCardRepository,
-        userRepository,
         repository
       );
     } catch (error: any) {
@@ -59,7 +52,6 @@ describe('createTransactionUsecase', () => {
     await createTransactionUsecase(
       transaction as Transaction,
       creditCardRepository,
-      userRepository,
       repository
     );
     expect(repository.create).toHaveBeenCalledWith(transaction);
@@ -97,7 +89,6 @@ describe('createTransactionUsecase', () => {
     await createTransactionUsecase(
       transaction as Transaction,
       creditCardRepository,
-      userRepository,
       repository
     );
 
@@ -161,7 +152,6 @@ describe('createTransactionUsecase', () => {
     await createTransactionUsecase(
       transaction as Transaction,
       creditCardRepository,
-      userRepository,
       repository
     );
 
@@ -202,7 +192,6 @@ describe('createTransactionUsecase', () => {
     await createTransactionUsecase(
       transaction as Transaction,
       creditCardRepository,
-      userRepository,
       repository
     );
     expect(repository.createInvoiceTransaction).toHaveBeenCalledTimes(3);
@@ -239,7 +228,6 @@ describe('createTransactionUsecase', () => {
     await createTransactionUsecase(
       transaction as Transaction,
       creditCardRepository,
-      userRepository,
       repository
     );
     expect(repository.createInvoiceTransaction).toHaveBeenCalledWith(

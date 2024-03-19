@@ -1,8 +1,10 @@
 import ValidationError from '../../../src/core/errors/validation.error';
 
 jest.mock('../../../src/core/usecases/create-transaction.usecase');
+jest.mock<typeof profileMiddleware>('../../../src/adapters/middlewares/profile.middleware');
 import createTransactionUsecase from '../../../src/core/usecases/create-transaction.usecase';
 import postTransactionUsecaseAdapter from '../../../src/adapters/post-transaction.usecase.adapter';
+import profileMiddleware from '../../../src/adapters/middlewares/profile.middleware';
 
 describe('postTransactionUseCase', () => {
   const res = {

@@ -3,28 +3,29 @@ import { log } from '../core/logger/logger';
 import createRecurringExpensesUsecase from '../core/usecases/create-recurring-expenses.usecase';
 import recurringExpensePrismaRepository from '../infra/recurring-expense.prisma-repository';
 import RecurringExpenseRepository from '../core/repositories/recurring-expense.repository';
-import userPrismaRepository from '../infra/user.prisma-repository';
-import UserRepository from '../core/repositories/user.repository';
+import RecurringExpense from '../core/entities/recurring-expense';
+import { RequestWithProfile } from './middlewares/profile.middleware';
 
 const postRecurringExpensesUsecaseAdapter = async (
   req: Request,
   res: Response
 ) => {
-  const { user } = res.locals;
   const { body: data } = req;
-  data.user = user;
-  log(
-    `[createRecurringExpensesUseCaseAdapter]: creating recurring expense ${data.description}`
+
+  const recurringExpense: Partial<RecurringExpense> = {
+    description: data.description,
+    amount: data.amount,
+    user: (req as RequestWithProfile).profile,
+    category: data.category
+  };
+
+  log(`[createRecurringExpensesUseCaseAdapter]: creating recurring expense ${data.description}`);
+  const newRecurringExpense = await createRecurringExpensesUsecase(
+    recurringExpense as RecurringExpense,
+    recurringExpensePrismaRepository as unknown as RecurringExpenseRepository
   );
-  const recurringExpense = await createRecurringExpensesUsecase(
-    data,
-    recurringExpensePrismaRepository as unknown as RecurringExpenseRepository,
-    userPrismaRepository as unknown as UserRepository
-  );
-  log(
-    `[createRecurringExpensesUseCaseAdapter]: recurring expense ${recurringExpense.description} created`
-  );
-  return res.status(201).json(recurringExpense);
+  log(`[createRecurringExpensesUseCaseAdapter]: recurring expense ${newRecurringExpense.description} created`);
+  return res.status(201).json(newRecurringExpense);
 };
 
 export default postRecurringExpensesUsecaseAdapter;

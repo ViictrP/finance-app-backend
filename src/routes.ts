@@ -103,10 +103,10 @@ const deleteRecurringExpenseRoute = (
   next: NextFunction
 ) => commonRouter(req, res, next, deleteRecurringExpenseUsecaseAdapter);
 
-router.post('/transactions', postTransactionRoute);
-router.delete('/transactions/:id', deleteTransactionRoute);
-router.post('/recurring-expenses', postRecurringExpensesRoute);
-router.delete('/recurring-expenses/:id', deleteRecurringExpenseRoute);
+router.post('/transactions', profileMiddleware, postTransactionRoute);
+router.delete('/transactions/:id', profileMiddleware, deleteTransactionRoute);
+router.post('/recurring-expenses', profileMiddleware, postRecurringExpensesRoute);
+router.delete('/recurring-expenses/:id', profileMiddleware, deleteRecurringExpenseRoute);
 
 // ============= MONTH CLOSURE ===========
 const postMonthclosureRoute = (
