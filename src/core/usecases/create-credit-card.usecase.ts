@@ -14,34 +14,20 @@ const createCreditCardUseCase = async (
   userRepository: UserRepository,
   repository: CreditCardRepository
 ): Promise<CreditCard> => {
-  log(
-    `[creditCardUseCase]: validating credit card ${creditCard.title} information`
-  );
+  log(`[creditCardUseCase]: validating credit card ${creditCard.title} information`);
   const isValid = creditCardValidator(creditCard);
   if (!isValid) {
-    log(
-      `[creditCardUseCase]: credit card ${creditCard.title} has invalid data`
-    );
+    log(`[creditCardUseCase]: credit card ${creditCard.title} has invalid data`);
     throw new ValidationError(`the credit card ${creditCard.title} is invalid`);
   }
   const hasCreditCard = await repository.get(creditCard, false);
   if (!!hasCreditCard) {
-    log(
-      `[creditCardUseCase]: User already has the credit card ${creditCard.title}`
-    );
-    throw new RequestError(
-      `User already has the credit card ${creditCard.title}`
-    );
+    log(`[creditCardUseCase]: User already has the credit card ${creditCard.title}`);
+    throw new RequestError(`User already has the credit card ${creditCard.title}`);
   }
-  log(
-    '[creditCardUseCase]: finding the owner of the new credit card',
-    creditCard.title
-  );
+  log('[creditCardUseCase]: finding the owner of the new credit card', creditCard.title);
   creditCard.user = { id: creditCard.user.id } as User;
-  log(
-    '[creditCardUseCase]: creating a new invoice for this credit card',
-    creditCard.title
-  );
+  log('[creditCardUseCase]: creating a new invoice for this credit card', creditCard.title);
   const today = new Date();
   const invoice: Partial<Invoice> = {
     month: MONTHS[today.getMonth()],
