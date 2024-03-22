@@ -104,6 +104,7 @@ describe('createTransactionUsecase', () => {
         installmentAmount: 1,
         installmentId: expect.any(String),
         installmentNumber: 1,
+        isInstallment: false,
         invoice: {
           creditCard: {
             id: '1',
@@ -115,7 +116,6 @@ describe('createTransactionUsecase', () => {
           month: expect.any(String),
           year: expect.any(Number)
         },
-        isInstallment: false,
         user: { id: '1', name: 'John Doe' }
       })
     );
@@ -126,9 +126,9 @@ describe('createTransactionUsecase', () => {
       id: '1',
       amount: 100,
       description: 'Transaction 1',
-      isInstallment: false,
       installmentAmount: 1,
       installmentNumber: 1,
+      isInstallment: false,
       createdAt: new Date('2023-12-11'),
       date: new Date('2023-12-11'),
       user: { id: '1', name: 'John Doe' } as any,
@@ -202,7 +202,7 @@ describe('createTransactionUsecase', () => {
       id: '1',
       amount: 100,
       description: 'Transaction 1',
-      isInstallment: true,
+      isInstallment: false,
       installmentAmount: 1,
       installmentNumber: 1,
       createdAt: new Date('2023-09-11T15:31:33.695Z'),

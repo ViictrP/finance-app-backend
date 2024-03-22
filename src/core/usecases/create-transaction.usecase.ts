@@ -57,7 +57,7 @@ async function createTransactionWithinInvoice(
     newTransaction.amount = transactionAmout;
     newTransaction.installmentNumber = installmentNumber + 1;
     newTransaction.installmentId = installmentId;
-    newTransaction.isInstallment = true;
+    newTransaction.isInstallment = transaction.installmentAmount > 1;
     populateWithInvoice(newTransaction, creditCard);
     log('[createTransactionUsecase]: persisting new transaction for invoice', transaction);
     await repository.createInvoiceTransaction(newTransaction);
