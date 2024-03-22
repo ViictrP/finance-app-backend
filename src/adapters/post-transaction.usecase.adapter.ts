@@ -15,6 +15,7 @@ const postTransactionUsecaseAdapter = async (req: Request, res: Response) => {
     description: body.description,
     isInstallment: body.isInstallment,
     installmentNumber: body.installmentNumber,
+    installmentAmount: body.installmentAmount,
     date: body.date,
     invoice: body.invoice,
     user: (req as RequestWithProfile).profile,
