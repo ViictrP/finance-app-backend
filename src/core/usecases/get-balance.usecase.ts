@@ -30,9 +30,7 @@ const getBalanceUsecase = async (
   repository: UserRepository
 ): Promise<Balance> => {
   validateFilter(filter);
-  log(
-    `[getBalanceUseCase]: getting the transactions of ${filter.month}/${filter.year}`
-  );
+  log(`[getBalanceUseCase]: getting the transactions of ${filter.month}/${filter.year}`);
   const user = (await repository.get(
     { email: filter.email } as User,
     filter.month,
@@ -60,9 +58,7 @@ const getBalanceUsecase = async (
   for (const current of user.creditCards) {
     const invoice = current.invoices[0];
     const amount = !!invoice
-      ? invoice.transactions.reduce((sum, current) => {
-          return sum + +current.amount;
-        }, 0)
+      ? invoice.transactions.reduce((sum, current) => sum + +current.amount, 0)
       : 0;
     const creditCardSum = creditCardsAmount + +amount;
     creditCardExpenses[current.id] = +amount;
