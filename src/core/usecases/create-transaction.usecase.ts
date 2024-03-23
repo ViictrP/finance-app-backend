@@ -46,7 +46,11 @@ async function createTransactionWithinInvoice(
   const transactionDate = new Date(transaction.date);
   let yearIncrement = 1;
   log('[createTransactionUsecase]: getting credit card for this transaction', transaction);
-  const creditCard = await creditCardRepository.get(invoice.creditCard, false);
+  const filter = {
+    number: invoice.creditCard.number,
+    user : { id: (invoice.creditCard as any).userId }
+  }
+  const creditCard = await creditCardRepository.get(filter as CreditCard, false);
   const installmentId = randomUUID();
 
   async function createNewInstallment(installmentNumber: number) {
@@ -81,6 +85,7 @@ async function createTransactionWithoutInvoice(
   repository: TransactionRepository
 ) {
   transaction.user = user!;
+  transaction.installmentAmount = 1;
   log('[createTransactionUsecase]: persisting new transaction for user', transaction);
   return repository.create(transaction);
 }

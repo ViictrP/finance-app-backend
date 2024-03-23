@@ -6,6 +6,8 @@ const getIncludes = (month?: string, year?: number) => {
   const monthStart = new Date();
   const monthEnd = new Date();
   monthStart.setDate(1);
+  monthStart.setHours(0, 0, 0);
+
   monthEnd.setDate(1);
   monthEnd.setMonth(monthStart.getMonth() + 1);
   return {
